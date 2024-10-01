@@ -32,7 +32,7 @@ public:
 
 	// Main
 	void Initialize(const std::string& textureName);
-	void Update(MainCamera2D* camera2D);
+	void Update(Camera2D* camera2D);
 	void Draw(const BlendMode& blendMode = BlendMode::kBlendModeNormal);
 
 	// Setter

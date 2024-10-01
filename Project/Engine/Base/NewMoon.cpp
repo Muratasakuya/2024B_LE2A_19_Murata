@@ -40,13 +40,21 @@ void NewMoon::BeginFrame() {
 #ifdef _DEBUG
 	imguiManager_->Begin();
 #endif
+	dxCommon_->PreDraw();
 	srvManager_->PreDraw();
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								 フレーム終了処理
 ////////////////////////////////////////////////////////////////////////////////*/
-void NewMoon::EndFrame() {}
+void NewMoon::EndFrame() {
+
+#ifdef _DEBUG
+	imguiManager_->End();
+#endif
+	imguiManager_->Draw();
+	dxCommon_->PostDraw();
+}
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								オフスクリーン描画処理
@@ -159,8 +167,8 @@ void NewMoon::Initialize(uint32_t width, uint32_t height) {
 	srvManager_ = std::make_unique<SrvManager>();
 	srvManager_->Initialize();
 
-	// Offscreen初期化
-	dxCommon_->CreateOffscreenRenderTexture(srvManager_.get(), width, height);
+	// Offscreen初期化、上手くいくまで廃止
+	//dxCommon_->CreateOffscreenRenderTexture(srvManager_.get(), width, height);
 
 	/*-----------------------------------------------------------------------*/
 	/// TextureManager

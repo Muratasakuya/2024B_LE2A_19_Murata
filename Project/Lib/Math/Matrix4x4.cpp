@@ -57,6 +57,26 @@ Matrix4x4& Matrix4x4::operator-=(const Matrix4x4& other) {
 	return *this;
 }
 
+Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& other) {
+
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			this->m[i][j] *= other.m[i][j];
+		}
+	}
+	return *this;
+}
+
+Matrix4x4& Matrix4x4::operator/=(const Matrix4x4& other) {
+
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			this->m[i][j] /= other.m[i][j];
+		}
+	}
+	return *this;
+}
+
 /*-------------------------------------------------------------*/
 /// 関数
 

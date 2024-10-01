@@ -39,7 +39,7 @@ void Sprite::Initialize(const std::string& textureName) {
 	transform2D_.Initialize();
 }
 
-void Sprite::Update(MainCamera2D* camera2D) {
+void Sprite::Update(Camera2D* camera2D) {
 
 	// 頂点更新
 	VertexUpdate();

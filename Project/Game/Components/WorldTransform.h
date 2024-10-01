@@ -4,7 +4,7 @@
 //								include
 //===================================================================*/
 #include "Engine/MyDirectXClass/DXConstBuffer.h"
-#include "Lib/Camera/MainCamera3D.h"
+#include "Lib/Camera/Camera3D.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								WorldTransform Class
@@ -20,7 +20,7 @@ public:
 	~WorldTransform() = default;
 
 	void Initialize();
-	void Update(MainCamera3D* camera3D);
+	void Update(Camera3D* camera3D);
 
 	// Setter
 	void SetAnimationData(const std::string& modelName, const std::string& animationName);
@@ -39,6 +39,9 @@ public:
 
 	TransformationMatrix matrix;
 
+	// 親
+	const WorldTransform* parent_ = nullptr;
+
 private:
 	//===================================================================*/
 	//							private Variables
@@ -51,12 +54,5 @@ private:
 	ModelData modelData_;
 	bool isPlayAnimation_;
 	float animationtime_;
-
-private:
-	//===================================================================*/
-	//							private Function
-	//===================================================================*/
-
-	
 
 };

@@ -4,7 +4,7 @@
 //								include
 //===================================================================*/
 #include "Engine/MyDirectXClass/DXConstBuffer.h"
-#include "Lib/Camera/MainCamera2D.h"
+#include "Lib/Camera/Camera2D.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 								MatrixObject Class
@@ -21,7 +21,7 @@ public:
 
 	// Main
 	void Initialize();
-	void Update(MainCamera2D* camera2D, const Transform2D& transform2D);
+	void Update(Camera2D* camera2D, const Transform2D& transform2D);
 
 private:
 	//===================================================================*/

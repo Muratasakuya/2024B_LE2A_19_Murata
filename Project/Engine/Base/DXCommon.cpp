@@ -182,6 +182,9 @@ void DXCommon::ClearWindow() {
 	float clearColor[] = { 0.184f, 0.310f, 0.310f, 1.0f };
 	// RGBAの順
 	commandList_->ClearRenderTargetView(rtvHandles[backBufferIndex_], clearColor, 0, nullptr);
+
+	// 深度バッファクリア
+	ClearDepthBuffer();
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -257,9 +260,9 @@ void DXCommon::OffscreenPreDraw() {
 void DXCommon::OffscreenPostDraw() {
 
 	// リソースの状態をRENDER_TARGETからPIXEL_SHADER_RESOURCEに変更
-	TransitionBarrier(renderTextureResource_.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+	//TransitionBarrier(renderTextureResource_.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 	// リソースの状態をD3D12_RESOURCE_STATE_DEPTH_WRITEからPIXEL_SHADER_RESOURCEに変更
-	TransitionBarrier(descriptor_->GetDepthResource(), D3D12_RESOURCE_STATE_DEPTH_WRITE, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+	//TransitionBarrier(descriptor_->GetDepthResource(), D3D12_RESOURCE_STATE_DEPTH_WRITE, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -296,8 +299,8 @@ void DXCommon::PreDraw() {
 void DXCommon::PostDraw() {
 
 	// 次のOffscreenに状態が合うように状態を変更
-	TransitionBarrier(descriptor_->GetDepthResource(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_DEPTH_WRITE);
-	TransitionBarrier(renderTextureResource_.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	//TransitionBarrier(descriptor_->GetDepthResource(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+	//TransitionBarrier(renderTextureResource_.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	// バックバッファの状態をRENDER_TARGETからPRESENTに変更 処理的には上のバリアと同じ
 	TransitionBarrier(swapChain_->GetResources(backBufferIndex_), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);

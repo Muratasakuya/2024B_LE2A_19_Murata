@@ -8,7 +8,7 @@ void MatrixObject::Initialize() {
 	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
 }
 
-void MatrixObject::Update(MainCamera2D* camera2D, const Transform2D& transform2D) {
+void MatrixObject::Update(Camera2D* camera2D, const Transform2D& transform2D) {
 
 	// SRT
 	Vector3 scale = { transform2D.size.x,transform2D.size.y,1.0f };

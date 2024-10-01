@@ -132,7 +132,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\DXCommon.cpp" />
     <ClCompile Include="Engine\Base\NewMoon.cpp" />
     <ClCompile Include="Engine\Methods\Input.cpp" />
-    <ClCompile Include="Lib\Camera\MainCamera2D.cpp" />
+    <ClCompile Include="Lib\Camera\Camera2D.cpp" />
     <ClCompile Include="Game\3D\Model.cpp" />
     <ClCompile Include="Engine\Managers\ModelManager.cpp" />
     <ClCompile Include="Game\Managers\ParticleManager.cpp" />
@@ -147,7 +147,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Scenes\Methods\IScene.cpp" />
     <ClCompile Include="Game\Managers\SceneManager.cpp" />
     <ClCompile Include="Game\Scenes\GameScene.cpp" />
-    <ClCompile Include="Lib\Camera\MainCamera3D.cpp" />
+    <ClCompile Include="Lib\Camera\Camera3D.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\Pipeline\DXDepthStencil.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\Pipeline\DXBlendState.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\Pipeline\DXInputLayout.cpp" />
@@ -203,7 +203,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\NewMoon.h" />
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\PipelineStateStructure.h" />
     <ClInclude Include="Engine\Methods\Input.h" />
-    <ClInclude Include="Lib\Camera\MainCamera2D.h" />
+    <ClInclude Include="Lib\Camera\Camera2D.h" />
     <ClInclude Include="Lib\Math\Matrix3x3.h" />
     <ClInclude Include="Game\3D\Model.h" />
     <ClInclude Include="Engine\Managers\ModelManager.h" />
@@ -220,7 +220,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Scenes\Methods\IScene.h" />
     <ClInclude Include="Game\Managers\SceneManager.h" />
     <ClInclude Include="Game\Scenes\GameScene.h" />
-    <ClInclude Include="Lib\Camera\MainCamera3D.h" />
+    <ClInclude Include="Lib\Camera\Camera3D.h" />
     <ClInclude Include="Lib\Structure.h" />
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXDepthStencil.h" />
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXBlendState.h" />

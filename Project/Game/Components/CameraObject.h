@@ -4,7 +4,6 @@
 //								include
 //===================================================================*/
 #include "Engine/MyDirectXClass/DXConstBuffer.h"
-#include "Lib/Camera/MainCamera3D.h"
 
 /*/////////////////////////////////////////////////////////////////////////////3///
 *								CameraObject Class
