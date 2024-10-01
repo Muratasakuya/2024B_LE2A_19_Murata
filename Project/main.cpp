@@ -1,4 +1,4 @@
-#include "SceneManager.h"
+#include "Game/Managers/SceneManager.h"
 
 // 解放忘れのチェック
 struct LeakChecker {

@@ -1,0 +1,32 @@
+#pragma once
+
+//===================================================================*/
+//								include
+//===================================================================*/
+#include "Engine/MyDirectXClass/DXConstBuffer.h"
+#include "Lib/Camera/MainCamera3D.h"
+
+/*/////////////////////////////////////////////////////////////////////////////3///
+*								CameraObject Class
+////////////////////////////////////////////////////////////////////////////////*/
+class CameraObject :
+	public DXConstBuffer<CameraForGPU> {
+public:
+	//===================================================================*/
+	//							public Functions
+	//===================================================================*/
+
+	CameraObject() = default;
+	~CameraObject() = default;
+
+	void Initialize();
+	void Update(const Vector3& worldPos);
+
+private:
+	//===================================================================*/
+	//							private Variables
+	//===================================================================*/
+
+	CameraForGPU camera;
+
+};
