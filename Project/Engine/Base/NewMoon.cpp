@@ -46,6 +46,7 @@ void NewMoon::BeginFrame() {
 	srvManager_->PreDraw();
 
 	cameraManager_->Update();
+	lightManager_->Update();
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
