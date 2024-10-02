@@ -3,47 +3,31 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Components/CameraObject.h"
-#include "Lib/Camera/Camera2D.h"
-#include "Lib/Camera/Camera3D.h"
-
-// c++
-#include <memory>
-
-// カメラタイプ
-enum class CameraType {
-
-	Perspective, // 3D
-	Orthographic // 2D
-};
+#include "Game/Components/LightObject.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*									Model Class
+*								LightManager Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class CameraManager {
+class LightManager {
 public:
 	//===================================================================*/
 	//							public Functions
 	//===================================================================*/
 
-	CameraManager() = default;
-	~CameraManager() = default;
+	LightManager() = default;
+	~LightManager() = default;
 
 	void Initialize();
 	void Update();
 
 	// Getter
-	Matrix4x4 GetViewProjection(CameraType cameraType);
-	CameraObject GetCameraBuffer() const;
+	LightObject GetLightBuffer() const;
 
 private:
 	//===================================================================*/
 	//							private Variables
 	//===================================================================*/
 
-	std::unique_ptr<Camera2D> camera2D_;
-	std::unique_ptr<Camera3D> camera3D_;
-
-	CameraObject cameraBuffer_;
+	LightObject light_;
 
 };

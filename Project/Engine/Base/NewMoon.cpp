@@ -26,6 +26,7 @@ std::unique_ptr<ModelManager> NewMoon::modelManager_ = nullptr;
 std::unique_ptr<Input> NewMoon::input_ = nullptr;
 std::unique_ptr<Audio> NewMoon::audio_ = nullptr;
 std::unique_ptr<CameraManager> NewMoon::cameraManager_ = nullptr;
+std::unique_ptr<LightManager> NewMoon::lightManager_ = nullptr;
 #pragma endregion
 ///===============================================================================
 
@@ -128,6 +129,9 @@ void NewMoon::Finalize() {
 	audio_->Finalize();
 	audio_.reset();
 
+	cameraManager_.reset();
+	lightManager_.reset();
+
 	// ComFinalize
 	CoUninitialize();
 
@@ -217,6 +221,12 @@ void NewMoon::Initialize(uint32_t width, uint32_t height) {
 
 	cameraManager_ = std::make_unique<CameraManager>();
 	cameraManager_->Initialize();
+
+	/*-----------------------------------------------------------------------*/
+	/// LightManager
+
+	lightManager_ = std::make_unique<LightManager>();
+	lightManager_->Initialize();
 }
 
 ///===============================================================================
@@ -487,3 +497,5 @@ Skeleton NewMoon::GetSkeletonData(const std::string& animationName) { return mod
 SkinCluster NewMoon::GetSkinClusterData(const std::string& animationName) { return modelManager_->GetSkinClusterData(animationName); }
 SrvManager* NewMoon::GetSrvManagerPtr() { return srvManager_.get(); }
 Matrix4x4 NewMoon::GetViewProjection(const CameraType& cameraType) { return cameraManager_->GetViewProjection(cameraType); }
+CameraObject NewMoon::GetCameraBuffer() { return cameraManager_->GetCameraBuffer(); }
+LightObject NewMoon::GetLightBuffer() { return lightManager_->GetLightBuffer(); }

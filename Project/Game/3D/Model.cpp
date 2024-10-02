@@ -54,6 +54,8 @@ void Model::Initialize(const std::string& modelName) {
 void Model::Draw(BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
+	auto cameraBuffer = NewMoon::GetCameraBuffer();
+	auto lightBuffer = NewMoon::GetLightBuffer();
 	DXConstBufferManager constBuffer;
 
 	for (uint32_t meshIndex = 0; meshIndex < meshNum_; ++meshIndex) {
@@ -68,7 +70,7 @@ void Model::Draw(BlendMode blendMode) {
 		NewMoon::SetGraphicsPipeline(commandList, pipelineType_, blendMode);
 		commandList->IASetVertexBuffers(0, 1, &vertices_[meshIndex].GetVertexBuffer());
 		commandList->IASetIndexBuffer(&indices_[meshIndex].GetIndexBuffer());
-		constBuffer.SetCommands(commandList, pipelineType_, worldTransform_, material_[meshIndex], light_, camera_);
+		constBuffer.SetCommands(commandList, pipelineType_, worldTransform_, material_[meshIndex], lightBuffer, cameraBuffer);
 		if (modelData_.meshes[meshIndex].material.textureName) {
 			NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, modelData_.meshes[meshIndex].material.textureName.value());
 		}
@@ -78,6 +80,8 @@ void Model::Draw(BlendMode blendMode) {
 void Model::SkinningAnimationDraw(const std::string& animationName, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
+	auto cameraBuffer = NewMoon::GetCameraBuffer();
+	auto lightBuffer = NewMoon::GetLightBuffer();
 	DXConstBufferManager constBuffer;
 
 	SetComputeCommands(animationName);
@@ -93,7 +97,7 @@ void Model::SkinningAnimationDraw(const std::string& animationName, BlendMode bl
 		NewMoon::SetGraphicsPipeline(commandList, pipelineType_, blendMode);
 		commandList->IASetVertexBuffers(0, 1, &outputVertices_[meshIndex].GetVertexBuffer());
 		commandList->IASetIndexBuffer(&indices_[meshIndex].GetIndexBuffer());
-		constBuffer.SetCommands(commandList, pipelineType_, worldTransform_, material_[meshIndex], light_, camera_);
+		constBuffer.SetCommands(commandList, pipelineType_, worldTransform_, material_[meshIndex], lightBuffer, cameraBuffer);
 		if (modelData_.meshes[meshIndex].material.textureName) {
 			NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, modelData_.meshes[meshIndex].material.textureName.value());
 		}

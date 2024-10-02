@@ -7,6 +7,7 @@
 #include "Engine/Methods/Input.h"
 #include "Game/Components/MaterialObject.h"
 #include "Game/Managers/CameraManager.h"
+#include "Game/Managers/LightManager.h"
 #include "Lib/Structure.h"
 
 // directX
@@ -174,6 +175,8 @@ public:
 	static SkinCluster GetSkinClusterData(const std::string& animationName);
 	static SrvManager* GetSrvManagerPtr();
 	static Matrix4x4 GetViewProjection(const CameraType& cameraType);
+	static CameraObject GetCameraBuffer();
+	static LightObject GetLightBuffer();
 
 public:
 	//===================================================================*/
@@ -207,4 +210,5 @@ private:
 	static std::unique_ptr<Audio> audio_;
 
 	static std::unique_ptr<CameraManager> cameraManager_;
+	static std::unique_ptr<LightManager> lightManager_;
 };

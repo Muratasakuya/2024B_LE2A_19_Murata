@@ -166,6 +166,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Managers\ImGuiManager.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\Logger.cpp" />
+    <ClCompile Include="Game\Managers\LightManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Base\WinApp.cpp" />
     <ClCompile Include="Engine\Managers\PipelineManager.cpp" />
@@ -258,6 +259,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\3D\Triangle.h" />
     <ClInclude Include="Game\Components\VertexObject.h" />
     <ClInclude Include="Game\3D\Sphere.h" />
+    <ClInclude Include="Game\Managers\LightManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

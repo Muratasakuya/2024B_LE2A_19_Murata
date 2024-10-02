@@ -94,6 +94,7 @@
     <ClCompile Include="Game\3D\Sphere.cpp" />
     <ClCompile Include="Game\3D\Particle.cpp" />
     <ClCompile Include="Game\Managers\CameraManager.cpp" />
+    <ClCompile Include="Game\Managers\LightManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Game\3D\Particle.h" />
     <ClInclude Include="Engine\Managers\TextureManager.h" />
     <ClInclude Include="Game\Managers\CameraManager.h" />
+    <ClInclude Include="Game\Managers\LightManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />
