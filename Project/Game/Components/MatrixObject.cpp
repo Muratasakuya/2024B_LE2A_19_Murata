@@ -8,7 +8,7 @@ void MatrixObject::Initialize() {
 	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
 }
 
-void MatrixObject::Update(Camera2D* camera2D, const Transform2D& transform2D) {
+void MatrixObject::Update(const Transform2D& transform2D) {
 
 	// SRT
 	Vector3 scale = { transform2D.size.x,transform2D.size.y,1.0f };
@@ -17,7 +17,7 @@ void MatrixObject::Update(Camera2D* camera2D, const Transform2D& transform2D) {
 
 	Matrix4x4 worldMatrix =
 		Matrix4x4::MakeAffineMatrix(scale, rotate, translate);
-	matrix_.WVP = worldMatrix * camera2D->GetViewProjectionMatrix();
+	matrix_.WVP = worldMatrix * NewMoon::GetViewProjection(CameraType::Orthographic);
 
 	// 定数バッファにデータを転送
 	TransferData(matrix_);

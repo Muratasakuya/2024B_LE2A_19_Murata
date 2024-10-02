@@ -39,7 +39,7 @@ void Sprite::Initialize(const std::string& textureName) {
 	transform2D_.Initialize();
 }
 
-void Sprite::Update(Camera2D* camera2D) {
+void Sprite::Update() {
 
 	// 頂点更新
 	VertexUpdate();
@@ -49,7 +49,7 @@ void Sprite::Update(Camera2D* camera2D) {
 	index_.Update();
 
 	material_.Update();
-	matrix_.Update(camera2D, transform2D_);
+	matrix_.Update(transform2D_);
 }
 
 void Sprite::Draw(const BlendMode& blendMode) {

@@ -117,6 +117,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Managers\CameraManager.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\DXOffscreenRender.cpp" />
     <ClCompile Include="Game\Components\CameraObject.cpp" />
@@ -185,6 +186,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\3D\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Managers\CameraManager.h" />
     <ClInclude Include="Engine\Managers\TextureManager.h" />
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
     <ClInclude Include="Engine\MyDirectXClass\DXOffscreenRender.h" />

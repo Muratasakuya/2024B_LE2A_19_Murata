@@ -4,7 +4,6 @@
 //								include
 //===================================================================*/
 #include "Engine/MyDirectXClass/DXConstBuffer.h"
-#include "Lib/Camera/Camera3D.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								WorldTransform Class
@@ -20,7 +19,7 @@ public:
 	~WorldTransform() = default;
 
 	void Initialize();
-	void Update(Camera3D* camera3D);
+	void Update();
 
 	// Setter
 	void SetAnimationData(const std::string& modelName, const std::string& animationName);

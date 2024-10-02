@@ -3,30 +3,43 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Engine/MyDirectXClass/DXConstBuffer.h"
+#include "Lib/Camera/Camera2D.h"
+#include "Lib/Camera/Camera3D.h"
+
+// c++
+#include <memory>
+
+// カメラタイプ
+enum class CameraType {
+
+	Perspective, // 3D
+	Orthographic // 2D
+};
 
 /*////////////////////////////////////////////////////////////////////////////////
-								MatrixObject Class
+*									Model Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class MatrixObject :
-	public DXConstBuffer<SpriteTransformationMatrix> {
+class CameraManager {
 public:
 	//===================================================================*/
 	//							public Functions
 	//===================================================================*/
 
-	MatrixObject() = default;
-	~MatrixObject() = default;
+	CameraManager() = default;
+	~CameraManager() = default;
 
-	// Main
 	void Initialize();
-	void Update(const Transform2D& transform2D);
+	void Update();
+
+	// Getter
+	Matrix4x4 GetViewProjection(CameraType cameraType);
 
 private:
 	//===================================================================*/
-	//							private Variable
+	//							private Variables
 	//===================================================================*/
 
-	SpriteTransformationMatrix matrix_;
+	std::unique_ptr<Camera2D> camera2D_;
+	std::unique_ptr<Camera3D> camera3D_;
 
 };

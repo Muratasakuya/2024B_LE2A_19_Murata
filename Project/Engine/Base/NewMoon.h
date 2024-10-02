@@ -5,8 +5,9 @@
 //===================================================================*/
 #include "Engine/Managers/PipelineManager.h"
 #include "Engine/Methods/Input.h"
-#include "Lib/Structure.h"
 #include "Game/Components/MaterialObject.h"
+#include "Game/Managers/CameraManager.h"
+#include "Lib/Structure.h"
 
 // directX
 #include <Externals/DirectXTex/DirectXTex.h>
@@ -33,6 +34,8 @@ class ParticleEmitter;
 class Audio;
 #pragma endregion
 ///===============================================================================
+
+/// GameとDirectXなど、役割ごとにEngineを分ける、これは絶対
 
 /*////////////////////////////////////////////////////////////////////////////////
 *									NewMoon Class
@@ -170,6 +173,7 @@ public:
 	static Skeleton GetSkeletonData(const std::string& animationName);
 	static SkinCluster GetSkinClusterData(const std::string& animationName);
 	static SrvManager* GetSrvManagerPtr();
+	static Matrix4x4 GetViewProjection(const CameraType& cameraType);
 
 public:
 	//===================================================================*/
@@ -201,4 +205,6 @@ private:
 	static std::unique_ptr<ImGuiManager> imguiManager_;
 	static std::unique_ptr<Input> input_;
 	static std::unique_ptr<Audio> audio_;
+
+	static std::unique_ptr<CameraManager> cameraManager_;
 };
