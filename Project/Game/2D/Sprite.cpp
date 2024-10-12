@@ -58,6 +58,7 @@ void Sprite::Draw(const BlendMode& blendMode) {
 	auto commandList = NewMoon::GetCommandList();
 
 	NewMoon::SetGraphicsPipeline(commandList, Object2D, blendMode);
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	commandList->IASetVertexBuffers(0, 1, &vertex_.GetVertexBuffer());
 	commandList->IASetIndexBuffer(&index_.GetIndexBuffer());
 	material_.SetCommand(commandList, 0);

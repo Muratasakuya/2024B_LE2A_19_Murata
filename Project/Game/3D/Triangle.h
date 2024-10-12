@@ -57,8 +57,6 @@ private:
 
 	WorldTransform worldTransform_;
 	MaterialObject3D material_;
-	LightObject light_;
-	CameraObject camera_;
 
 private:
 	//===================================================================*/
@@ -88,12 +86,6 @@ inline void Triangle::SetConstBuffer(DXConstBuffer<T>& buffer) {
 	} else if constexpr (std::is_same_v<T, Material3D>) {
 
 		material_ = static_cast<MaterialObject3D&>(buffer);
-	} else if constexpr (std::is_same_v<T, PunctualLight>) {
-
-		light_ = static_cast<LightObject&>(buffer);
-	} else if constexpr (std::is_same_v<T, CameraForGPU>) {
-
-		camera_ = static_cast<CameraObject&>(buffer);
 	}
 }
 

@@ -4,14 +4,15 @@
 #include "Game/Managers/SceneManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*									Main
+*							Camera3D classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
+
 void Camera3D::Init() {
 
 	// Affine
 	transform_.scale.SetInit(1.0f);
-	transform_.rotate.Init();
-	transform_.translate = { 0.0f,0.0f,0.0f };
+	transform_.rotate = { 0.26f,0.0f,0.0f };
+	transform_.translate = { 0.0f,1.3f,-6.5f };
 
 	cameraMatrix_ =
 		Matrix4x4::MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
@@ -49,16 +50,11 @@ void Camera3D::ImGui() {
 }
 
 /*///////////////////////////////////////////////////////////////////////////////
-*								getterMethods
+*									Getter
 ////////////////////////////////////////////////////////////////////////////////*/
 Vector3 Camera3D::GetWorldPos() const { return transform_.translate; }
-
 Matrix4x4 Camera3D::GetCameraMatrix() const { return cameraMatrix_; }
-
 Matrix4x4 Camera3D::GetViewMatrix() const { return viewMatrix_; }
-
 Matrix4x4 Camera3D::GetProjectionMatrix() const { return projectionMatrix_; }
-
 Matrix4x4 Camera3D::GetViewProjectionMatrix() const { return viewProjectionMatrix_; }
-
 Matrix4x4 Camera3D::GetProjectionInverseMatrix() const { return projectionInverseMatrix_; }

@@ -1,6 +1,7 @@
 #include "Triangle.h"
 
 #include "Engine/Base/NewMoon.h"
+#include "Engine/Base/NewMoonGame.h"
 #include "Engine/Managers/DXConstBufferManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -13,12 +14,7 @@ void Triangle::Init(const std::string& textureName) {
 
 	// ConstBuffer初期化
 	vertex_.Init(kTriangleVertexNum);
-
-	for (uint32_t i = 0; i < kTriangleVertexNum; i++) {
-
-		VertexData3D vertexData{};
-		vertex_.data.push_back(vertexData);
-	}
+	vertex_.data.resize(kTriangleVertexNum);
 }
 
 void Triangle::Update(const std::array<Vector3, kTriangleVertexNum>& vertices) {
@@ -51,11 +47,14 @@ void Triangle::Update(const std::array<Vector3, kTriangleVertexNum>& vertices) {
 void Triangle::Draw(BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
+	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
+	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
 	DXConstBufferManager constBuffer;
 
 	NewMoon::SetGraphicsPipeline(commandList, pObject3D, blendMode);
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	commandList->IASetVertexBuffers(0, 1, &vertex_.GetVertexBuffer());
-	constBuffer.SetCommands(commandList, pObject3D, worldTransform_, material_, light_, camera_);
+	constBuffer.SetCommands(commandList, pObject3D, worldTransform_, material_, lightBuffer, cameraBuffer);
 	NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, textureName_);
 	commandList->DrawInstanced(kTriangleVertexNum, 1, 0, 0);
 }

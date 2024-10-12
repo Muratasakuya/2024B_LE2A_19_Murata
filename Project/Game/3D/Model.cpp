@@ -5,8 +5,9 @@
 #include "Engine/Managers/DXConstBufferManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*									Main
+*							Model classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
+
 void Model::Init(const std::string& modelName) {
 
 	// 使用するモデル、テクスチャ
@@ -69,6 +70,7 @@ void Model::Draw(BlendMode blendMode) {
 		}
 
 		NewMoon::SetGraphicsPipeline(commandList, pipelineType_, blendMode);
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		commandList->IASetVertexBuffers(0, 1, &vertices_[meshIndex].GetVertexBuffer());
 		commandList->IASetIndexBuffer(&indices_[meshIndex].GetIndexBuffer());
 		constBuffer.SetCommands(commandList, pipelineType_, worldTransform_, material_[meshIndex], lightBuffer, cameraBuffer);
@@ -96,6 +98,7 @@ void Model::SkinningAnimationDraw(const std::string& animationName, BlendMode bl
 			D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
 		NewMoon::SetGraphicsPipeline(commandList, pipelineType_, blendMode);
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		commandList->IASetVertexBuffers(0, 1, &outputVertices_[meshIndex].GetVertexBuffer());
 		commandList->IASetIndexBuffer(&indices_[meshIndex].GetIndexBuffer());
 		constBuffer.SetCommands(commandList, pipelineType_, worldTransform_, material_[meshIndex], lightBuffer, cameraBuffer);

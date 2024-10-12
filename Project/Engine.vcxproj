@@ -117,6 +117,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Lib\Camera\DebugCamera.cpp" />
     <ClCompile Include="Game\Managers\CameraManager.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\DXOffscreenRender.cpp" />
@@ -188,6 +189,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\NewMoonGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Lib\Camera\DebugCamera.h" />
     <ClInclude Include="Engine\Methods\ScreenDimensions.h" />
     <ClInclude Include="Game\Managers\CameraManager.h" />
     <ClInclude Include="Engine\Managers\TextureManager.h" />

@@ -288,9 +288,6 @@ void DXCommon::PreDraw() {
 	scissorRect_ = D3D12_RECT(0, 0, kClientWidth_, kClientHeight_);
 	commandList_->RSSetScissorRects(1, &scissorRect_);// Scirssorを設定
 
-	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考える
-	commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -395,25 +392,23 @@ void DXCommon::InitFixFPS() {
 ////////////////////////////////////////////////////////////////////////////////*/
 void DXCommon::UpdateFixFPS() {
 
-	// 1/60秒ぴったりの時間
-	const std::chrono::microseconds kMinTime(uint64_t(1000000.0f / 60.0f));
-	// 1/60秒よりもわずかに短い時間
-	const std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
+	// フレームレートピッタリの時間
+	constexpr std::chrono::microseconds kMinTime(static_cast<uint64_t>(1000000.0f / 60.0f));
+
+	// 1/60秒よりわずかに短い時間
+	constexpr std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / 64.0f));
 
 	// 現在時間を取得する
-	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-	// 前回時間からの経過時間を取得する
-	std::chrono::microseconds elapsed =
-		std::chrono::duration_cast<std::chrono::microseconds>(now - reference_);
+	auto now = std::chrono::steady_clock::now();
+	// 前回記録からの経過時間を取得する
+	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(now - reference_);
 
-	// 1/60秒(よりわずかに短い時間) 経っていない場合
+	// 1/60秒 (よりわずかに短い時間) 経っていない場合
 	if (elapsed < kMinCheckTime) {
-
-		// 1/60秒経過するまで微小なスリーブを繰り返す
-		while (std::chrono::steady_clock::now() - reference_ < kMinTime) {
-
-			// 1マイクロ秒スリーブ
-			std::this_thread::sleep_for(std::chrono::microseconds(1));
+		// 1/60秒経過するまで微小なスリープを繰り返す
+		auto wait_until = reference_ + kMinTime;
+		while (std::chrono::steady_clock::now() < wait_until) {
+			std::this_thread::yield();
 		}
 	}
 

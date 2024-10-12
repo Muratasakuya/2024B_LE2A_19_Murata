@@ -4,7 +4,6 @@
 //								include
 //===================================================================*/
 #include "Game/Scenes/Methods/IScene.h"
-#include "Game/Editor/RailEditor.h"
 
 // c++
 #include <memory>
@@ -33,11 +32,5 @@ private:
 	//===================================================================*/
 	//							private Variables
 	//===================================================================*/
-
-	// test
-	Vector3 pointA_;
-	Vector3 pointB_;
-
-	Vector4 color_;
 	
 };

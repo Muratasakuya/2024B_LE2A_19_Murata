@@ -184,6 +184,10 @@ void NewMoonGame::DrawLine(const Vector3& pointA, const Vector3& pointB, const V
 	primitiveDrawer_->DrawLine(pointA, pointB, color);
 }
 
+void NewMoonGame::DrawGrid() {
+	primitiveDrawer_->DrawGrid();
+}
+
 ///===================================================================
 // Getter
 

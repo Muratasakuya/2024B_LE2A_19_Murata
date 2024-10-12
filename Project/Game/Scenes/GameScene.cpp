@@ -10,10 +10,6 @@
 ////////////////////////////////////////////////////////////////////////////////*/
 void GameScene::Init() {
 
-	pointA_ = { -10.0f,0.0f,5.0f };
-	pointB_ = { 10.0f,0.0f,5.0f };
-
-	color_ = { 1.0f,1.0f,1.0f,1.0f };
 }
 
 void GameScene::Update() {
@@ -25,7 +21,7 @@ void GameScene::Draw() {
 	//===================================================================*/
 	/// Back
 
-	NewMoonGame::DrawLine(pointA_, pointB_, color_);
+	NewMoonGame::DrawGrid();
 
 	NewMoon::ClearDepthBuffer();
 	//===================================================================*/
@@ -39,9 +35,6 @@ void GameScene::ImGui() {
 #ifdef _DEBUG
 	ImGui::Begin("test");
 
-	ImGui::DragFloat3("pointA", &pointA_.x, 0.01f);
-	ImGui::DragFloat3("pointB", &pointB_.x, 0.01f);
-	ImGui::ColorEdit4("color", &color_.x);
 	ImGui::Text("FrameRate: %.1f FPS", ImGui::GetIO().Framerate);
 
 	ImGui::End();

@@ -19,6 +19,7 @@ void CameraManager::Init() {
 }
 void CameraManager::Update() {
 
+	camera3D_->ImGui();
 	camera2D_->Update();
 	camera3D_->Update();
 

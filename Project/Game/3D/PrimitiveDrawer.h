@@ -35,6 +35,8 @@ public:
 	void Update();
 	void DrawLine(const Vector3& pointA, const Vector3& pointB, const Vector4& color);
 
+	void DrawGrid(); // 平面描画
+
 	void Reset();
 
 private:

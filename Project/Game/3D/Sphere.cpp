@@ -14,18 +14,9 @@ void Sphere::Init(const std::string& textureName) {
 
 	// ConstBuffer初期化
 	vertex_.Init(vertexNum_);
+	vertex_.data.resize(vertexNum_);
 	index_.Init(indexNum_);
-
-	for (uint32_t i = 0; i < vertexNum_; i++) {
-
-		VertexData3D vertexData{};
-		vertex_.data.push_back(vertexData);
-	}
-	for (uint32_t i = 0; i < indexNum_; i++) {
-
-		uint32_t indexData;
-		index_.data.push_back(indexData);
-	}
+	index_.data.resize(indexNum_);
 
 	// 頂点設定
 	VertexSetting();
@@ -44,6 +35,7 @@ void Sphere::Draw(BlendMode blendMode) {
 	DXConstBufferManager constBuffer;
 
 	NewMoon::SetGraphicsPipeline(commandList, pObject3D, blendMode);
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	commandList->IASetVertexBuffers(0, 1, &vertex_.GetVertexBuffer());
 	commandList->IASetIndexBuffer(&index_.GetIndexBuffer());
 	constBuffer.SetCommands(commandList, pObject3D, worldTransform_, material_, lightBuffer, cameraBuffer);
