@@ -31,7 +31,7 @@ public:
 	DXSwapChain() = default;
 	~DXSwapChain() = default;
 
-	void Initialize(
+	void Init(
 		WinApp* winApp, IDXGIFactory7* dxgiFactory, ID3D12CommandQueue* commandQueue,
 		uint32_t width, uint32_t height);
 

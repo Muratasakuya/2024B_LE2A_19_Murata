@@ -24,7 +24,7 @@ public:
 	DXDevice() = default;
 	~DXDevice() = default;
 
-	void Initialize();
+	void Init();
 
 	// Getter
 	ID3D12Device* GetDevice() const ;

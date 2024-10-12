@@ -18,7 +18,7 @@ public:
 	TutorialScene();
 	~TutorialScene();
 
-	void Initialize()override;
+	void Init()override;
 	void Update()override;
 	void Draw()override;
 

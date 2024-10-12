@@ -3,6 +3,19 @@
 #include "Engine/Base/NewMoon.h"
 #include "Engine/Managers/SrvManager.h"
 
+/*////////////////////////////////////////////////////////////////////////////////
+*						PrimitiveVertexObject Class
+////////////////////////////////////////////////////////////////////////////////*/
+void PrimitiveVertexObject::Init(UINT vertexNum) {
+
+	DXConstBuffer::CreateVertexBuffer(NewMoon::GetDXDevice(), vertexNum);
+}
+
+void PrimitiveVertexObject::Update() {
+
+	DXConstBuffer::TransferVertexData(pos);
+}
+
 template class VertexObject<VertexData3D>;
 template class VertexObject<VertexData2D>;
 
@@ -10,35 +23,31 @@ template class VertexObject<VertexData2D>;
 *								VertexObject Class
 ////////////////////////////////////////////////////////////////////////////////*/
 template<>
-void VertexObject<VertexData3D>::Initialize(UINT vertexNum) {
+void VertexObject<VertexData3D>::Init(UINT vertexNum) {
 
-	// 定数バッファ生成
 	DXConstBuffer<VertexData3D>::CreateVertexBuffer(NewMoon::GetDXDevice(), vertexNum);
 }
 template<>
 void VertexObject<VertexData3D>::Update() {
 
-	// 定数バッファにデータを転送
 	TransferVertexData(data);
 }
 
 template<>
-void VertexObject<VertexData2D>::Initialize(UINT vertexNum) {
+void VertexObject<VertexData2D>::Init(UINT vertexNum) {
 
-	// 定数バッファ生成
 	DXConstBuffer<VertexData2D>::CreateVertexBuffer(NewMoon::GetDXDevice(), vertexNum);
 }
 template<>
 void VertexObject<VertexData2D>::Update() {
 
-	// 定数バッファにデータを転送
 	TransferVertexData(data);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								InputVertexObject Class
 ////////////////////////////////////////////////////////////////////////////////*/
-void InputVertexObject::Initialize(UINT vertexNum, ID3D12Resource* vertexResource) {
+void InputVertexObject::Init(UINT vertexNum, ID3D12Resource* vertexResource) {
 
 	// SRV確保
 	inputVertex.srvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
@@ -53,9 +62,8 @@ D3D12_GPU_DESCRIPTOR_HANDLE& InputVertexObject::GetGpuHandle() { return inputVer
 /*////////////////////////////////////////////////////////////////////////////////
 *								OutputVertexObject Class
 ////////////////////////////////////////////////////////////////////////////////*/
-void OutputVertexObject::Initialize(UINT vertexNum) {
+void OutputVertexObject::Init(UINT vertexNum) {
 
-	// 定数バッファ生成
 	DXConstBuffer<VertexData3D>::CreateUavVertexBuffer(NewMoon::GetDXDevice(), vertexNum);
 
 	// UAV確保
@@ -71,12 +79,10 @@ D3D12_GPU_DESCRIPTOR_HANDLE& OutputVertexObject::GetGpuHandle() { return outputV
 /*////////////////////////////////////////////////////////////////////////////////
 *								SkinningInfoData Class
 ////////////////////////////////////////////////////////////////////////////////*/
-void SkinningInfoData::Initialize(UINT vertexNum) {
+void SkinningInfoData::Init(UINT vertexNum) {
 
 	info.numVertices = vertexNum;
 
-	// 定数バッファ生成
-	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
-	// 定数バッファ転送
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
 	TransferData(info);
 }

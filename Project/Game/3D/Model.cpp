@@ -1,15 +1,16 @@
 #include "Model.h"
 
 #include "Engine/Base/NewMoon.h"
+#include "Engine/Base/NewMoonGame.h"
 #include "Engine/Managers/DXConstBufferManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *									Main
 ////////////////////////////////////////////////////////////////////////////////*/
-void Model::Initialize(const std::string& modelName) {
+void Model::Init(const std::string& modelName) {
 
 	// 使用するモデル、テクスチャ
-	modelData_ = NewMoon::GetModelData(modelName);
+	modelData_ = NewMoonGame::GetModelMangager()->GetModelData(modelName);
 	meshNum_ = modelData_.meshes.size();
 
 	// 頂点数、インデックス数のリサイズ
@@ -28,9 +29,9 @@ void Model::Initialize(const std::string& modelName) {
 		indicesNum_[meshIndex] = static_cast<UINT>(mesh.indices.size());
 
 		// ConstBuffer初期化
-		vertices_[meshIndex].Initialize(verticesNum_[meshIndex]);
-		indices_[meshIndex].Initialize(indicesNum_[meshIndex]);
-		skinningInfoDatas_[meshIndex].Initialize(verticesNum_[meshIndex]);
+		vertices_[meshIndex].Init(verticesNum_[meshIndex]);
+		indices_[meshIndex].Init(indicesNum_[meshIndex]);
+		skinningInfoDatas_[meshIndex].Init(verticesNum_[meshIndex]);
 
 		vertices_[meshIndex].data.resize(verticesNum_[meshIndex]);
 		std::copy(mesh.vertices.begin(), mesh.vertices.end(), vertices_[meshIndex].data.begin());
@@ -46,16 +47,16 @@ void Model::Initialize(const std::string& modelName) {
 		indices_[meshIndex].Update();
 
 		// ConstBuffer初期化
-		inputVertices_[meshIndex].Initialize(verticesNum_[meshIndex], vertices_[meshIndex].GetResource());
-		outputVertices_[meshIndex].Initialize(verticesNum_[meshIndex]);
+		inputVertices_[meshIndex].Init(verticesNum_[meshIndex], vertices_[meshIndex].GetResource());
+		outputVertices_[meshIndex].Init(verticesNum_[meshIndex]);
 	}
 }
 
 void Model::Draw(BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
-	auto cameraBuffer = NewMoon::GetCameraBuffer();
-	auto lightBuffer = NewMoon::GetLightBuffer();
+	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
+	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
 	DXConstBufferManager constBuffer;
 
 	for (uint32_t meshIndex = 0; meshIndex < meshNum_; ++meshIndex) {
@@ -80,8 +81,8 @@ void Model::Draw(BlendMode blendMode) {
 void Model::SkinningAnimationDraw(const std::string& animationName, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
-	auto cameraBuffer = NewMoon::GetCameraBuffer();
-	auto lightBuffer = NewMoon::GetLightBuffer();
+	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
+	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
 	DXConstBufferManager constBuffer;
 
 	SetComputeCommands(animationName);
@@ -117,9 +118,11 @@ void Model::SetComputeCommands(const std::string& animationName) {
 	for (uint32_t meshIndex = 0; meshIndex < meshNum_; ++meshIndex) {
 
 		NewMoon::SetComputePipeline(commandList, ComputePipelineType::SkinningCS);
-		commandList->SetComputeRootDescriptorTable(0, NewMoon::GetSkinClusterData(animationName).paletteSrvHandle.second);
+		commandList->SetComputeRootDescriptorTable(0,
+			NewMoonGame::GetModelMangager()->GetSkinClusterData(animationName).paletteSrvHandle.second);
 		commandList->SetComputeRootDescriptorTable(1, inputVertices_[meshIndex].GetGpuHandle());
-		commandList->SetComputeRootDescriptorTable(2, NewMoon::GetSkinClusterData(animationName).influenceSrvHandle.second);
+		commandList->SetComputeRootDescriptorTable(2,
+			NewMoonGame::GetModelMangager()->GetSkinClusterData(animationName).influenceSrvHandle.second);
 		commandList->SetComputeRootDescriptorTable(3, outputVertices_[meshIndex].GetGpuHandle());
 		commandList->SetComputeRootConstantBufferView(4, skinningInfoDatas_[meshIndex].GetResource()->GetGPUVirtualAddress());
 		// Compute起動

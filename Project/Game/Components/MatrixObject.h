@@ -19,7 +19,7 @@ public:
 	~MatrixObject() = default;
 
 	// Main
-	void Initialize();
+	void Init();
 	void Update(const Transform2D& transform2D);
 
 private:

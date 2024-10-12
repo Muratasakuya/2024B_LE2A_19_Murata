@@ -29,7 +29,7 @@ public:
 
 	void Create(uint32_t index, ID3D12Resource* resource);
 
-	void Initialize();
+	void Init();
 
 	void Reset();
 

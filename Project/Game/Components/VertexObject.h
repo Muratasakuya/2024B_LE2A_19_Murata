@@ -9,6 +9,31 @@
 #include <cstdint>
 
 /*////////////////////////////////////////////////////////////////////////////////
+*							PrimitiveVertexObject Class
+////////////////////////////////////////////////////////////////////////////////*/
+class PrimitiveVertexObject :
+	public DXConstBuffer<Vector4> {
+public:
+	//===================================================================*/
+	//							public Functions
+	//===================================================================*/
+
+	PrimitiveVertexObject() = default;
+	~PrimitiveVertexObject() = default;
+
+	void Init(UINT vertexNum);
+	void Update();
+
+public:
+	//===================================================================*/
+	//							public Variable
+	//===================================================================*/
+
+	std::vector<Vector4> pos;
+
+};
+
+/*////////////////////////////////////////////////////////////////////////////////
 *								VertexObject Class
 ////////////////////////////////////////////////////////////////////////////////*/
 template<typename T>
@@ -22,7 +47,7 @@ public:
 	VertexObject() = default;
 	~VertexObject() = default;
 
-	void Initialize(UINT vertexNum);
+	void Init(UINT vertexNum);
 	void Update();
 
 public:
@@ -60,7 +85,7 @@ public:
 	InputVertexObject() = default;
 	~InputVertexObject() = default;
 
-	void Initialize(UINT vertexNum, ID3D12Resource* vertexResource);
+	void Init(UINT vertexNum, ID3D12Resource* vertexResource);
 
 	// Getter
 	D3D12_GPU_DESCRIPTOR_HANDLE& GetGpuHandle();
@@ -100,7 +125,7 @@ public:
 	OutputVertexObject() = default;
 	~OutputVertexObject() = default;
 
-	void Initialize(UINT vertexNum);
+	void Init(UINT vertexNum);
 
 	// Getter
 	D3D12_GPU_DESCRIPTOR_HANDLE& GetGpuHandle();
@@ -127,7 +152,7 @@ public:
 	SkinningInfoData() = default;
 	~SkinningInfoData() = default;
 
-	void Initialize(UINT vertexNum);
+	void Init(UINT vertexNum);
 
 public:
 	//===================================================================*/

@@ -1,16 +1,17 @@
 #include "WorldTransform.h"
 
 #include "Engine/Base/NewMoon.h"
+#include "Engine/Base/NewMoonGame.h"
 
-void WorldTransform::Initialize() {
+void WorldTransform::Init() {
 
 	// SRT
-	scale.SetInitialize(1.0f);
-	rotation.Initialize();
-	translation.Initialize();
+	scale.SetInit(1.0f);
+	rotation.Init();
+	translation.Init();
 
 	// 定数バッファ生成
-	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
 void WorldTransform::Update() {
@@ -24,7 +25,7 @@ void WorldTransform::Update() {
 
 			worldMatrix *= parent_->matrix.World;
 		}
-		Matrix4x4 wvpMatrix = worldMatrix * NewMoon::GetViewProjection(CameraType::Perspective);
+		Matrix4x4 wvpMatrix = worldMatrix * NewMoonGame::GetGameCamera()->GetViewProjection(CameraType::Perspective);
 		Matrix4x4 worldInverseTranspose = Matrix4x4::Transpose(Matrix4x4::Inverse(worldMatrix));
 
 		matrix.World = worldMatrix;
@@ -79,15 +80,15 @@ void WorldTransform::Update() {
 		if (skeleton_) {
 
 			// アニメーション適応
-			NewMoon::ApplyAnimation(skeleton_.value().name, animationtime_);
+			NewMoonGame::ApplyAnimation(skeleton_.value().name, animationtime_);
 			// スケルトンの更新
-			NewMoon::SkeletonUpdate(skeleton_.value().name);
+			NewMoonGame::SkeletonUpdate(skeleton_.value().name);
 			// スキンクラスターの更新
-			NewMoon::SkinClusterUpdate(skeleton_.value().name);
+			NewMoonGame::SkinClusterUpdate(skeleton_.value().name);
 		}
 
 		Matrix4x4 worldMatrix = Matrix4x4::MakeAffineMatrix(scale, rotation, translation);
-		Matrix4x4 wvpMatrix = worldMatrix * NewMoon::GetViewProjection(CameraType::Perspective);
+		Matrix4x4 wvpMatrix = worldMatrix * NewMoonGame::GetGameCamera()->GetViewProjection(CameraType::Perspective);
 		Matrix4x4 worldInverseTranspose = Matrix4x4::Transpose(Matrix4x4::Inverse(worldMatrix));
 
 		matrix.World = worldMatrix;
@@ -105,11 +106,11 @@ void WorldTransform::Update() {
 ////////////////////////////////////////////////////////////////////////////////*/
 void WorldTransform::SetAnimationData(const std::string& modelName, const std::string& animationName) {
 
-	modelData_ = NewMoon::GetModelData(modelName);
-	animationData_ = NewMoon::GetAnimationData(animationName);
-	skeleton_ = NewMoon::GetSkeletonData(animationName);
+	modelData_ = NewMoonGame::GetModelMangager()->GetModelData(modelName);
+	animationData_ = NewMoonGame::GetModelMangager()->GetAnimationData(animationName);
+	skeleton_ = NewMoonGame::GetModelMangager()->GetSkeletonData(animationName);
 	skeleton_.value().name = animationName;
-	skinCluster_ = NewMoon::GetSkinClusterData(animationName);
+	skinCluster_ = NewMoonGame::GetModelMangager()->GetSkinClusterData(animationName);
 
 }
 void WorldTransform::SetPlayAnimation(bool isPlayAnimation) { isPlayAnimation_ = isPlayAnimation; }

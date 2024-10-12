@@ -6,13 +6,13 @@
 /*////////////////////////////////////////////////////////////////////////////////
 *									Main
 ////////////////////////////////////////////////////////////////////////////////*/
-void Triangle::Initialize(const std::string& textureName) {
+void Triangle::Init(const std::string& textureName) {
 
 	// 使用するテクスチャ
 	textureName_ = textureName;
 
 	// ConstBuffer初期化
-	vertex_.Initialize(kTriangleVertexNum);
+	vertex_.Init(kTriangleVertexNum);
 
 	for (uint32_t i = 0; i < kTriangleVertexNum; i++) {
 

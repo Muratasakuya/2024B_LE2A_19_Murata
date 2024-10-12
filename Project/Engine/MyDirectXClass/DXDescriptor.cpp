@@ -84,7 +84,7 @@ void DXDescriptor::CreateDSV(ID3D12Device* device, uint32_t width, uint32_t heig
 /*////////////////////////////////////////////////////////////////////////////////
 *									初期化
 ////////////////////////////////////////////////////////////////////////////////*/
-void DXDescriptor::Initialize(uint32_t width, uint32_t height) {
+void DXDescriptor::Init(uint32_t width, uint32_t height) {
 
 	auto device = NewMoon::GetDXDevice();
 

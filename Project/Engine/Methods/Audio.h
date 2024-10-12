@@ -67,10 +67,10 @@ public:
 
 	bool IsPlayWave(const std::string& name);
 
-	void Initialize();
+	void Init();
 
 	void Unload();
-	void Finalize();
+	void Close();
 
 private:
 	//===================================================================*/

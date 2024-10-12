@@ -31,7 +31,7 @@ public:
 	~Sprite() = default;
 
 	// Main
-	void Initialize(const std::string& textureName);
+	void Init(const std::string& textureName);
 	void Update();
 	void Draw(const BlendMode& blendMode = BlendMode::kBlendModeNormal);
 

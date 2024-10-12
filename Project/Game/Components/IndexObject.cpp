@@ -2,7 +2,7 @@
 
 #include "Engine/Base/NewMoon.h"
 
-void IndexObject::Initialize(UINT indexNum) {
+void IndexObject::Init(UINT indexNum) {
 
 	// 定数バッファ生成
 	DXConstBuffer::CreateIndexBuffer(NewMoon::GetDXDevice(), indexNum);

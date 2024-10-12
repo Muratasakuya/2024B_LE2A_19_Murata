@@ -18,7 +18,7 @@ public:
 	LightObject() = default;
 	~LightObject() = default;
 
-	void Initialize();
+	void Init();
 	void Update();
 
 public:

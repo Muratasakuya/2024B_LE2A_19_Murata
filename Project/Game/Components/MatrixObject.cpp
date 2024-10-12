@@ -1,11 +1,12 @@
 #include "MatrixObject.h"
 
 #include "Engine/Base/NewMoon.h"
+#include "Engine/Base/NewMoonGame.h"
 
-void MatrixObject::Initialize() {
+void MatrixObject::Init() {
 
 	// 定数バッファ生成
-	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
 void MatrixObject::Update(const Transform2D& transform2D) {
@@ -17,7 +18,7 @@ void MatrixObject::Update(const Transform2D& transform2D) {
 
 	Matrix4x4 worldMatrix =
 		Matrix4x4::MakeAffineMatrix(scale, rotate, translate);
-	matrix_.WVP = worldMatrix * NewMoon::GetViewProjection(CameraType::Orthographic);
+	matrix_.WVP = worldMatrix * NewMoonGame::GetGameCamera()->GetViewProjection(CameraType::Orthographic);
 
 	// 定数バッファにデータを転送
 	TransferData(matrix_);

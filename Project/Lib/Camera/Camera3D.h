@@ -21,7 +21,7 @@ public:
 	~Camera3D() = default;
 
 	// Main
-	void Initialize();
+	void Init();
 	void Update();
 	void ImGui();
 

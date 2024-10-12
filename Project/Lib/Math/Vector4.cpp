@@ -55,7 +55,7 @@ bool Vector4::operator!=(const Vector4& other) const {
 /// 関数
 
 // 0.0f初期化
-void Vector4::Initialize() {
+void Vector4::Init() {
 
 	this->x = 0.0f;
 	this->y = 0.0f;
@@ -64,7 +64,7 @@ void Vector4::Initialize() {
 }
 
 // 任意初期化
-void Vector4::SetInitialize(float value) {
+void Vector4::SetInit(float value) {
 
 	this->x = value;
 	this->y = value;

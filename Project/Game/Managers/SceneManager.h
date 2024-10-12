@@ -4,6 +4,8 @@
 //								include
 //===================================================================*/
 #include "Engine/Base/NewMoon.h"
+#include "Engine/Base/NewMoonGame.h"
+#include "Engine/Methods/ScreenDimensions.h"
 #include "Game/Scenes/Methods/IScene.h"
 #include "Game/Scenes/Methods/SceneFactory.h"
 
@@ -26,7 +28,7 @@ public:
 
 	void ChangeScene(SceneNo sceneNo);
 
-	// singleton
+	// 悪魔、c++の汚点
 	static SceneManager* GetInstance();
 
 private:

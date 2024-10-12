@@ -33,7 +33,7 @@ public:
 
 	void CreateDSV(ID3D12Device* device, uint32_t width, uint32_t height);
 
-	void Initialize(uint32_t width, uint32_t height);
+	void Init(uint32_t width, uint32_t height);
 
 	// Getter
 	ID3D12DescriptorHeap* GetDSVDescriptorHeap() const;

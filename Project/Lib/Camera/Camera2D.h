@@ -18,7 +18,7 @@ public:
 	~Camera2D() = default;
 
 	// Main
-	void Initialize();
+	void Init();
 	void Update();
 	void ImGui();
 

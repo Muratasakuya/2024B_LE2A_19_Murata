@@ -3,63 +3,47 @@
 #include "Engine/Managers/ImGuiManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								singleton
+*						SceneManager classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
+
+// 悪魔
 SceneManager* SceneManager::GetInstance() {
 
 	static SceneManager instance;
-
 	return &instance;
 }
 
-/*////////////////////////////////////////////////////////////////////////////////
-*								コンストラクタ
-////////////////////////////////////////////////////////////////////////////////*/
 SceneManager::SceneManager() {
 
 	currentSceneNo_ = GAME;
 	currentScene_ = static_cast<std::unique_ptr<IScene>>(sceneFactory_.CreateScene(currentSceneNo_));
-	currentScene_->Initialize();
+	currentScene_->Init();
 }
 
-/*////////////////////////////////////////////////////////////////////////////////
-*								  デストラクタ
-////////////////////////////////////////////////////////////////////////////////*/
 SceneManager::~SceneManager() {
-
 	currentScene_.reset();
 }
 
-/*////////////////////////////////////////////////////////////////////////////////
-*								   シーン遷移
-////////////////////////////////////////////////////////////////////////////////*/
 void SceneManager::ChangeScene(SceneNo sceneNo) {
 
 	currentSceneNo_ = sceneNo;
 	currentScene_ = static_cast<std::unique_ptr<IScene>>(sceneFactory_.CreateScene(currentSceneNo_));
-	currentScene_->Initialize();
+	currentScene_->Init();
 }
 
-/*////////////////////////////////////////////////////////////////////////////////
-*							各シーンの初期化 更新　描画
-////////////////////////////////////////////////////////////////////////////////*/
 void SceneManager::Run() {
 
-	// ウィンドウのxボタンが押されるまでループ
 	while (NewMoon::ProcessMessage() == 0) {
-		// フレームの開始
-		NewMoon::BeginFrame();
 
-		// シーン取得
+		NewMoon::BeginFrame();
+		NewMoonGame::Update();
+
 		currentSceneNo_ = currentScene_->GetSceneNo();
 
-		// 更新
 		currentScene_->Update();
-
-		// 通常描画処理
 		currentScene_->Draw();
 
-		// フレームの終了
+		NewMoonGame::Reset();
 		NewMoon::EndFrame();
 	}
 

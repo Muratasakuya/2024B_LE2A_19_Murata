@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////*/
 void DXInputLayout::Create(PipelineType pipelineType) {
 
-	if (pipelineType == Primitive) {
+	if (pipelineType == Primitive || pipelineType == PrimitiveLine) {
 
 		static D3D12_INPUT_ELEMENT_DESC inputElementDescs[1]{};
 
@@ -56,7 +56,7 @@ void DXInputLayout::Create(PipelineType pipelineType) {
 		inputLayoutDesc_[pipelineType] = {};
 		inputLayoutDesc_[pipelineType].pInputElementDescs = inputElementDescs;
 		inputLayoutDesc_[pipelineType].NumElements = _countof(inputElementDescs);
-	} else if (pipelineType ==SkinningObject3D) {
+	} else if (pipelineType == SkinningObject3D) {
 
 		static D3D12_INPUT_ELEMENT_DESC inputElementDescs[5]{};
 

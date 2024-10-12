@@ -1,5 +1,6 @@
 #include "Vector3.h"
 
+#include "Engine/Methods/ScreenDimensions.h"
 #include "Lib/Structure.h"
 
 /*-------------------------------------------------------------*/
@@ -74,7 +75,7 @@ bool Vector3::operator!=(const Vector3& other) const {
 /// 関数
 
 // 0.0f初期化
-void Vector3::Initialize() {
+void Vector3::Init() {
 
 	this->x = 0.0f;
 	this->y = 0.0f;
@@ -82,7 +83,7 @@ void Vector3::Initialize() {
 }
 
 // 任意初期化
-void Vector3::SetInitialize(float value) {
+void Vector3::SetInit(float value) {
 
 	this->x = value;
 	this->y = value;
@@ -178,4 +179,25 @@ Vector3 Vector3::Lerp(const Vector3& v1, const Vector3& v2, float t) {
 		v1.y + t * (v2.y - v1.y),
 		v1.z + t * (v2.z - v1.z)
 	);
+}
+
+// 4x4行列の座標変換
+Vector3 Vector3::Transform(const Vector3& vector, const Matrix4x4& matrix) {
+
+	Vector3 result;
+
+	// ベクトルと行列の乗算
+	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + vector.z * matrix.m[2][0] + matrix.m[3][0];
+	result.y = vector.x * matrix.m[0][1] + vector.y * matrix.m[1][1] + vector.z * matrix.m[2][1] + matrix.m[3][1];
+	result.z = vector.x * matrix.m[0][2] + vector.y * matrix.m[1][2] + vector.z * matrix.m[2][2] + matrix.m[3][2];
+	float w = vector.x * matrix.m[0][3] + vector.y * matrix.m[1][3] + vector.z * matrix.m[2][3] + matrix.m[3][3];
+
+	// ベクトルの正規化
+	if (w != 0.0f) {
+		result.x /= w;
+		result.y /= w;
+		result.z /= w;
+	}
+
+	return result;
 }

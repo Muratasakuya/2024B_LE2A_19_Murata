@@ -91,7 +91,7 @@ void DXCommon::CreateFenceEvent() {
 /*////////////////////////////////////////////////////////////////////////////////
 *							 dxCompilerの初期化
 ////////////////////////////////////////////////////////////////////////////////*/
-void DXCommon::InitializeDXCompiler() {
+void DXCommon::InitDXCompiler() {
 
 	dxcUtils_ = nullptr;
 	dxcCompiler_ = nullptr;
@@ -374,9 +374,6 @@ void DXCommon::WaitForGPU() {
 		// このあとでGPUの実行を待ってからResetが呼び出される
 	}
 
-	// FPS固定
-	UpdateFixFPS();
-
 	// 次のフレーム用のコマンドリストを準備
 	hr_ = commandAllocator_->Reset();
 	assert(SUCCEEDED(hr_));
@@ -387,7 +384,7 @@ void DXCommon::WaitForGPU() {
 /*////////////////////////////////////////////////////////////////////////////////
 *								固定FPSの初期化
 ////////////////////////////////////////////////////////////////////////////////*/
-void DXCommon::InitializeFixFPS() {
+void DXCommon::InitFixFPS() {
 
 	// 現在時間を記録する
 	reference_ = std::chrono::steady_clock::now();
@@ -427,7 +424,7 @@ void DXCommon::UpdateFixFPS() {
 /*////////////////////////////////////////////////////////////////////////////////
 *								DirectXの初期化
 ////////////////////////////////////////////////////////////////////////////////*/
-void DXCommon::Initialize(WinApp* winApp, uint32_t width, uint32_t height) {
+void DXCommon::Init(WinApp* winApp, uint32_t width, uint32_t height) {
 
 	device_ = std::make_unique<DXDevice>();
 	swapChain_ = std::make_unique<DXSwapChain>();
@@ -438,13 +435,13 @@ void DXCommon::Initialize(WinApp* winApp, uint32_t width, uint32_t height) {
 	kClientHeight_ = height;
 
 	// FPS固定初期化
-	InitializeFixFPS();
+	InitFixFPS();
 
 	// デバッグの表示、エラー警告
 	DebugLayer();
 
 	// デバイスの初期化
-	device_->Initialize();
+	device_->Init();
 
 	// エラー、警告があれば起動できない
 	DebugInfo();
@@ -453,16 +450,16 @@ void DXCommon::Initialize(WinApp* winApp, uint32_t width, uint32_t height) {
 	CreateFenceEvent();
 
 	// dxCompilerの初期化
-	InitializeDXCompiler();
+	InitDXCompiler();
 
 	// commandQueue, commandAllocator, commandListの生成
 	CreateCommand();
 
 	// swapChainの生成
-	swapChain_->Initialize(winApp, device_->GetDxgiFactory(), commandQueue_.Get(), kClientWidth_, kClientHeight_);
+	swapChain_->Init(winApp, device_->GetDxgiFactory(), commandQueue_.Get(), kClientWidth_, kClientHeight_);
 
 	// RTV初期化
-	rtvManager_->Initialize();
+	rtvManager_->Init();
 	// SwapChain用のRTVの作成
 	for (uint32_t i = 0; i < swapChain_->bufferCount; i++) {
 
@@ -471,13 +468,13 @@ void DXCommon::Initialize(WinApp* winApp, uint32_t width, uint32_t height) {
 	}
 
 	// DSVの初期化
-	descriptor_->Initialize(kClientWidth_, kClientHeight_);
+	descriptor_->Init(kClientWidth_, kClientHeight_);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *									終了処理
 ////////////////////////////////////////////////////////////////////////////////*/
-void DXCommon::Finalize(WinApp* winApp) {
+void DXCommon::Close(WinApp* winApp) {
 
 	CloseHandle(fenceEvent_);
 

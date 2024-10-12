@@ -24,31 +24,61 @@ void PipelineManager::CreatePipelineState(
 
 	HRESULT hr;
 
-	// Pipeline State Objectの生成
-	graphicsPipelineStateDesc_.pRootSignature = rootSigature;
-	graphicsPipelineStateDesc_.InputLayout = inputLayout;
-	graphicsPipelineStateDesc_.VS = { vs->GetBufferPointer(),vs->GetBufferSize() };
-	graphicsPipelineStateDesc_.PS = { ps->GetBufferPointer(),ps->GetBufferSize() };
-	graphicsPipelineStateDesc_.BlendState.RenderTarget[0] = blendDesc;
-	graphicsPipelineStateDesc_.RasterizerState = rasterizerDesc;
-	graphicsPipelineStateDesc_.DepthStencilState = depthStencilDesc;
-	graphicsPipelineStateDesc_.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	if (pipelineType == PipelineType::PrimitiveLine) {
 
-	// 書き込むRTVの情報
-	graphicsPipelineStateDesc_.NumRenderTargets = 1;
-	graphicsPipelineStateDesc_.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	// 利用するトポロジ(形状)のタイプ、三角形
-	graphicsPipelineStateDesc_.PrimitiveTopologyType =
-		D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	// どのように画面に色を打ち込むかの設定
-	graphicsPipelineStateDesc_.SampleDesc.Count = 1;
-	graphicsPipelineStateDesc_.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-	// 実際に生成
-	pipelineStates_[pipelineType][blendMode] = nullptr;
-	hr = dxCommon->GetDevice()->CreateGraphicsPipelineState(
-		&graphicsPipelineStateDesc_,
-		IID_PPV_ARGS(&pipelineStates_[pipelineType][blendMode]));
-	assert(SUCCEEDED(hr));
+		// Pipeline State Objectの生成
+		graphicsPipelineStateDesc_.pRootSignature = rootSigature;
+		graphicsPipelineStateDesc_.InputLayout = inputLayout;
+		graphicsPipelineStateDesc_.VS = { vs->GetBufferPointer(),vs->GetBufferSize() };
+		graphicsPipelineStateDesc_.PS = { ps->GetBufferPointer(),ps->GetBufferSize() };
+		graphicsPipelineStateDesc_.BlendState.RenderTarget[0] = blendDesc;
+		graphicsPipelineStateDesc_.RasterizerState = rasterizerDesc;
+		graphicsPipelineStateDesc_.DepthStencilState = depthStencilDesc;
+		graphicsPipelineStateDesc_.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+		// 書き込むRTVの情報
+		graphicsPipelineStateDesc_.NumRenderTargets = 1;
+		graphicsPipelineStateDesc_.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		// 利用するトポロジ(形状)のタイプ、三角形
+		graphicsPipelineStateDesc_.PrimitiveTopologyType =
+			D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
+		// どのように画面に色を打ち込むかの設定
+		graphicsPipelineStateDesc_.SampleDesc.Count = 1;
+		graphicsPipelineStateDesc_.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+		// 実際に生成
+		pipelineStates_[pipelineType][blendMode] = nullptr;
+		hr = dxCommon->GetDevice()->CreateGraphicsPipelineState(
+			&graphicsPipelineStateDesc_,
+			IID_PPV_ARGS(&pipelineStates_[pipelineType][blendMode]));
+		assert(SUCCEEDED(hr));
+	} else {
+
+		// Pipeline State Objectの生成
+		graphicsPipelineStateDesc_.pRootSignature = rootSigature;
+		graphicsPipelineStateDesc_.InputLayout = inputLayout;
+		graphicsPipelineStateDesc_.VS = { vs->GetBufferPointer(),vs->GetBufferSize() };
+		graphicsPipelineStateDesc_.PS = { ps->GetBufferPointer(),ps->GetBufferSize() };
+		graphicsPipelineStateDesc_.BlendState.RenderTarget[0] = blendDesc;
+		graphicsPipelineStateDesc_.RasterizerState = rasterizerDesc;
+		graphicsPipelineStateDesc_.DepthStencilState = depthStencilDesc;
+		graphicsPipelineStateDesc_.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+		// 書き込むRTVの情報
+		graphicsPipelineStateDesc_.NumRenderTargets = 1;
+		graphicsPipelineStateDesc_.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		// 利用するトポロジ(形状)のタイプ、三角形
+		graphicsPipelineStateDesc_.PrimitiveTopologyType =
+			D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		// どのように画面に色を打ち込むかの設定
+		graphicsPipelineStateDesc_.SampleDesc.Count = 1;
+		graphicsPipelineStateDesc_.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+		// 実際に生成
+		pipelineStates_[pipelineType][blendMode] = nullptr;
+		hr = dxCommon->GetDevice()->CreateGraphicsPipelineState(
+			&graphicsPipelineStateDesc_,
+			IID_PPV_ARGS(&pipelineStates_[pipelineType][blendMode]));
+		assert(SUCCEEDED(hr));
+	}
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +116,7 @@ void PipelineManager::CreatePipelineStateObject(DXCommon* dxCommon) {
 	for (PipelineType pipelineType : pipelineTypes) {
 
 		// ShaderCompile
-		shaderCompiler_->Initialize(dxCommon, pipelineType);
+		shaderCompiler_->Init(dxCommon, pipelineType);
 
 		for (BlendMode blendType : blendModeTypes) {
 
@@ -115,7 +145,7 @@ void PipelineManager::CreatePipelineStateObject(DXCommon* dxCommon) {
 	for (ComputePipelineType csPipeline : computePipelineTypes) {
 
 		// ShaderCompile
-		shaderCompiler_->Initialize(dxCommon, csPipeline);
+		shaderCompiler_->Init(dxCommon, csPipeline);
 
 		// RootSignature
 		rootSignature_->CreateComputeRootSignature(dxCommon, csPipeline);

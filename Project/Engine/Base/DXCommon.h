@@ -42,7 +42,7 @@ public:
 
 	void ClearDepthBuffer();
 
-	void Initialize(WinApp* winApp, uint32_t width, uint32_t height);
+	void Init(WinApp* winApp, uint32_t width, uint32_t height);
 	void CreateOffscreenRenderTexture(SrvManager* srvManager, uint32_t width, uint32_t height);
 	void TransitionBarrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
 
@@ -56,7 +56,7 @@ public:
 
 	void WaitForGPU();
 
-	void Finalize(WinApp* winApp);
+	void Close(WinApp* winApp);
 
 	// Getter
 	ID3D12Device* GetDevice() const;
@@ -134,11 +134,11 @@ private:
 	void DebugInfo();
 
 	void CreateFenceEvent();
-	void InitializeDXCompiler();
+	void InitDXCompiler();
 	void CreateCommand();
 	void ClearWindow();
 
-	void InitializeFixFPS();
+	void InitFixFPS();
 	void UpdateFixFPS();
 };
 

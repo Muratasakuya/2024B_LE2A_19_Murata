@@ -143,7 +143,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Lib\Math\Quaternion.cpp" />
     <ClCompile Include="Game\3D\PrimitiveDrawer.cpp" />
     <ClCompile Include="Game\3D\Particle.cpp" />
-    <ClCompile Include="Game\Scenes\ResultScene.cpp" />
     <ClCompile Include="Game\Scenes\Methods\SceneFactory.cpp" />
     <ClCompile Include="Game\Scenes\Methods\IScene.cpp" />
     <ClCompile Include="Game\Managers\SceneManager.cpp" />
@@ -185,8 +184,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\3D\Triangle.cpp" />
     <ClCompile Include="Game\Components\VertexObject.cpp" />
     <ClCompile Include="Game\3D\Sphere.cpp" />
+    <ClCompile Include="Game\Editor\RailEditor.cpp" />
+    <ClCompile Include="Engine\Base\NewMoonGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Methods\ScreenDimensions.h" />
     <ClInclude Include="Game\Managers\CameraManager.h" />
     <ClInclude Include="Engine\Managers\TextureManager.h" />
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -217,7 +219,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Lib\Math\Quaternion.h" />
     <ClInclude Include="Game\3D\PrimitiveDrawer.h" />
     <ClInclude Include="Game\3D\Particle.h" />
-    <ClInclude Include="Game\Scenes\ResultScene.h" />
     <ClInclude Include="Game\Scenes\Methods\SceneFactory.h" />
     <ClInclude Include="Game\Scenes\Methods\AbstractSceneFactory.h" />
     <ClInclude Include="Game\Scenes\Methods\IScene.h" />
@@ -260,6 +261,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Components\VertexObject.h" />
     <ClInclude Include="Game\3D\Sphere.h" />
     <ClInclude Include="Game\Managers\LightManager.h" />
+    <ClInclude Include="Game\Editor\RailEditor.h" />
+    <ClInclude Include="Engine\Base\NewMoonGame.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />
@@ -368,6 +371,18 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Primitive.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PrimitiveLine.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PrimitiveLine.VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>

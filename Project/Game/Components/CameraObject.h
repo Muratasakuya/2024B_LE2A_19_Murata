@@ -18,7 +18,7 @@ public:
 	CameraObject() = default;
 	~CameraObject() = default;
 
-	void Initialize();
+	void Init();
 	void Update(const Vector3& worldPos);
 
 private:
@@ -27,5 +27,30 @@ private:
 	//===================================================================*/
 
 	CameraForGPU camera;
+
+};
+
+/*/////////////////////////////////////////////////////////////////////////////3///
+*						ViewProjectionBuffer Class
+////////////////////////////////////////////////////////////////////////////////*/
+class ViewProjectionBuffer :
+	public DXConstBuffer<Matrix4x4> {
+public:
+	//===================================================================*/
+	//							public Functions
+	//===================================================================*/
+
+	ViewProjectionBuffer() = default;
+	~ViewProjectionBuffer() = default;
+
+	void Init();
+	void Update(Matrix4x4 viewPro);
+
+private:
+	//===================================================================*/
+	//							private Variables
+	//===================================================================*/
+
+	Matrix4x4 viewProjection;
 
 };

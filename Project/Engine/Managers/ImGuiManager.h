@@ -30,13 +30,13 @@ public:
 	ImGuiManager() = default;
 	~ImGuiManager() = default;
 
-	void Initialize(WinApp* winApp,DXCommon* dxCommon, SrvManager* srvManager);
+	void Init(WinApp* winApp,DXCommon* dxCommon, SrvManager* srvManager);
 
 	void Begin();
 	void End();
 	void Draw();
 
-	void Finalize();
+	void Close();
 
 private:
 	//===================================================================*/

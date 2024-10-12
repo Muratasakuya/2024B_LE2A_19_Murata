@@ -21,7 +21,7 @@ public:
 	IndexObject() = default;
 	~IndexObject() = default;
 
-	void Initialize(UINT indexNum);
+	void Init(UINT indexNum);
 	void Update();
 
 public:

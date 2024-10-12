@@ -29,12 +29,13 @@ public:
 	CameraManager() = default;
 	~CameraManager() = default;
 
-	void Initialize();
+	void Init();
 	void Update();
 
 	// Getter
 	Matrix4x4 GetViewProjection(CameraType cameraType);
 	CameraObject GetCameraBuffer() const;
+	ViewProjectionBuffer GetViewProjectionBuffer() const;
 
 private:
 	//===================================================================*/
@@ -45,5 +46,6 @@ private:
 	std::unique_ptr<Camera3D> camera3D_;
 
 	CameraObject cameraBuffer_;
+	ViewProjectionBuffer viewProjectionBuffer_;
 
 };

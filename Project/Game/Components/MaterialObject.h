@@ -9,6 +9,31 @@
 #include <string>
 
 /*////////////////////////////////////////////////////////////////////////////////
+							PrimitiveMaterial Class
+////////////////////////////////////////////////////////////////////////////////*/
+class PrimitiveMaterial :
+	public DXConstBuffer<Vector4> {
+public:
+	//===================================================================*/
+	//							public Functions
+	//===================================================================*/
+
+	PrimitiveMaterial() = default;
+	~PrimitiveMaterial() = default;
+
+	// Main
+	void Init();
+	void Update();
+
+public:
+	//===================================================================*/
+	//							public Variables
+	//===================================================================*/
+
+	Vector4 color;
+};
+
+/*////////////////////////////////////////////////////////////////////////////////
 							MaterialObject3D Class
 ////////////////////////////////////////////////////////////////////////////////*/
 class MaterialObject3D :
@@ -23,7 +48,7 @@ public:
 	~MaterialObject3D() = default;
 
 	// Main
-	void Initialize();
+	void Init();
 	void Update();
 
 public:
@@ -50,7 +75,7 @@ public:
 	~MaterialObject2D() = default;
 
 	// Main
-	void Initialize();
+	void Init();
 	void Update();
 
 public:
@@ -77,7 +102,7 @@ public:
 	~OffscreenDepthMaterial() = default;
 
 	// Main
-	void Initialize();
+	void Init();
 	void Update();
 
 public:
@@ -103,7 +128,7 @@ public:
 	~OffscreenDissolveMaterial() = default;
 
 	// Main
-	void Initialize();
+	void Init();
 	void Update();
 
 public:

@@ -1,19 +1,20 @@
 #include "Sphere.h"
 
 #include "Engine/Base/NewMoon.h"
+#include "Engine/Base/NewMoonGame.h"
 #include "Engine/Managers/DXConstBufferManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *									Main
 ////////////////////////////////////////////////////////////////////////////////*/
-void Sphere::Initialize(const std::string& textureName) {
+void Sphere::Init(const std::string& textureName) {
 
 	// 使用するテクスチャ
 	textureName_ = textureName;
 
 	// ConstBuffer初期化
-	vertex_.Initialize(vertexNum_);
-	index_.Initialize(indexNum_);
+	vertex_.Init(vertexNum_);
+	index_.Init(indexNum_);
 
 	for (uint32_t i = 0; i < vertexNum_; i++) {
 
@@ -38,12 +39,14 @@ void Sphere::Initialize(const std::string& textureName) {
 void Sphere::Draw(BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
+	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
+	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
 	DXConstBufferManager constBuffer;
 
 	NewMoon::SetGraphicsPipeline(commandList, pObject3D, blendMode);
 	commandList->IASetVertexBuffers(0, 1, &vertex_.GetVertexBuffer());
 	commandList->IASetIndexBuffer(&index_.GetIndexBuffer());
-	constBuffer.SetCommands(commandList, pObject3D, worldTransform_, material_, light_);
+	constBuffer.SetCommands(commandList, pObject3D, worldTransform_, material_, lightBuffer, cameraBuffer);
 	NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, textureName_);
 	commandList->DrawIndexedInstanced(indexNum_, 1, 0, 0, 0);
 }

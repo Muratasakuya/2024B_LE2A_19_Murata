@@ -17,7 +17,7 @@ public:
 	LightManager() = default;
 	~LightManager() = default;
 
-	void Initialize();
+	void Init();
 	void Update();
 
 	// Getter

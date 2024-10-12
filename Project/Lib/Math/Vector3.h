@@ -14,6 +14,7 @@
 // 前方宣言
 template <typename tValue>
 struct Keyframe;
+class Matrix4x4;
 
 /// <summary>
 /// 3次元ベクトル
@@ -58,9 +59,9 @@ public:
 	/// 関数
 
 	// 0.0f初期化
-	void Initialize();
+	void Init();
 	// 任意初期化
-	void SetInitialize(float value);
+	void SetInit(float value);
 
 	// 三角形の頂点から法線の取得
 	static Vector3 CalculateTriangleNormal(const Vector4& v0, const Vector4& v1, const Vector4& v2);
@@ -78,5 +79,8 @@ public:
 
 	// 線形補完
 	static Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
+
+	// 4x4行列の座標変換
+	static Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 
 };

@@ -15,7 +15,7 @@
 //	ParticleEmitter();
 //	~ParticleEmitter() {};
 //
-//	void Initialize(ParticleManager* particleManager);
+//	void Init(ParticleManager* particleManager);
 //
 //	void Emit();
 //	void Update();

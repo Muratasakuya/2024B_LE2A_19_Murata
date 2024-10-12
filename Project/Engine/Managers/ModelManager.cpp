@@ -2,6 +2,7 @@
 #include "ModelManager.h"
 
 #include "Engine/Base/NewMoon.h"
+#include "Engine/Base/NewMoonGame.h"
 #include "Engine/Managers/SrvManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -275,7 +276,7 @@ ModelData ModelManager::LoadObjFile(const std::string& directoryPath, const std:
 			std::string identifier = name.stem().string();
 			meshModelData.material.textureName = identifier;
 
-			NewMoon::LoadTexture(meshModelData.material.textureName.value());
+			NewMoonGame::LoadTexture(meshModelData.material.textureName.value());
 		}
 
 		modelData.meshes.push_back(meshModelData);
@@ -293,9 +294,9 @@ ModelData ModelManager::LoadObjFile(const std::string& directoryPath, const std:
 /*////////////////////////////////////////////////////////////////////////////////
 *							SrvManagerのPtrセット
 ////////////////////////////////////////////////////////////////////////////////*/
-void ModelManager::Initialize(SrvManager* srvManager) {
+void ModelManager::Init() {
 
-	srvManager_ = srvManager;
+	srvManager_ = NewMoon::GetSrvManagerPtr();
 	srvIndex_ = 0;
 }
 
@@ -388,7 +389,33 @@ void ModelManager::LoadAniamation(const std::string& directoryPath, const std::s
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
-*							Skeletonの更新
+*								Modelの自作 四角形限定
+////////////////////////////////////////////////////////////////////////////////*/
+void ModelManager::MakeQuadModel(const std::string& modelName, uint32_t id,
+	const std::array<VertexData3D, kQuadVertexNum> vertexData) {
+
+	ModelData modelData{};
+	MeshModelData meshData{};
+
+	// 頂点情報設定
+	meshData.vertices.resize(kQuadVertexNum);
+	std::copy(vertexData.begin(), vertexData.end(), meshData.vertices.begin());
+	// インデックス情報の設定
+	meshData.indices = {
+		0,1,2, // 三角形1つ目
+		2,3,0  // 三角形2つ目
+	};
+	// テクスチャの設定
+	meshData.material.textureName = std::nullopt;
+
+	// モデルデータに追加
+	modelData.meshes.push_back(meshData);
+	const std::string modelNameId = modelName + std::to_string(id);
+	models_[modelNameId] = modelData;
+}
+
+/*////////////////////////////////////////////////////////////////////////////////
+*								Skeletonの更新
 ////////////////////////////////////////////////////////////////////////////////*/
 void ModelManager::SkeletonUpdate(const std::string& animationName) {
 

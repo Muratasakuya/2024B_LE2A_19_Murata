@@ -6,11 +6,11 @@
 /*////////////////////////////////////////////////////////////////////////////////
 *									Main
 ////////////////////////////////////////////////////////////////////////////////*/
-void Camera3D::Initialize() {
+void Camera3D::Init() {
 
 	// Affine
-	transform_.scale.SetInitialize(1.0f);
-	transform_.rotate.Initialize();
+	transform_.scale.SetInit(1.0f);
+	transform_.rotate.Init();
 	transform_.translate = { 0.0f,0.0f,0.0f };
 
 	cameraMatrix_ =

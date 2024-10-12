@@ -56,7 +56,7 @@ public:
 	/// 関数
 
 	// 0.0f初期化
-	void Initialize();
+	void Init();
 
 	// ノルム
 	static float Length(const Vector2& v);

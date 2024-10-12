@@ -42,7 +42,7 @@ public:
 	void SetGraphicsRootDescriptorTable(
 		ID3D12GraphicsCommandList* commandList, UINT rootParamaterIndex, std::string identifier);
 
-	void Initialize(DXCommon* dxCommon, SrvManager* srvManager);
+	void Init();
 
 	// Getter
 	const DirectX::TexMetadata& GetMetaData(const std::string textureName);

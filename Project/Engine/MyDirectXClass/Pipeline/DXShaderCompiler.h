@@ -33,8 +33,8 @@ public:
 	DXShaderCompiler() = default;
 	~DXShaderCompiler() = default;
 
-	void Initialize(DXCommon* dxCommon, const PipelineType& pipelineType);
-	void Initialize(DXCommon* dxCommon, const ComputePipelineType& cspipelineType);
+	void Init(DXCommon* dxCommon, const PipelineType& pipelineType);
+	void Init(DXCommon* dxCommon, const ComputePipelineType& cspipelineType);
 
 	// Getter
 	IDxcBlob* GetVSBlob(const PipelineType& pipelineType) const;

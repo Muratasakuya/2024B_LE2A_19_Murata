@@ -81,7 +81,7 @@ bool Vector2::operator<(const Vector2& other) const {
 /// 関数
 
 // 0.0f初期化
-void Vector2::Initialize() {
+void Vector2::Init() {
 
 	this->x = 0.0f;
 	this->y = 0.0f;

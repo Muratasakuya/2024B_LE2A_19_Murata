@@ -39,7 +39,7 @@ public:
 	~Triangle() = default;
 
 	// Main
-	void Initialize(const std::string& textureName);
+	void Init(const std::string& textureName);
 	void Update(const std::array<Vector3, kTriangleVertexNum>& vertices = triangleVertices);
 	void Draw(BlendMode blendMode = BlendMode::kBlendModeNormal);
 

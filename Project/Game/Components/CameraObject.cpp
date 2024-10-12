@@ -2,12 +2,10 @@
 
 #include "Engine/Base/NewMoon.h"
 
-void CameraObject::Initialize() {
+void CameraObject::Init() {
 
-	camera.worldPosition.Initialize();
-
-	// 定数バッファ生成
-	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
+	camera.worldPosition.Init();
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
 void CameraObject::Update(const Vector3& worldPos) {
@@ -15,6 +13,17 @@ void CameraObject::Update(const Vector3& worldPos) {
 	// ワールド座標取得
 	camera.worldPosition = worldPos;
 
-	// 定数バッファにデータを転送
-	TransferData(camera);
+	DXConstBuffer::TransferData(camera);
+}
+
+void ViewProjectionBuffer::Init() {
+
+	viewProjection.MakeIdentity4x4();
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
+}
+
+void ViewProjectionBuffer::Update(Matrix4x4 viewPro) {
+
+	viewProjection = viewPro;
+	DXConstBuffer::TransferData(viewProjection);
 }

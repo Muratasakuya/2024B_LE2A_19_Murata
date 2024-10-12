@@ -75,7 +75,7 @@
 //	cBuffer_->particleMatrix = vertexResource_->CreateParticleWVP(instanceMaxCount_);
 //
 //	// srvDescの初期化
-//	InitializeDXSrvDesc();
+//	InitDXSrvDesc();
 //
 //	// モデル情報の作成
 //
@@ -116,7 +116,7 @@
 //	// テクスチャの読み込み
 //	TextureManager::GetInstance()->LoadTexture("./Resources/Images/circle.png");
 //
-//	Initialize(camera);
+//	Init(camera);
 //}
 //
 ///*////////////////////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@
 ///*////////////////////////////////////////////////////////////////////////////////
 //*								 SrvDescの初期化
 //////////////////////////////////////////////////////////////////////////////////*/
-//void Particle::InitializeDXSrvDesc() {
+//void Particle::InitDXSrvDesc() {
 //
 //	instancingSrvDesc_.Format = DXGI_FORMAT_UNKNOWN;
 //	instancingSrvDesc_.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
@@ -162,7 +162,7 @@
 ///*////////////////////////////////////////////////////////////////////////////////
 //*									初期化
 //////////////////////////////////////////////////////////////////////////////////*/
-//void Particle::Initialize(Camera3D* camera) {
+//void Particle::Init(Camera3D* camera) {
 //
 //	// 乱数の生成
 //	std::random_device seedGenerator;

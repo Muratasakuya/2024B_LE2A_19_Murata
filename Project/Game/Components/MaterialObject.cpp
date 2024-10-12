@@ -3,78 +3,76 @@
 #include "Engine/Base/NewMoon.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
+*								PrimitiveMaterial
+////////////////////////////////////////////////////////////////////////////////*/
+void PrimitiveMaterial::Init() {
+
+	color.SetInit(1.0f);
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
+}
+
+void PrimitiveMaterial::Update() {
+
+	DXConstBuffer::TransferData(color);
+}
+
+/*////////////////////////////////////////////////////////////////////////////////
 *								MaterialObject3D
 ////////////////////////////////////////////////////////////////////////////////*/
-void MaterialObject3D::Initialize() {
+void MaterialObject3D::Init() {
 
-	// default
-	color.SetInitialize(1.0f);
-	properties.Initialize();
-
-	// 定数バッファ生成
-	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
+	color.SetInit(1.0f);
+	properties.Init();
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
 void MaterialObject3D::Update() {
 
 	properties.color = color;
-
-	// 定数バッファにデータを転送
 	TransferData(properties);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								MaterialObject2D
 ////////////////////////////////////////////////////////////////////////////////*/
-void MaterialObject2D::Initialize() {
+void MaterialObject2D::Init() {
 
-	// default
-	color.SetInitialize(1.0f);
-	properties.Initialize();
-
-	// 定数バッファ生成
-	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
+	color.SetInit(1.0f);
+	properties.Init();
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
 void MaterialObject2D::Update() {
 
 	properties.color = color;
-
-	// 定数バッファにデータを転送
 	TransferData(properties);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								OffscreenDepthMaterial
 ////////////////////////////////////////////////////////////////////////////////*/
-void OffscreenDepthMaterial::Initialize() {
+void OffscreenDepthMaterial::Init() {
 
-	// 定数バッファ生成
-	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
 void OffscreenDepthMaterial::Update() {
 
-	// 定数バッファにデータを転送
 	TransferData(property);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								OffscreenDissolveMaterial
 ////////////////////////////////////////////////////////////////////////////////*/
-void OffscreenDissolveMaterial::Initialize() {
+void OffscreenDissolveMaterial::Init() {
 
-	// default
 	properties.threshold = 0.0f;
 	properties.edgeSize = 0.03f;
 	properties.edgeColor = { 1.0f,0.4f,0.3f };
-
-	// 定数バッファ生成
-	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
 void OffscreenDissolveMaterial::Update() {
 
-	// 定数バッファにデータを転送
 	TransferData(properties);
 }

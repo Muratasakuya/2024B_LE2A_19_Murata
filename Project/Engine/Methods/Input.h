@@ -58,7 +58,7 @@ public:
 	Input() = default;
 	~Input() = default;
 
-	void Initialize(WinApp* winApp);
+	void Init();
 	void Update();
 
 	void ImGui();

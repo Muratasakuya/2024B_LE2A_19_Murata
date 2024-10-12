@@ -24,6 +24,13 @@ void DXRasterizerState::Create(PipelineType pipelineType) {
 
 	// 三角形の中を塗りつぶす
 	rasterizerDesc_[pipelineType].FillMode = D3D12_FILL_MODE_SOLID;
+
+	if (pipelineType == PrimitiveLine) {
+
+		rasterizerDesc_[pipelineType].FillMode = D3D12_FILL_MODE_WIREFRAME;
+		rasterizerDesc_[pipelineType].CullMode = D3D12_CULL_MODE_NONE;
+		rasterizerDesc_[pipelineType].AntialiasedLineEnable = TRUE;
+	}
 }
 
 /*////////////////////////////////////////////////////////////////////////////////

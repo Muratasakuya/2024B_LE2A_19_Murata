@@ -26,7 +26,7 @@ public:
 	~Model() = default;
 
 	// Main
-	void Initialize(const std::string& modelName);
+	void Init(const std::string& modelName);
 	void Draw(BlendMode blendMode = BlendMode::kBlendModeNormal);
 	void SkinningAnimationDraw(const std::string& animationName, BlendMode blendMode = BlendMode::kBlendModeNormal);
 

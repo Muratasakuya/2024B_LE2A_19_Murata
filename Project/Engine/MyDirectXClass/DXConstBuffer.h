@@ -18,7 +18,7 @@ public:
 	DXConstBuffer() = default;
 	virtual ~DXConstBuffer() = default;
 
-	void Initialize(ID3D12Device* device);
+	void Init(ID3D12Device* device);
 
 	void SetCommand(ID3D12GraphicsCommandList* commandList, UINT rootParameterIndex);
 
@@ -64,7 +64,7 @@ private:
 /// template関数定義
 
 template<typename T>
-void DXConstBuffer<T>::Initialize(ID3D12Device* device) {
+void DXConstBuffer<T>::Init(ID3D12Device* device) {
 
 	CreateConstBuffer(device);
 }

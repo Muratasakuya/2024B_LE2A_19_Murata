@@ -1,10 +1,9 @@
 #include "TextureManager.h"
 
-#include "Engine/MyDirectXClass/VertexResource.h"
-#include "Engine/Base/DXCommon.h"
 #include "Engine/Base/NewMoon.h"
-#include "Engine/MyDirectXClass/VertexResource.h"
+#include "Engine/Base/DXCommon.h"
 #include "Engine/Managers/SrvManager.h"
+#include "Engine/MyDirectXClass/VertexResource.h"
 
 const DirectX::TexMetadata& TextureManager::GetMetaData(const std::string textureName) {
 
@@ -207,11 +206,8 @@ void TextureManager::SetGraphicsRootDescriptorTable(
 /*////////////////////////////////////////////////////////////////////////////////
 *								 インスタンスの代入
 ////////////////////////////////////////////////////////////////////////////////*/
-void TextureManager::Initialize(DXCommon* dxCommon, SrvManager* srvManager) {
+void TextureManager::Init() {
 
-	assert(dxCommon);
-	assert(srvManager);
-
-	dxCommon_ = dxCommon;
-	srvManager_ = srvManager;
+	dxCommon_ = NewMoon::GetDXCommonPtr();
+	srvManager_ = NewMoon::GetSrvManagerPtr();
 }

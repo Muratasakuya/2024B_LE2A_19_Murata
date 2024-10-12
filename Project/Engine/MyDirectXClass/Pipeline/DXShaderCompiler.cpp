@@ -83,7 +83,7 @@ IDxcBlob* DXShaderCompiler::CompileShader(const std::wstring& filePath,
 /*////////////////////////////////////////////////////////////////////////////////
 *								 初期化
 ////////////////////////////////////////////////////////////////////////////////*/
-void DXShaderCompiler::Initialize(DXCommon* dxCommon, const PipelineType& pipelineType) {
+void DXShaderCompiler::Init(DXCommon* dxCommon, const PipelineType& pipelineType) {
 
 	if (pipelineType == Primitive) {
 
@@ -173,6 +173,21 @@ void DXShaderCompiler::Initialize(DXCommon* dxCommon, const PipelineType& pipeli
 
 		// ピクセルシェーダ
 		psBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/Particle.PS.hlsl", L"ps_6_0",
+			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
+		assert(psBlob_[pipelineType] != nullptr);
+	} else if (pipelineType == PrimitiveLine) {
+
+		/*------------------------------------------------------------------------------------------------------------------------*/
+		//												  PrimitiveLine Shader
+		/*------------------------------------------------------------------------------------------------------------------------*/
+
+		// 頂点シェーダ
+		vsBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/PrimitiveLine.VS.hlsl", L"vs_6_0",
+			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
+		assert(vsBlob_[pipelineType] != nullptr);
+
+		// ピクセルシェーダ
+		psBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/PrimitiveLine.PS.hlsl", L"ps_6_0",
 			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
 		assert(psBlob_[pipelineType] != nullptr);
 	} else if (pipelineType == OffscreenCopy) {
@@ -327,7 +342,7 @@ void DXShaderCompiler::Initialize(DXCommon* dxCommon, const PipelineType& pipeli
 		assert(psBlob_[pipelineType] != nullptr);
 	}
 }
-void DXShaderCompiler::Initialize(DXCommon* dxCommon, const ComputePipelineType& cspipelineType) {
+void DXShaderCompiler::Init(DXCommon* dxCommon, const ComputePipelineType& cspipelineType) {
 
 	if (cspipelineType == SkinningCS) {
 

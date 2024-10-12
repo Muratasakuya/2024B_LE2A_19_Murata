@@ -96,11 +96,9 @@ bool Input::PushMouseRight() const {
 /*////////////////////////////////////////////////////////////////////////////////
 *								Inputの初期化
 ////////////////////////////////////////////////////////////////////////////////*/
-void Input::Initialize(WinApp* winApp) {
+void Input::Init() {
 
-	assert(winApp);
-
-	winApp_ = winApp;
+	winApp_ = NewMoon::GetWinAppPtr();
 
 	HRESULT hr;
 

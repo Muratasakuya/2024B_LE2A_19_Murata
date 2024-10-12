@@ -1,21 +1,22 @@
 #include "Sprite.h"
 
 #include "Engine/Base/NewMoon.h"
+#include "Engine/Base/NewMoonGame.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *									Main
 ////////////////////////////////////////////////////////////////////////////////*/
-void Sprite::Initialize(const std::string& textureName) {
+void Sprite::Init(const std::string& textureName) {
 
 	// 使用するテクスチャ
 	textureName_ = textureName;
 
 	// ConstBuffer初期化
-	vertex_.Initialize(kSpriteVertexNum);
-	index_.Initialize(kSpriteIndexNum);
+	vertex_.Init(kSpriteVertexNum);
+	index_.Init(kSpriteIndexNum);
 
-	material_.Initialize();
-	matrix_.Initialize();
+	material_.Init();
+	matrix_.Init();
 
 	for (uint32_t i = 0; i < kSpriteVertexNum; i++) {
 
@@ -36,7 +37,7 @@ void Sprite::Initialize(const std::string& textureName) {
 	index_.data[4] = 3;
 	index_.data[5] = 2;
 
-	transform2D_.Initialize();
+	transform2D_.Init();
 }
 
 void Sprite::Update() {
@@ -77,7 +78,7 @@ void Sprite::VertexUpdate() {
 	float bottom = 1.0f - transform2D_.anchorPoint.y;
 
 	// テクスチャのサイズを画像サイズに合わせる
-	const DirectX::TexMetadata& metadata = NewMoon::GetMetaData(textureName_);
+	const DirectX::TexMetadata& metadata = NewMoonGame::GetTextureManager()->GetMetaData(textureName_);
 	transform2D_.textureSize = { static_cast<float>(metadata.width) ,static_cast<float>(metadata.height) };
 	transform2D_.size = transform2D_.textureSize;
 

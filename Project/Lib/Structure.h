@@ -53,7 +53,7 @@ struct Transform2D {
 	bool isFlipY;           // 上下反転
 
 	// DefaultInitialize
-	void Initialize() {
+	void Init() {
 
 		pos = { 0.0f,0.0f };
 		rotate = 0.0f;
@@ -92,15 +92,15 @@ struct Material3D {
 	Matrix4x4 uvTransform;
 
 	// DefaultInitialize
-	void Initialize() {
+	void Init() {
 
-		color.SetInitialize(1.0f);
+		color.SetInit(1.0f);
 		enableLighting = false;
 		enableHalfLambert = false;
 		enablePhongReflection = false;
 		enableBlinnPhongReflection = false;
 		phongRefShininess = 1.0f;
-		specularColor.SetInitialize(1.0f);
+		specularColor.SetInit(1.0f);
 		uvTransform = Matrix4x4::MakeIdentity4x4();
 	}
 };
@@ -110,9 +110,9 @@ struct Material2D {
 	Matrix4x4 uvTransform;
 
 	// DefaultInitialize
-	void Initialize() {
+	void Init() {
 
-		color.SetInitialize(1.0f);
+		color.SetInit(1.0f);
 		uvTransform = Matrix4x4::MakeIdentity4x4();
 	}
 };
@@ -136,7 +136,7 @@ struct DirectionalLight {
 	float intensity;
 
 	// DefaultInitialize
-	void Initialize() {
+	void Init() {
 
 		color = { 1.0f,1.0f,1.0f,1.0f };
 		direction = { 0.0f,-1.0f,0.0f };
@@ -153,7 +153,7 @@ struct PointLight {
 	float padding[2];
 
 	// DefaultInitialize
-	void Initialize() {
+	void Init() {
 
 		color = { 1.0f,1.0f,1.0f,1.0f };
 		pos = { 0.0f,0.0f,0.0f };
@@ -175,7 +175,7 @@ struct SpotLight {
 	float padding[2];
 
 	// DefaultInitialize
-	void Initialize() {
+	void Init() {
 
 		color = { 1.0f,1.0f,1.0f,1.0f };
 		pos = { 0.0f,0.0f,0.0f };
@@ -194,11 +194,11 @@ struct PunctualLight {
 	SpotLight spot;
 
 	// DefaultInitialize
-	void Initialize() {
+	void Init() {
 
-		directional.Initialize();
-		point.Initialize();
-		spot.Initialize();
+		directional.Init();
+		point.Init();
+		spot.Init();
 	};
 };
 /*==========================================================*/

@@ -2,15 +2,15 @@
 
 #include "Engine/Base/NewMoon.h"
 
-void LightObject::Initialize() {
+void LightObject::Init() {
 
 	// default
-	directional.Initialize();
-	point.Initialize();
-	spot.Initialize();
+	directional.Init();
+	point.Init();
+	spot.Init();
 
 	// 定数バッファ生成
-	DXConstBuffer::Initialize(NewMoon::GetDXDevice());
+	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
 void LightObject::Update() {

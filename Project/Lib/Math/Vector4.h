@@ -36,9 +36,9 @@ public:
 	/// 関数
 
 	// 0.0f初期化
-	void Initialize();
+	void Init();
 	// 任意初期化
-	void SetInitialize(float value);
+	void SetInit(float value);
 
 	// 16進数 -> Vector4 色変換
 	static Vector4 ConvertColor(int color);

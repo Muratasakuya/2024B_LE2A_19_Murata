@@ -4,7 +4,6 @@
 #include "Game/Scenes/TitleScene.h"
 #include "Game/Scenes/TutorialScene.h"
 #include "Game/Scenes/SelectScene.h"
-#include "Game/Scenes/ResultScene.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								シーン生成
@@ -26,9 +25,6 @@ IScene* SceneFactory::CreateScene(SceneNo sceneNo) {
 	case GAME:
 
 		return new GameScene();
-	case RESULT:
-
-		return new ResultScene();
 	}
 
 	return nullptr;

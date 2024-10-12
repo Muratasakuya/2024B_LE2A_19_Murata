@@ -33,8 +33,8 @@
 //	Particle(Camera3D* camera);
 //	~Particle();
 //
-//	void Initialize(Camera3D* camera);
-//	void InitializeDXSrvDesc();
+//	void Init(Camera3D* camera);
+//	void InitDXSrvDesc();
 //
 //	void Update(Camera3D* camera);
 //

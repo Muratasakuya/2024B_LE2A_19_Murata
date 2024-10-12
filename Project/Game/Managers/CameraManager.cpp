@@ -3,18 +3,19 @@
 /*////////////////////////////////////////////////////////////////////////////////
 *									 Main
 ////////////////////////////////////////////////////////////////////////////////*/
-void CameraManager::Initialize() {
+void CameraManager::Init() {
 
 	// 2D
 	camera2D_ = std::make_unique<Camera2D>();
-	camera2D_->Initialize();
+	camera2D_->Init();
 
 	// 3D
 	camera3D_ = std::make_unique<Camera3D>();
-	camera3D_->Initialize();
+	camera3D_->Init();
 
 	// ConstBuffer初期化
-	cameraBuffer_.Initialize();
+	cameraBuffer_.Init();
+	viewProjectionBuffer_.Init();
 }
 void CameraManager::Update() {
 
@@ -23,6 +24,7 @@ void CameraManager::Update() {
 
 	// ConstBuffer転送
 	cameraBuffer_.Update(camera3D_->GetWorldPos());
+	viewProjectionBuffer_.Update(camera3D_->GetViewProjectionMatrix());
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -46,3 +48,4 @@ Matrix4x4 CameraManager::GetViewProjection(CameraType cameraType) {
 	return Matrix4x4::MakeIdentity4x4();
 }
 CameraObject CameraManager::GetCameraBuffer() const { return cameraBuffer_; }
+ViewProjectionBuffer CameraManager::GetViewProjectionBuffer() const { return viewProjectionBuffer_; }
