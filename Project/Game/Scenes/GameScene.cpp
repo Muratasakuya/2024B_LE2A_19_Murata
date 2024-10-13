@@ -14,6 +14,11 @@ void GameScene::Init() {
 
 void GameScene::Update() {
 
+	if (NewMoonGame::TriggerKey(DIK_SPACE)) {
+
+		SceneManager::GetInstance()->ChangeScene(TITLE, TransitionType::Fade);
+	}
+
 	ImGui();
 }
 
@@ -33,10 +38,6 @@ void GameScene::Draw() {
 
 void GameScene::ImGui() {
 #ifdef _DEBUG
-	ImGui::Begin("test");
-
-	ImGui::Text("FrameRate: %.1f FPS", ImGui::GetIO().Framerate);
-
-	ImGui::End();
+	
 #endif // _DEBUG
 }

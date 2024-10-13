@@ -38,10 +38,13 @@ public:
 	// Setter
 	void SetPos(const Vector2& pos);
 	void SetAnchor(const Vector2& anchor);
+	void SetCenterAnchor();
 	void SetTextureLeftTop(const Vector2& leftTop);
 	void SetTextureSize(const Vector2& textureSize);
+	void SetOriginalTextureSize(const Vector2& textrueSize);
 	void SetColor(const Vector4& color);
 	void SetAlpha(float alpha);
+	void AjustTextureSize(bool ajustTexture);
 
 private:
 	//===================================================================*/
@@ -56,6 +59,8 @@ private:
 	Transform2D transform2D_;
 
 	std::string textureName_;
+
+	bool ajustTexture_ = true;
 
 private:
 	//===================================================================*/

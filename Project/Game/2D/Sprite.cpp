@@ -4,8 +4,9 @@
 #include "Engine/Base/NewMoonGame.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*									Main
+*							Sprite classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
+
 void Sprite::Init(const std::string& textureName) {
 
 	// 使用するテクスチャ
@@ -13,21 +14,12 @@ void Sprite::Init(const std::string& textureName) {
 
 	// ConstBuffer初期化
 	vertex_.Init(kSpriteVertexNum);
+	vertex_.data.resize(kSpriteVertexNum);
 	index_.Init(kSpriteIndexNum);
+	index_.data.resize(kSpriteIndexNum);
 
 	material_.Init();
 	matrix_.Init();
-
-	for (uint32_t i = 0; i < kSpriteVertexNum; i++) {
-
-		VertexData2D vertexData{};
-		vertex_.data.push_back(vertexData);
-	}
-	for (uint32_t i = 0; i < kSpriteIndexNum; i++) {
-
-		uint32_t indexData;
-		index_.data.push_back(indexData);
-	}
 
 	// Indexの設定
 	index_.data[0] = 0;
@@ -73,15 +65,19 @@ void Sprite::Draw(const BlendMode& blendMode) {
 void Sprite::VertexUpdate() {
 
 	// アンカーポイント
-	float left   = 0.0f - transform2D_.anchorPoint.x;
-	float right  = 1.0f - transform2D_.anchorPoint.x;
-	float top    = 0.0f - transform2D_.anchorPoint.y;
+	float left = 0.0f - transform2D_.anchorPoint.x;
+	float right = 1.0f - transform2D_.anchorPoint.x;
+	float top = 0.0f - transform2D_.anchorPoint.y;
 	float bottom = 1.0f - transform2D_.anchorPoint.y;
 
 	// テクスチャのサイズを画像サイズに合わせる
 	const DirectX::TexMetadata& metadata = NewMoonGame::GetTextureManager()->GetMetaData(textureName_);
 	transform2D_.textureSize = { static_cast<float>(metadata.width) ,static_cast<float>(metadata.height) };
-	transform2D_.size = transform2D_.textureSize;
+
+	if (ajustTexture_) {
+
+		transform2D_.size = transform2D_.textureSize;
+	}
 
 	// 横
 	float texLeft = transform2D_.textureLeftTop.x / static_cast<float>(metadata.width);
@@ -109,7 +105,10 @@ void Sprite::VertexUpdate() {
 ////////////////////////////////////////////////////////////////////////////////*/
 void Sprite::SetPos(const Vector2& pos) { transform2D_.pos = pos; }
 void Sprite::SetAnchor(const Vector2& anchor) { transform2D_.anchorPoint = anchor; }
+void Sprite::SetCenterAnchor() { transform2D_.anchorPoint = { 0.5f,0.5f }; }
 void Sprite::SetTextureLeftTop(const Vector2& leftTop) { transform2D_.textureLeftTop = leftTop; }
 void Sprite::SetTextureSize(const Vector2& textureSize) { transform2D_.textureSize = textureSize; }
+void Sprite::SetOriginalTextureSize(const Vector2& textrueSize) { transform2D_.size = textrueSize; }
 void Sprite::SetColor(const Vector4& color) { material_.color = color; }
 void Sprite::SetAlpha(float alpha) { material_.color.w = alpha; }
+void Sprite::AjustTextureSize(bool ajustTexture) { ajustTexture_ = ajustTexture; }

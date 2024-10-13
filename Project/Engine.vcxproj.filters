@@ -99,6 +99,7 @@
     <ClCompile Include="Game\Editor\RailEditor.cpp" />
     <ClCompile Include="Engine\Base\NewMoonGame.cpp" />
     <ClCompile Include="Lib\Camera\DebugCamera.cpp" />
+    <ClCompile Include="Game\Scenes\Methods\TransitionScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Engine\Base\NewMoonGame.h" />
     <ClInclude Include="Engine\Methods\ScreenDimensions.h" />
     <ClInclude Include="Lib\Camera\DebugCamera.h" />
+    <ClInclude Include="Game\Scenes\Methods\TransitionScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

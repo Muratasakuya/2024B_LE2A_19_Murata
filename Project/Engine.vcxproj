@@ -187,6 +187,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\3D\Sphere.cpp" />
     <ClCompile Include="Game\Editor\RailEditor.cpp" />
     <ClCompile Include="Engine\Base\NewMoonGame.cpp" />
+    <ClCompile Include="Game\Scenes\Methods\TransitionScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\Camera\DebugCamera.h" />
@@ -265,6 +266,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Managers\LightManager.h" />
     <ClInclude Include="Game\Editor\RailEditor.h" />
     <ClInclude Include="Engine\Base\NewMoonGame.h" />
+    <ClInclude Include="Game\Scenes\Methods\TransitionScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

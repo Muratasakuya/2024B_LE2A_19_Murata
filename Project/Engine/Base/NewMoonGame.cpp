@@ -1,10 +1,13 @@
 #include "NewMoonGame.h"
 
 #include "NewMoon.h"
+#include "Engine/Managers/ImGuiManager.h"
 
 ///===============================================================================
 /// staticメンバ変数初期化
 #pragma region
+std::chrono::steady_clock::time_point NewMoonGame::lastFrameTime_ = std::chrono::steady_clock::now();
+float NewMoonGame::deltaTime_ = 0.0f;
 std::unique_ptr<TextureManager> NewMoonGame::textureManager_ = nullptr;
 std::unique_ptr<ModelManager> NewMoonGame::modelManager_ = nullptr;
 std::unique_ptr<Audio> NewMoonGame::audio_ = nullptr;
@@ -43,7 +46,27 @@ void NewMoonGame::Init() {
 	primitiveDrawer_->Init(cameraManager_->GetViewProjectionBuffer());
 }
 
+void NewMoonGame::ImGui() {
+#ifdef _DEBUG
+	ImGui::Begin("Game");
+
+	ImGui::Text("FrameRate: %.1f FPS", ImGui::GetIO().Framerate); // 60FPS固定
+	ImGui::Text("DeltaTime: %.3f", deltaTime_);                     // 60FPS ≒ 0.016f
+	input_->ImGui();
+
+	ImGui::End();
+#endif // _DEBUG
+}
+
 void NewMoonGame::Update() {
+
+	ImGui();
+
+	auto currentFrameTime = std::chrono::steady_clock::now();
+	std::chrono::duration<float> elapsedTime = currentFrameTime - lastFrameTime_;
+	deltaTime_ = elapsedTime.count();
+
+	lastFrameTime_ = currentFrameTime;
 
 	input_->Update();
 
@@ -205,4 +228,8 @@ CameraManager* NewMoonGame::GetGameCamera() {
 
 LightManager* NewMoonGame::GetGameLight() {
 	return lightManager_.get();
+}
+
+float NewMoonGame::GetDeltaTime() {
+	return deltaTime_;
 }

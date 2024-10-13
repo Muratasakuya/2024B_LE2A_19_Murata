@@ -8,6 +8,7 @@
 #include "Engine/Methods/ScreenDimensions.h"
 #include "Game/Scenes/Methods/IScene.h"
 #include "Game/Scenes/Methods/SceneFactory.h"
+#include "Game/Scenes/Methods/TransitionScene.h"
 
 // c++
 #include <memory>
@@ -26,10 +27,12 @@ public:
 
 	void Run();
 
-	void ChangeScene(SceneNo sceneNo);
+	void ChangeScene(SceneNo sceneNo, TransitionType transitiontype, float duration = 1.0f);
 
-	// 悪魔、c++の汚点
 	static SceneManager* GetInstance();
+
+	// Setter
+	void SetTransitioning(bool isTransitioning);
 
 private:
 	//===================================================================*/
@@ -37,7 +40,9 @@ private:
 	//===================================================================*/
 
 	std::unique_ptr<IScene> currentScene_;
+	std::unique_ptr<TransitionScene> transitionScene_;
 	SceneFactory sceneFactory_;
 
 	SceneNo currentSceneNo_;
+	bool isTransitioning_;
 };

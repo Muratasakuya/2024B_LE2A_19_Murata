@@ -14,6 +14,7 @@
 // c++
 #include <memory>
 #include <string>
+#include <chrono>
 
 // directX
 #include <Externals/DirectXTex/DirectXTex.h>
@@ -89,11 +90,15 @@ public:
 	static ModelManager* GetModelMangager();
 	static CameraManager* GetGameCamera();
 	static LightManager* GetGameLight();
+	static float GetDeltaTime();
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
+
+	static std::chrono::steady_clock::time_point lastFrameTime_;
+	static float deltaTime_;
 
 	static std::unique_ptr<TextureManager> textureManager_;
 	static std::unique_ptr<ModelManager> modelManager_;
@@ -105,5 +110,7 @@ private:
 	static std::unique_ptr<LightManager> lightManager_;
 
 	static std::unique_ptr<PrimitiveDrawer> primitiveDrawer_;
+
+	static void ImGui();
 
 };

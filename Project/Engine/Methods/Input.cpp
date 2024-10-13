@@ -195,9 +195,18 @@ void Input::Update() {
 		rightThumbY_ = 0.0f;
 	}
 
-	hr = mouse_->GetDeviceState(sizeof(DIMOUSESTATE), &mouseState_);
+	// マウス情報の取得開始
+	hr = mouse_->Acquire();
 	if (FAILED(hr)) {
+		if (hr == DIERR_INPUTLOST || hr == DIERR_NOTACQUIRED) {
 
+			mouse_->Acquire();
+		}
+	}
+
+	hr = mouse_->GetDeviceState(sizeof(DIMOUSESTATE), &mouseState_);
+
+	if (FAILED(hr)) {
 		// 取得失敗時の処理
 		std::fill(mouseButtons_.begin(), mouseButtons_.end(), false);
 		mousePos_ = { 0.0f, 0.0f };
@@ -209,7 +218,6 @@ void Input::Update() {
 
 		POINT point;
 		GetCursorPos(&point);
-
 		ScreenToClient(winApp_->GetHwnd(), &point);
 
 		// マウスの移動量を保存
