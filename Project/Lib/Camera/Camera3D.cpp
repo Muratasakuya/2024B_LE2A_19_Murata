@@ -38,14 +38,10 @@ void Camera3D::Update() {
 ////////////////////////////////////////////////////////////////////////////////*/
 void Camera3D::ImGui() {
 #ifdef _DEBUG
-	ImGui::Begin("3DCamera");
-
-	ImGui::SliderAngle("rotateX", &transform_.rotate.x);
-	ImGui::SliderAngle("rotateY", &transform_.rotate.y);
-	ImGui::SliderAngle("rotateZ", &transform_.rotate.z);
-	ImGui::DragFloat3("translate", &transform_.translate.x, 0.01f);
-
-	ImGui::End();
+	ImGui::SliderAngle("Rotate X", &transform_.rotate.x);
+	ImGui::SliderAngle("Rotate Y", &transform_.rotate.y);
+	ImGui::SliderAngle("Rotate Z", &transform_.rotate.z);
+	ImGui::DragFloat3("Translate", &transform_.translate.x, 0.01f);
 #endif
 }
 

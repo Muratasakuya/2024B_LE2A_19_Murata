@@ -32,6 +32,8 @@ public:
 	void Init();
 	void Update();
 
+	void ImGui();
+
 	// Getter
 	Matrix4x4 GetViewProjection(CameraType cameraType);
 	CameraObject GetCameraBuffer() const;

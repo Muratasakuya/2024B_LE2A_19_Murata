@@ -48,11 +48,26 @@ void NewMoonGame::Init() {
 
 void NewMoonGame::ImGui() {
 #ifdef _DEBUG
-	ImGui::Begin("Game");
+	ImGui::Begin("Game Debug");
+	if (ImGui::BeginTabBar("Tabs")) {
+		if (ImGui::BeginTabItem("Performance")) {
+			ImGui::Text("Frame Rate: %.1f FPS", ImGui::GetIO().Framerate); // フレームレート情報
+			ImGui::Text("Delta Time: %.3f seconds", deltaTime_);           // ΔTime
+			ImGui::EndTabItem();
+		}
 
-	ImGui::Text("FrameRate: %.1f FPS", ImGui::GetIO().Framerate); // 60FPS固定
-	ImGui::Text("DeltaTime: %.3f", deltaTime_);                     // 60FPS ≒ 0.016f
-	input_->ImGui();
+		if (ImGui::BeginTabItem("Input")) {
+			input_->ImGui();
+			ImGui::EndTabItem();
+		}
+
+		if (ImGui::BeginTabItem("Camera")) {
+			cameraManager_->ImGui();
+			ImGui::EndTabItem();
+		}
+
+		ImGui::EndTabBar();
+	}
 
 	ImGui::End();
 #endif // _DEBUG

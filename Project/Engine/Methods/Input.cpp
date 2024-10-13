@@ -231,29 +231,12 @@ void Input::Update() {
 *								ImGui表示
 ////////////////////////////////////////////////////////////////////////////////*/
 void Input::ImGui() {
-
+#ifdef _DEBUG
 	Vector2 mouseMoveValue = GetMouseMoveValue();
-	static bool showMouseInfo = false;
 
-	ImGui::Begin("NewMoon");
-
-	// Inputドロップダウンメニューを作成
-	if (ImGui::TreeNode("Input")) {
-		if (ImGui::Selectable("Mouse", showMouseInfo)) {
-
-			showMouseInfo = !showMouseInfo;
-		}
-
-		// Mouse情報を表示
-		if (showMouseInfo) {
-			ImGui::Text("mousePos: { %4.1f, %4.1f", mousePos_.x, mousePos_.y);
-			ImGui::Text("mouseMoveValue: { %4.1f, %4.1f", mouseMoveValue.x, mouseMoveValue.y);
-			ImGui::Text("leftMouseButton: %d", mouseButtons_[0]);
-			ImGui::Text("rightMouseButton: %d", mouseButtons_[1]);
-		}
-
-		ImGui::TreePop();
-	}
-
-	ImGui::End();
+	ImGui::Text("Mouse Position: { %4.1f, %4.1f }", mousePos_.x, mousePos_.y);
+	ImGui::Text("Mouse Movement: { %4.1f, %4.1f }", mouseMoveValue.x, mouseMoveValue.y);
+	ImGui::Text("Left Mouse Button: %d", mouseButtons_[0]);
+	ImGui::Text("Right Mouse Button: %d", mouseButtons_[1]);
+#endif
 }

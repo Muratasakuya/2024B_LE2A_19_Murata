@@ -19,13 +19,17 @@ void CameraManager::Init() {
 }
 void CameraManager::Update() {
 
-	camera3D_->ImGui();
 	camera2D_->Update();
 	camera3D_->Update();
 
 	// ConstBuffer転送
 	cameraBuffer_.Update(camera3D_->GetWorldPos());
 	viewProjectionBuffer_.Update(camera3D_->GetViewProjectionMatrix());
+}
+
+void CameraManager::ImGui() {
+
+	camera3D_->ImGui();
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
