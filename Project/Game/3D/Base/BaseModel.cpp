@@ -1,5 +1,7 @@
 #include "BaseModel.h"
 
+#include "Engine/Base/NewMoonGame.h"
+
 /*////////////////////////////////////////////////////////////////////////////////
 *						BaseModel classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
@@ -17,18 +19,16 @@ void BaseModel::Init(const std::string& modelName) {
 		material.Init();
 	}
 
-	waveBuffer_.Init();
 }
 void BaseModel::Update() {
 
-	transform_.Update();
+	transform_.Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 	for (auto& material : materials_) {
 
 		material.Update();
 	}
-	waveBuffer_.Update();
 }
 void BaseModel::Draw(BlendMode blendMode) {
 
-	model_->DrawWave(transform_, materials_, waveBuffer_, blendMode);
+	model_->Draw(transform_, materials_, blendMode);
 }

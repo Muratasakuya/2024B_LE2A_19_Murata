@@ -3,6 +3,8 @@
 //===================================================================*/
 //								include
 //===================================================================*/
+#include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
+#include "Game/Components/CameraObject.h"
 #include "Lib/Structure.h"
 
 // c++
@@ -25,6 +27,9 @@ public:
 	void Update();
 	void ImGui();
 
+	void CameraSetCommand(ID3D12GraphicsCommandList* commandList,const PipelineType& pipelineType);
+	void ViewProSetCommand(ID3D12GraphicsCommandList* commandList);
+
 	// Setter
 	void SetViewMatrix(const Matrix4x4& viewMatrix);
 
@@ -35,6 +40,8 @@ public:
 	Matrix4x4 GetProjectionMatrix() const;
 	Matrix4x4 GetViewProjectionMatrix() const;
 	Matrix4x4 GetProjectionInverseMatrix() const;
+	CameraObject GetCameraBuffer() const;
+	ViewProjectionBuffer GetViewProBuffer() const;
 
 private:
 	//===================================================================*/
@@ -49,4 +56,8 @@ private:
 	Matrix4x4 projectionInverseMatrix_;
 
 	Transform3D transform_;
+
+	CameraObject cameraBuffer_;
+	ViewProjectionBuffer viewProBuffer_;
+
 };

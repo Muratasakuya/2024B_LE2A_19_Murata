@@ -56,7 +56,7 @@ void Model::Init(const std::string& modelName) {
 void Model::Draw(WorldTransform transform, std::vector<MaterialObject3D>& materials, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
-	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
+	auto cameraBuffer = NewMoonGame::GameCamera()->GetCamera3D()->GetCameraBuffer();
 	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
 
 	for (uint32_t meshIndex = 0; meshIndex < meshNum_; ++meshIndex) {
@@ -88,7 +88,7 @@ void Model::SkinningAnimationDraw(WorldTransform transform, std::vector<Material
 	const std::string& animationName, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
-	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
+	auto cameraBuffer = NewMoonGame::GameCamera()->GetCamera3D()->GetCameraBuffer();
 	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
 
 	SetComputeCommands(animationName);
@@ -122,29 +122,7 @@ void Model::SkinningAnimationDraw(WorldTransform transform, std::vector<Material
 			D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 	}
 }
-void Model::DrawWave(WorldTransform transform, std::vector<MaterialObject3D>& materials,
-	WaveBuffer waveBuffer, BlendMode blendMode) {
 
-	auto commandList = NewMoon::GetCommandList();
-	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
-	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
-
-	NewMoon::SetGraphicsPipeline(commandList, WaveBort, blendMode);
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	commandList->IASetVertexBuffers(0, 1, &vertices_.front().GetVertexBuffer());
-	commandList->IASetIndexBuffer(&indices_.front().GetIndexBuffer());
-
-	materials.front().SetCommand(commandList, materials.front().GetRootParameterIndex());
-	transform.SetCommand(commandList, transform.GetRootParameterIndex());
-	lightBuffer.SetCommand(commandList, 3);
-	cameraBuffer.SetCommand(commandList, 4);
-	waveBuffer.SetCommand(commandList, waveBuffer.GetRootParameterIndex());
-
-	NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, "waveBase");
-	NewMoon::SetGraphicsRootDescriptorTable(commandList, 6, "waveBlue");
-	NewMoon::SetGraphicsRootDescriptorTable(commandList, 7, "waveWhite2");
-	commandList->DrawIndexedInstanced(static_cast<UINT>(indices_.front().data.size()), 1, 0, 0, 0);
-}
 void Model::SetComputeCommands(const std::string& animationName) {
 
 	auto commandList = NewMoon::GetCommandList();

@@ -192,6 +192,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\Wave.cpp" />
     <ClCompile Include="Game\Components\WaveBuffer.cpp" />
     <ClCompile Include="Lib\Camera\RailCamera.cpp" />
+    <ClCompile Include="Game\Enetities\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\3D\Base\BaseModel.h" />
@@ -275,6 +276,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Objects\Wave.h" />
     <ClInclude Include="Game\Components\WaveBuffer.h" />
     <ClInclude Include="Lib\Camera\RailCamera.h" />
+    <ClInclude Include="Game\Enetities\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

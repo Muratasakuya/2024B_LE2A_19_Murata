@@ -33,9 +33,6 @@ public:
 	void SkinningAnimationDraw(WorldTransform transform, std::vector<MaterialObject3D>& materials,
 		const std::string& animationName, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
-	void DrawWave(WorldTransform transform, std::vector<MaterialObject3D>& materials, WaveBuffer waveBuffer,
-		BlendMode blendMode = BlendMode::kBlendModeNormal);
-
 	// Getter
 	size_t GetMeshNum() const;
 

@@ -88,7 +88,7 @@ public:
 
 	static TextureManager* GetTextureManager();
 	static ModelManager* GetModelMangager();
-	static CameraManager* GetGameCamera();
+	static CameraManager* GameCamera();
 	static LightManager* GetGameLight();
 	static float GetDeltaTime();
 

@@ -23,7 +23,7 @@ void RailEditor::Update() {
 	for (auto& spherePair : spheres_) {
 		auto& sphereWorldTransform = spherePair.second;
 
-		sphereWorldTransform.Update();
+		sphereWorldTransform.Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 	}
 	sphereMaterial_.Update();
 }
@@ -53,28 +53,25 @@ void RailEditor::SetCatmullRomVertices() {
 	if (ImGui::CollapsingHeader("Vertex Input", ImGuiTreeNodeFlags_DefaultOpen)) {
 		ImGui::Text("Set position for the next vertex:");
 		ImGui::DragFloat3("RailPoints", &spherePos_.x, 0.05f);
+		if (ImGui::Button("Create Point")) {
+			// レール座標に追加
+			railPoints_.push_back(spherePos_);
 
-		if (spherePos_ != Vector3(0.0f, 0.0f, 0.0f)) {
-			if (ImGui::Button("Create Point")) {
-				// レール座標に追加
-				railPoints_.push_back(spherePos_);
+			// 頂点表示用球の作成
+			WorldTransform worldTransform;
+			worldTransform.Init();
+			// ST設定
+			worldTransform.translation = spherePos_;
+			worldTransform.scale.SetInit(sphereScale_);
 
-				// 頂点表示用球の作成
-				WorldTransform worldTransform;
-				worldTransform.Init();
-				// ST設定
-				worldTransform.translation = spherePos_;
-				worldTransform.scale.SetInit(sphereScale_);
+			auto sphere = std::make_unique<Sphere>();
+			sphere->Init(sphereTexture_);
 
-				auto sphere = std::make_unique<Sphere>();
-				sphere->Init(sphereTexture_);
+			// 追加
+			spheres_.push_back(std::make_pair(std::move(sphere), worldTransform));
 
-				// 追加
-				spheres_.push_back(std::make_pair(std::move(sphere), worldTransform));
-
-				// 入力座標リセット
-				spherePos_.Init();
-			}
+			// 入力座標リセット
+			spherePos_.Init();
 		}
 	}
 

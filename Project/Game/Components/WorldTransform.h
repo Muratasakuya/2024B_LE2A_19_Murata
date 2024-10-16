@@ -19,7 +19,7 @@ public:
 	~WorldTransform() = default;
 
 	void Init();
-	void Update();
+	void Update(const Matrix4x4& viewPro);
 
 	// Setter
 	void SetAnimationData(const std::string& modelName, const std::string& animationName);

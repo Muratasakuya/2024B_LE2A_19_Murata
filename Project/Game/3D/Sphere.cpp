@@ -30,7 +30,7 @@ void Sphere::Init(const std::string& textureName) {
 void Sphere::Draw(WorldTransform transform, MaterialObject3D material, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
-	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
+	auto cameraBuffer = NewMoonGame::GameCamera()->GetCamera3D()->GetCameraBuffer();
 	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
 	DXConstBufferManager constBuffer;
 

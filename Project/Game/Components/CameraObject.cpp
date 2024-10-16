@@ -42,3 +42,8 @@ void ViewProjectionBuffer::Update(Matrix4x4 viewPro) {
 	viewProjection = viewPro;
 	DXConstBuffer::TransferData(viewProjection);
 }
+
+UINT ViewProjectionBuffer::GetRootParameterIndex() const {
+
+	return 1;
+}

@@ -41,7 +41,7 @@ void PrimitiveDrawer::DrawLine(const Vector3& pointA, const Vector3& pointB, con
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 	commandList->IASetVertexBuffers(0, 1, &vertex_.GetVertexBuffer());
 	material_.SetCommand(commandList, 0);
-	viewProBuffer_.SetCommand(commandList, 1);
+	viewProBuffer_.SetCommand(commandList, viewProBuffer_.GetRootParameterIndex());
 	commandList->DrawInstanced(kVertexCountLine_, 1, indexLine_ - kVertexCountLine_, 0);
 }
 

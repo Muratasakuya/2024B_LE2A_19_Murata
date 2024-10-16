@@ -43,7 +43,7 @@ void NewMoonGame::Init() {
 	lightManager_->Init();
 
 	primitiveDrawer_ = std::make_unique<PrimitiveDrawer>();
-	primitiveDrawer_->Init(cameraManager_->GetViewProjectionBuffer());
+	primitiveDrawer_->Init(cameraManager_->GetCamera3D()->GetViewProBuffer());
 }
 
 void NewMoonGame::ImGui() {
@@ -242,7 +242,7 @@ ModelManager* NewMoonGame::GetModelMangager() {
 	return modelManager_.get();
 }
 
-CameraManager* NewMoonGame::GetGameCamera() {
+CameraManager* NewMoonGame::GameCamera() {
 	return cameraManager_.get();
 }
 

@@ -50,6 +50,9 @@ public:
 	void Init();
 	void Update(Matrix4x4 viewPro);
 
+	// Getter
+	UINT GetRootParameterIndex() const;
+
 private:
 	//===================================================================*/
 	//							private Variables

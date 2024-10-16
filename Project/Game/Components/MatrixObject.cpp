@@ -18,7 +18,7 @@ void MatrixObject::Update(const Transform2D& transform2D) {
 
 	Matrix4x4 worldMatrix =
 		Matrix4x4::MakeAffineMatrix(scale, rotate, translate);
-	matrix_.WVP = worldMatrix * NewMoonGame::GetGameCamera()->GetViewProjection(CameraType::Orthographic);
+	matrix_.WVP = worldMatrix * NewMoonGame::GameCamera()->GetCamera2D()->GetViewProjectionMatrix();
 
 	// 定数バッファにデータを転送
 	TransferData(matrix_);

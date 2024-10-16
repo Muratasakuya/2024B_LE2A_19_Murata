@@ -3,38 +3,37 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
-#include "Game/Editor/RailEditor.h"
-#include "Game/Enetities/Player.h"
-
-// c++
-#include <memory>
+#include "Game/3D/Base/BaseModel.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								GameScene Class
+*								Player Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class GameScene :
-	public IScene {
+class Player :
+	public BaseModel {
 public:
 	//===================================================================*/
-	//							public Functions
+	//							public Function
 	//===================================================================*/
 
-	GameScene();
-	~GameScene();
+	Player() = default;
+	~Player() = default;
 
-	// Main -> IScene
-	void Init()override;
-	void Update()override;
-	void Draw()override;
+	void Init();
+	void Update(const Matrix4x4& viewPro);
+	void Draw();
 
-private:
+	void ImGui();
+
+	// Setter
+	void SetForward(const Vector3& forward);
+	void SetParent(const WorldTransform* parent);
+
+public:
 	//===================================================================*/
-	//							private Variables
+	//							private variable
 	//===================================================================*/
 
-	std::unique_ptr<RailEditor> railEditor_;
-
-	std::unique_ptr<Player> player_;
+	// 前方ベクトル
+	Vector3 forward_;
 
 };

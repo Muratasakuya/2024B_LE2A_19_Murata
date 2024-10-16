@@ -14,7 +14,7 @@ void WorldTransform::Init() {
 	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
-void WorldTransform::Update() {
+void WorldTransform::Update(const Matrix4x4& viewPro) {
 
 	// アニメーションを使用しない普通の更新
 	if (!isPlayAnimation_) {
@@ -23,9 +23,9 @@ void WorldTransform::Update() {
 			Matrix4x4::MakeAffineMatrix(scale, rotation, translation);
 		if (parent_) {
 
-			worldMatrix *= parent_->matrix.World;
+			worldMatrix = Matrix4x4::Multiply(worldMatrix, parent_->matrix.World);
 		}
-		Matrix4x4 wvpMatrix = worldMatrix * NewMoonGame::GetGameCamera()->GetViewProjection(CameraType::Perspective);
+		Matrix4x4 wvpMatrix = worldMatrix * viewPro;
 		Matrix4x4 worldInverseTranspose = Matrix4x4::Transpose(Matrix4x4::Inverse(worldMatrix));
 
 		matrix.World = worldMatrix;
@@ -88,7 +88,7 @@ void WorldTransform::Update() {
 		}
 
 		Matrix4x4 worldMatrix = Matrix4x4::MakeAffineMatrix(scale, rotation, translation);
-		Matrix4x4 wvpMatrix = worldMatrix * NewMoonGame::GetGameCamera()->GetViewProjection(CameraType::Perspective);
+		Matrix4x4 wvpMatrix = worldMatrix * viewPro;
 		Matrix4x4 worldInverseTranspose = Matrix4x4::Transpose(Matrix4x4::Inverse(worldMatrix));
 
 		matrix.World = worldMatrix;

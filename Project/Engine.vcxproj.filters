@@ -105,6 +105,7 @@
     <ClCompile Include="Game\3D\Base\BaseModel.cpp" />
     <ClCompile Include="Game\Components\WaveBuffer.cpp" />
     <ClCompile Include="Lib\Camera\RailCamera.cpp" />
+    <ClCompile Include="Game\Enetities\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Game\3D\Base\BaseModel.h" />
     <ClInclude Include="Game\Components\WaveBuffer.h" />
     <ClInclude Include="Lib\Camera\RailCamera.h" />
+    <ClInclude Include="Game\Enetities\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

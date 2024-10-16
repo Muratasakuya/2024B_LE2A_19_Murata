@@ -38,8 +38,6 @@ protected:
 	WorldTransform transform_;
 	std::vector<MaterialObject3D> materials_;
 
-	WaveBuffer waveBuffer_;
-
 	//===================================================================*/
 	/// Functions
 
