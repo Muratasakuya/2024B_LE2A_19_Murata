@@ -8,6 +8,7 @@
 #include "Game/Components/IndexObject.h"
 #include "Game/Components/WorldTransform.h"
 #include "Game/Components/MaterialObject.h"
+#include "Game/Components/WaveBuffer.h"
 
 // c++
 #include <vector>
@@ -27,15 +28,19 @@ public:
 
 	// Main
 	void Init(const std::string& modelName);
-	void Draw(BlendMode blendMode = BlendMode::kBlendModeNormal);
-	void SkinningAnimationDraw(const std::string& animationName, BlendMode blendMode = BlendMode::kBlendModeNormal);
+	void Draw(WorldTransform transform, std::vector<MaterialObject3D>& materials,
+		BlendMode blendMode = BlendMode::kBlendModeNormal);
+	void SkinningAnimationDraw(WorldTransform transform, std::vector<MaterialObject3D>& materials,
+		const std::string& animationName, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
-	// Setter
-	template <typename... Args>
-	void SetConstBuffers(Args&&... args);
+	void DrawWave(WorldTransform transform, std::vector<MaterialObject3D>& materials, WaveBuffer waveBuffer,
+		BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 	// Getter
 	size_t GetMeshNum() const;
+
+	// Setter
+	void SetTexture(const std::string& textureName);
 
 private:
 	//===================================================================*/
@@ -52,9 +57,6 @@ private:
 	std::vector<IndexObject> indices_;
 	std::vector<UINT> indicesNum_;
 
-	WorldTransform worldTransform_;
-	std::vector<MaterialObject3D> material_;
-
 	//===================================================================*/
 	/// Compute
 	// Input Output
@@ -65,34 +67,9 @@ private:
 
 private:
 	//===================================================================*/
-	//							private Functions
+	//							private Function
 	//===================================================================*/
 
-	template<typename T>
-	void SetConstBuffer(DXConstBuffer<T>& buffer);
 	void SetComputeCommands(const std::string& animationName);
 
 };
-
-///===============================================================================
-/// template関数定義
-
-template<typename ...Args>
-inline void Model::SetConstBuffers(Args && ...args) {
-
-	(SetConstBuffer(std::forward<Args>(args)), ...);
-}
-
-template<typename T>
-inline void Model::SetConstBuffer(DXConstBuffer<T>& buffer) {
-
-	if constexpr (std::is_same_v<T, TransformationMatrix>) {
-
-		worldTransform_ = static_cast<WorldTransform&>(buffer);
-	} else if constexpr (std::is_same_v<T, Material3D>) {
-
-		material_.push_back(static_cast<MaterialObject3D&>(buffer));
-	}
-}
-
-///===============================================================================

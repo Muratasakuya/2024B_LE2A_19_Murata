@@ -25,6 +25,9 @@ public:
 	void SetAnimationData(const std::string& modelName, const std::string& animationName);
 	void SetPlayAnimation(bool isPlayAnimation);
 
+	// Getter
+	UINT GetRootParameterIndex() const;
+
 public:
 	//===================================================================*/
 	//							public Variables

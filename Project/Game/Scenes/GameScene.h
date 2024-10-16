@@ -4,6 +4,7 @@
 //								include
 //===================================================================*/
 #include "Game/Scenes/Methods/IScene.h"
+#include "Game/3D/Sphere.h"
 
 // c++
 #include <memory>
@@ -18,19 +19,17 @@ public:
 	//							public Functions
 	//===================================================================*/
 
-	GameScene() = default;
-	~GameScene() = default;
+	GameScene();
+	~GameScene();
 
 	// Main -> IScene
 	void Init()override;
 	void Update()override;
 	void Draw()override;
 
-	void ImGui();
-
 private:
 	//===================================================================*/
 	//							private Variables
 	//===================================================================*/
-	
+
 };

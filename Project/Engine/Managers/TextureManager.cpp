@@ -163,7 +163,7 @@ void TextureManager::LoadTexture(const std::string& textureName) {
 	// GPU実行の完了を待つ
 	dxCommon_->WaitForGPU();
 
-	intermediateResource->Release();
+	intermediateResource.Reset();
 
 	// SRV確保
 	texture.srvIndex = srvManager_->Allocate();

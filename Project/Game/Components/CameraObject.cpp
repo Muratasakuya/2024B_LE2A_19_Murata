@@ -16,6 +16,21 @@ void CameraObject::Update(const Vector3& worldPos) {
 	DXConstBuffer::TransferData(camera);
 }
 
+UINT CameraObject::GetRootParameterIndex(const PipelineType& pipelineType) const {
+
+	if (pipelineType == PipelineType::pObject3D ||
+		pipelineType == PipelineType::SkinningObject3D) {
+
+		return 4;
+	}
+	if (pipelineType == PipelineType::Object3DUnTex) {
+
+		return 3;
+	}
+
+	return UINT_MAX;
+}
+
 void ViewProjectionBuffer::Init() {
 
 	viewProjection.MakeIdentity4x4();

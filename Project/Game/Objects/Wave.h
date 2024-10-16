@@ -3,33 +3,30 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Components/LightObject.h"
+#include "Game/3D/Base/BaseModel.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								LightManager Class
+*									Wave Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class LightManager {
+class Wave :
+	public BaseModel {
 public:
 	//===================================================================*/
 	//							public Functions
 	//===================================================================*/
 
-	LightManager() = default;
-	~LightManager() = default;
+	Wave() = default;
+	~Wave() = default;
 
 	void Init();
 	void Update();
+	void Draw();
 
 	void ImGui();
-
-	// Getter
-	LightObject GetLightBuffer() const;
 
 private:
 	//===================================================================*/
 	//							private Variables
 	//===================================================================*/
-
-	LightObject light_;
 
 };

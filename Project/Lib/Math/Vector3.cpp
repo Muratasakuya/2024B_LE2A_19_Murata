@@ -14,6 +14,9 @@ Vector3 Vector3::operator+(const Vector3& other) const {
 Vector3 Vector3::operator-(const Vector3& other) const {
 	return { x - other.x, y - other.y, z - other.z };
 }
+Vector3 Vector3::operator-() const {
+	return { -x, -y, -z };
+}
 // *
 Vector3 Vector3::operator*(const Vector3& other) const {
 	return { x * other.x, y * other.y, z * other.z };
@@ -80,6 +83,10 @@ void Vector3::Init() {
 	this->x = 0.0f;
 	this->y = 0.0f;
 	this->z = 0.0f;
+}
+Vector3 Vector3::Zero() {
+
+	return { 0.0f,0.0f,0.0f };
 }
 
 // 任意初期化

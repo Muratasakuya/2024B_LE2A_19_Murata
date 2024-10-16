@@ -66,6 +66,11 @@ void NewMoonGame::ImGui() {
 			ImGui::EndTabItem();
 		}
 
+		if (ImGui::BeginTabItem("Light")) {
+			lightManager_->ImGui();
+			ImGui::EndTabItem();
+		}
+
 		ImGui::EndTabBar();
 	}
 

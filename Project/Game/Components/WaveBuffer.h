@@ -3,33 +3,33 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Components/LightObject.h"
+#include "Engine/MyDirectXClass/DXConstBuffer.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								LightManager Class
+*								WaveBuffer Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class LightManager {
+class WaveBuffer :
+	public DXConstBuffer<WaveForGPU> {
 public:
 	//===================================================================*/
 	//							public Functions
 	//===================================================================*/
 
-	LightManager() = default;
-	~LightManager() = default;
+	WaveBuffer() = default;
+	~WaveBuffer() = default;
 
 	void Init();
 	void Update();
 
-	void ImGui();
-
 	// Getter
-	LightObject GetLightBuffer() const;
+	UINT GetRootParameterIndex() const;
 
-private:
+public:
 	//===================================================================*/
-	//							private Variables
+	//							public Variables
 	//===================================================================*/
 
-	LightObject light_;
+	WaveForGPU properties;
+
 
 };

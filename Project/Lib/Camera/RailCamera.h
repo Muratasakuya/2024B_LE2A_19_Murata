@@ -3,50 +3,45 @@
 //===================================================================*/
 //								include
 //===================================================================*/
+#include "Game/Components/WorldTransform.h"
+#include "Game/Editor/RailEditor.h"
 #include "Lib/Structure.h"
+#include "Lib/Camera/Camera3D.h"
 
 // c++
+#include <memory>
 #include <numbers>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Camera3D Class
+*								RailCamera Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class Camera3D {
+class RailCamera {
 public:
 	//===================================================================*/
 	//							public Function
 	//===================================================================*/
 
-	Camera3D() = default;
-	~Camera3D() = default;
+	RailCamera() = default;
+	~RailCamera() = default;
 
-	// Main
-	void Init();
+	void Init(RailEditor* railEditor, const Vector3& worldPos);
 	void Update();
-	void ImGui();
-
-	// Setter
-	void SetViewMatrix(const Matrix4x4& viewMatrix);
 
 	// Getter
 	Vector3 GetWorldPos() const;
-	Matrix4x4 GetCameraMatrix() const;
-	Matrix4x4 GetViewMatrix() const;
-	Matrix4x4 GetProjectionMatrix() const;
 	Matrix4x4 GetViewProjectionMatrix() const;
-	Matrix4x4 GetProjectionInverseMatrix() const;
 
-private:
+public:
 	//===================================================================*/
 	//							private variable
 	//===================================================================*/
 
-	Matrix4x4 cameraMatrix_;
-	Matrix4x4 viewMatrix_;
-	Matrix4x4 projectionMatrix_;
+	RailEditor* railEditor_ = nullptr;
 
-	Matrix4x4 viewProjectionMatrix_;
-	Matrix4x4 projectionInverseMatrix_;
+	WorldTransform worldTransform_;
+	std::unique_ptr<Camera3D> camera_;
 
-	Transform3D transform_;
+	float eyeT_;
+	float targetT_;
+
 };

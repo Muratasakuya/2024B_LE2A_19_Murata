@@ -12,7 +12,7 @@ void Camera3D::Init() {
 	// Affine
 	transform_.scale.SetInit(1.0f);
 	transform_.rotate = { 0.26f,0.0f,0.0f };
-	transform_.translate = { 0.0f,1.3f,-6.5f };
+	transform_.translate = { 0.0f,4.9f,-15.0f };
 
 	cameraMatrix_ =
 		Matrix4x4::MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
@@ -44,6 +44,11 @@ void Camera3D::ImGui() {
 	ImGui::DragFloat3("Translate", &transform_.translate.x, 0.01f);
 #endif
 }
+
+/*///////////////////////////////////////////////////////////////////////////////
+*									Setter
+////////////////////////////////////////////////////////////////////////////////*/
+void Camera3D::SetViewMatrix(const Matrix4x4& viewMatrix) { viewMatrix_ = viewMatrix; }
 
 /*///////////////////////////////////////////////////////////////////////////////
 *									Getter

@@ -27,6 +27,7 @@
     <FxCompile Include="Resources\Shaders\Skinning.CS.hlsl" />
     <FxCompile Include="Resources\Shaders\PrimitiveLine.VS.hlsl" />
     <FxCompile Include="Resources\Shaders\PrimitiveLine.PS.hlsl" />
+    <FxCompile Include="Resources\Shaders\WakeBoard.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.cpp" />
@@ -100,6 +101,10 @@
     <ClCompile Include="Engine\Base\NewMoonGame.cpp" />
     <ClCompile Include="Lib\Camera\DebugCamera.cpp" />
     <ClCompile Include="Game\Scenes\Methods\TransitionScene.cpp" />
+    <ClCompile Include="Game\Objects\Wave.cpp" />
+    <ClCompile Include="Game\3D\Base\BaseModel.cpp" />
+    <ClCompile Include="Game\Components\WaveBuffer.cpp" />
+    <ClCompile Include="Lib\Camera\RailCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -179,6 +184,10 @@
     <ClInclude Include="Engine\Methods\ScreenDimensions.h" />
     <ClInclude Include="Lib\Camera\DebugCamera.h" />
     <ClInclude Include="Game\Scenes\Methods\TransitionScene.h" />
+    <ClInclude Include="Game\Objects\Wave.h" />
+    <ClInclude Include="Game\3D\Base\BaseModel.h" />
+    <ClInclude Include="Game\Components\WaveBuffer.h" />
+    <ClInclude Include="Lib\Camera\RailCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />
@@ -186,6 +195,7 @@
     <None Include="Resources\Shaders\Object3D.hlsli" />
     <None Include="Resources\Shaders\Particle.hlsli" />
     <None Include="Resources\Shaders\PhongReflection.hlsli" />
+    <None Include="Resources\Shaders\WakeBoard.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

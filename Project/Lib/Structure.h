@@ -253,6 +253,16 @@ struct CameraForGPU {
 	Vector3 worldPosition;
 };
 /*==========================================================*/
+/// 波の情報
+struct WaveForGPU {
+
+	float time;       // 時間変数
+	float amplitude;  // 波の振幅
+	float frequency;  // 波の周波数
+	float speed;      // 波の速度
+	float wavelength; // 波長
+};
+/*==========================================================*/
 /// モデル
 struct MaterialData {
 

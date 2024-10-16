@@ -114,3 +114,8 @@ void WorldTransform::SetAnimationData(const std::string& modelName, const std::s
 
 }
 void WorldTransform::SetPlayAnimation(bool isPlayAnimation) { isPlayAnimation_ = isPlayAnimation; }
+
+UINT WorldTransform::GetRootParameterIndex() const {
+
+	return 1;
+}

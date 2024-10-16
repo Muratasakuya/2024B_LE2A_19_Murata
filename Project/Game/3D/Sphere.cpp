@@ -27,7 +27,7 @@ void Sphere::Init(const std::string& textureName) {
 	index_.Update();
 }
 
-void Sphere::Draw(BlendMode blendMode) {
+void Sphere::Draw(WorldTransform transform, MaterialObject3D material, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
 	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
@@ -38,7 +38,7 @@ void Sphere::Draw(BlendMode blendMode) {
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	commandList->IASetVertexBuffers(0, 1, &vertex_.GetVertexBuffer());
 	commandList->IASetIndexBuffer(&index_.GetIndexBuffer());
-	constBuffer.SetCommands(commandList, pObject3D, worldTransform_, material_, lightBuffer, cameraBuffer);
+	constBuffer.SetCommands(commandList, pObject3D, transform, material, lightBuffer, cameraBuffer);
 	NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, textureName_);
 	commandList->DrawIndexedInstanced(indexNum_, 1, 0, 0, 0);
 }

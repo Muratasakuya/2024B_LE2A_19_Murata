@@ -4,8 +4,9 @@
 //								include
 //===================================================================*/
 #include "Engine/MyDirectXClass/DXConstBuffer.h"
+#include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
 
-/*/////////////////////////////////////////////////////////////////////////////3///
+/*////////////////////////////////////////////////////////////////////////////////
 *								CameraObject Class
 ////////////////////////////////////////////////////////////////////////////////*/
 class CameraObject :
@@ -20,6 +21,9 @@ public:
 
 	void Init();
 	void Update(const Vector3& worldPos);
+
+	// Getter
+	UINT GetRootParameterIndex(const PipelineType& pipelineType) const;
 
 private:
 	//===================================================================*/

@@ -53,12 +53,11 @@ void Model::Init(const std::string& modelName) {
 	}
 }
 
-void Model::Draw(BlendMode blendMode) {
+void Model::Draw(WorldTransform transform, std::vector<MaterialObject3D>& materials, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
 	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
 	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
-	DXConstBufferManager constBuffer;
 
 	for (uint32_t meshIndex = 0; meshIndex < meshNum_; ++meshIndex) {
 
@@ -73,19 +72,24 @@ void Model::Draw(BlendMode blendMode) {
 		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		commandList->IASetVertexBuffers(0, 1, &vertices_[meshIndex].GetVertexBuffer());
 		commandList->IASetIndexBuffer(&indices_[meshIndex].GetIndexBuffer());
-		constBuffer.SetCommands(commandList, pipelineType_, worldTransform_, material_[meshIndex], lightBuffer, cameraBuffer);
+
+		materials[meshIndex].SetCommand(commandList, materials[meshIndex].GetRootParameterIndex());
+		transform.SetCommand(commandList, transform.GetRootParameterIndex());
+		lightBuffer.SetCommand(commandList, lightBuffer.GetRootParameterIndex(pipelineType_));
+		cameraBuffer.SetCommand(commandList, cameraBuffer.GetRootParameterIndex(pipelineType_));
+
 		if (modelData_.meshes[meshIndex].material.textureName) {
 			NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, modelData_.meshes[meshIndex].material.textureName.value());
 		}
 		commandList->DrawIndexedInstanced(static_cast<UINT>(indices_[meshIndex].data.size()), 1, 0, 0, 0);
 	}
 }
-void Model::SkinningAnimationDraw(const std::string& animationName, BlendMode blendMode) {
+void Model::SkinningAnimationDraw(WorldTransform transform, std::vector<MaterialObject3D>& materials,
+	const std::string& animationName, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
 	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
 	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
-	DXConstBufferManager constBuffer;
 
 	SetComputeCommands(animationName);
 
@@ -98,10 +102,14 @@ void Model::SkinningAnimationDraw(const std::string& animationName, BlendMode bl
 			D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
 		NewMoon::SetGraphicsPipeline(commandList, pipelineType_, blendMode);
-		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		commandList->IASetVertexBuffers(0, 1, &outputVertices_[meshIndex].GetVertexBuffer());
 		commandList->IASetIndexBuffer(&indices_[meshIndex].GetIndexBuffer());
-		constBuffer.SetCommands(commandList, pipelineType_, worldTransform_, material_[meshIndex], lightBuffer, cameraBuffer);
+
+		materials[meshIndex].SetCommand(commandList, materials[meshIndex].GetRootParameterIndex());
+		transform.SetCommand(commandList, transform.GetRootParameterIndex());
+		lightBuffer.SetCommand(commandList, lightBuffer.GetRootParameterIndex(pipelineType_));
+		cameraBuffer.SetCommand(commandList, cameraBuffer.GetRootParameterIndex(pipelineType_));
+
 		if (modelData_.meshes[meshIndex].material.textureName) {
 			NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, modelData_.meshes[meshIndex].material.textureName.value());
 		}
@@ -113,6 +121,29 @@ void Model::SkinningAnimationDraw(const std::string& animationName, BlendMode bl
 			D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER,
 			D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 	}
+}
+void Model::DrawWave(WorldTransform transform, std::vector<MaterialObject3D>& materials,
+	WaveBuffer waveBuffer, BlendMode blendMode) {
+
+	auto commandList = NewMoon::GetCommandList();
+	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
+	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
+
+	NewMoon::SetGraphicsPipeline(commandList, WaveBort, blendMode);
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	commandList->IASetVertexBuffers(0, 1, &vertices_.front().GetVertexBuffer());
+	commandList->IASetIndexBuffer(&indices_.front().GetIndexBuffer());
+
+	materials.front().SetCommand(commandList, materials.front().GetRootParameterIndex());
+	transform.SetCommand(commandList, transform.GetRootParameterIndex());
+	lightBuffer.SetCommand(commandList, 3);
+	cameraBuffer.SetCommand(commandList, 4);
+	waveBuffer.SetCommand(commandList, waveBuffer.GetRootParameterIndex());
+
+	NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, "waveBase");
+	NewMoon::SetGraphicsRootDescriptorTable(commandList, 6, "waveBlue");
+	NewMoon::SetGraphicsRootDescriptorTable(commandList, 7, "waveWhite2");
+	commandList->DrawIndexedInstanced(static_cast<UINT>(indices_.front().data.size()), 1, 0, 0, 0);
 }
 void Model::SetComputeCommands(const std::string& animationName) {
 
@@ -137,3 +168,14 @@ void Model::SetComputeCommands(const std::string& animationName) {
 *									Getter
 ////////////////////////////////////////////////////////////////////////////////*/
 size_t Model::GetMeshNum() const { return meshNum_; }
+
+/*////////////////////////////////////////////////////////////////////////////////
+*									Setter
+////////////////////////////////////////////////////////////////////////////////*/
+void Model::SetTexture(const std::string& textureName) {
+
+	for (uint32_t meshIndex = 0; meshIndex < meshNum_; ++meshIndex) {
+
+		modelData_.meshes[meshIndex].material.textureName = textureName;
+	}
+}

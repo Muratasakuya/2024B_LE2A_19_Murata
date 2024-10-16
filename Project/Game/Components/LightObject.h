@@ -4,6 +4,7 @@
 //								include
 //===================================================================*/
 #include "Engine/MyDirectXClass/DXConstBuffer.h"
+#include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								LightObject Class
@@ -20,6 +21,11 @@ public:
 
 	void Init();
 	void Update();
+
+	void ImGui();
+
+	// Getter
+	UINT GetRootParameterIndex(const PipelineType& pipelineType) const;
 
 public:
 	//===================================================================*/

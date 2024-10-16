@@ -47,11 +47,22 @@ private:
 	const float sphereScale_ = 0.05f;
 	Vector3 spherePos_;
 
-private:
+public:
 	//===================================================================*/
-	//							private Functions
+	//							public Methods
 	//===================================================================*/
 
+	//* Catmull-Rom *//
+	// 線分の数
+	const size_t segmentCount_ = 128;
+
 	void SetCatmullRomVertices();
+
+	Vector3 Interpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t);
+	Vector3 SetCatmullRomPos(const std::vector<Vector3>& points, float t);
+	void DrawRailLine();
+
+	// Getter
+	const std::vector<Vector3>& GetControlPoints() const;
 
 };

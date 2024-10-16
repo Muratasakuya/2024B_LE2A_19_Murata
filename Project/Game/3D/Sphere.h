@@ -28,11 +28,7 @@ public:
 
 	// Main
 	void Init(const std::string& textureName);
-	void Draw(BlendMode blendMode = BlendMode::kBlendModeNormal);
-
-	// Setter
-	template <typename... Args>
-	void SetConstBuffers(Args&&... args);
+	void Draw(WorldTransform transform, MaterialObject3D material, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 private:
 	//===================================================================*/
@@ -48,9 +44,6 @@ private:
 	IndexObject index_;
 	std::string textureName_;
 
-	WorldTransform worldTransform_;
-	MaterialObject3D material_;
-
 private:
 	//===================================================================*/
 	//							private Functions
@@ -59,30 +52,4 @@ private:
 	void VertexSetting();
 	void IndexSetting();
 
-	template<typename T>
-	void SetConstBuffer(DXConstBuffer<T>& buffer);
-
 };
-
-///===============================================================================
-/// template関数定義
-
-template<typename ...Args>
-inline void Sphere::SetConstBuffers(Args && ...args) {
-
-	(SetConstBuffer(std::forward<Args>(args)), ...);
-}
-
-template<typename T>
-inline void Sphere::SetConstBuffer(DXConstBuffer<T>& buffer) {
-
-	if constexpr (std::is_same_v<T, TransformationMatrix>) {
-
-		worldTransform_ = static_cast<WorldTransform&>(buffer);
-	} else if constexpr (std::is_same_v<T, Material3D>) {
-
-		material_ = static_cast<MaterialObject3D&>(buffer);
-	}
-}
-
-///===============================================================================

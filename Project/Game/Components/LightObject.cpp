@@ -40,3 +40,18 @@ void LightObject::Update() {
 	// 定数バッファにデータを転送
 	TransferData(light);
 }
+
+UINT LightObject::GetRootParameterIndex(const PipelineType& pipelineType) const {
+
+	if (pipelineType == PipelineType::pObject3D ||
+		pipelineType == PipelineType::SkinningObject3D) {
+
+		return 3;
+	}
+	if (pipelineType == PipelineType::Object3DUnTex) {
+
+		return 2;
+	}
+
+	return UINT_MAX;
+}

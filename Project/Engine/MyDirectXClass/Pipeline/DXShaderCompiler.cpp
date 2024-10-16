@@ -340,6 +340,21 @@ void DXShaderCompiler::Init(DXCommon* dxCommon, const PipelineType& pipelineType
 		psBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/Dissolve.PS.hlsl", L"ps_6_0",
 			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
 		assert(psBlob_[pipelineType] != nullptr);
+	} else if (pipelineType == WaveBort) {
+
+		/*------------------------------------------------------------------------------------------------------------------------*/
+		//												WakeBoard Shader
+		/*------------------------------------------------------------------------------------------------------------------------*/
+
+		// 頂点シェーダ
+		vsBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/WakeBoard.VS.hlsl", L"vs_6_0",
+			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
+		assert(vsBlob_[pipelineType] != nullptr);
+
+		// ピクセルシェーダ
+		psBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/WakeBoard.PS.hlsl", L"ps_6_0",
+			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
+		assert(psBlob_[pipelineType] != nullptr);
 	}
 }
 void DXShaderCompiler::Init(DXCommon* dxCommon, const ComputePipelineType& cspipelineType) {

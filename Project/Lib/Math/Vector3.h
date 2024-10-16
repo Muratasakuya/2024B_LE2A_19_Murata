@@ -31,6 +31,7 @@ public:
 	Vector3 operator+(const Vector3& other) const;
 	// -
 	Vector3 operator-(const Vector3& other) const;
+	Vector3 operator-() const;
 	// *
 	Vector3 operator*(const Vector3& other) const;
 	// /
@@ -60,6 +61,7 @@ public:
 
 	// 0.0f初期化
 	void Init();
+	Vector3 Zero();
 	// 任意初期化
 	void SetInit(float value);
 

@@ -47,8 +47,8 @@ void PrimitiveDrawer::DrawLine(const Vector3& pointA, const Vector3& pointB, con
 
 void PrimitiveDrawer::DrawGrid() {
 
-	const uint32_t kSubdivision = 32;
-	const float kGridHalfWidth = 4.0f;
+	const uint32_t kSubdivision = 24;
+	const float kGridHalfWidth = 5.0f;
 	const float kGridEvery = (kGridHalfWidth * 2.0f) / float(kSubdivision);
 
 	const Vector4 kLineColor = { 1.0f, 1.0f, 1.0f, 1.0f };

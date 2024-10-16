@@ -51,6 +51,9 @@ public:
 	void Init();
 	void Update();
 
+	// Getter
+	UINT GetRootParameterIndex() const;
+
 public:
 	//===================================================================*/
 	//							public Variables

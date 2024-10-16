@@ -6,20 +6,18 @@
 #include "Game/Managers/SceneManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*									Main
+*							GameScene classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
+
+GameScene::GameScene() {}
+GameScene::~GameScene() {}
+
 void GameScene::Init() {
 
 }
 
 void GameScene::Update() {
 
-	if (NewMoonGame::TriggerKey(DIK_SPACE)) {
-
-		SceneManager::GetInstance()->ChangeScene(TITLE, TransitionType::Fade);
-	}
-
-	ImGui();
 }
 
 void GameScene::Draw() {
@@ -34,10 +32,4 @@ void GameScene::Draw() {
 
 
 
-}
-
-void GameScene::ImGui() {
-#ifdef _DEBUG
-	
-#endif // _DEBUG
 }
