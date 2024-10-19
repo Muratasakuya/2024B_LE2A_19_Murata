@@ -95,6 +95,8 @@ void RailCamera::ImGui() {
 			eyeT_ = 0.0f;
 
 			NewMoonGame::GameCamera()->GetCamera3D()->Reset();
+			transform_.Init();
+			camera_->Init();
 		}
 	}
 #endif

@@ -83,7 +83,7 @@ public:
 	///===================================================================
 	// Draw
 
-	static void DrawLine(const Vector3& pointA, const Vector3& pointB, const Vector4& color);
+	static void DrawLine(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
 	static void DrawGrid();
 
 	///===================================================================

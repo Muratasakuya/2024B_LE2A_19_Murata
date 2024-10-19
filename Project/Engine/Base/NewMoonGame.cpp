@@ -238,7 +238,7 @@ void NewMoonGame::SkinClusterUpdate(const std::string& animationName) {
 ///===================================================================
 // Draw
 
-void NewMoonGame::DrawLine(const Vector3& pointA, const Vector3& pointB, const Vector4& color) {
+void NewMoonGame::DrawLine(const Vector3& pointA, const Vector3& pointB, const LineColor& color) {
 	primitiveDrawer_->DrawLine(pointA, pointB, color);
 }
 

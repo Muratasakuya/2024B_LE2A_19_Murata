@@ -8,6 +8,20 @@
 #include "Game/Components/CameraObject.h"
 #include "Lib/Structure.h"
 
+// c++
+#include <unordered_map>
+
+//===================================================================*/
+//							global Methods
+//===================================================================*/
+enum class LineColor {
+
+	White, // 白
+	Red,   // 赤
+	Green, // 緑
+	Blue,  // 青
+};
+
 /*////////////////////////////////////////////////////////////////////////////////
 *								PrimitiveDrawer Class
 ////////////////////////////////////////////////////////////////////////////////*/
@@ -33,7 +47,7 @@ public:
 	// Main
 	void Init(const ViewProjectionBuffer& viewProBuffer);
 	void Update();
-	void DrawLine(const Vector3& pointA, const Vector3& pointB, const Vector4& color);
+	void DrawLine(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
 
 	void DrawGrid(); // 平面描画
 
@@ -45,7 +59,8 @@ private:
 	//===================================================================*/
 
 	PrimitiveVertexObject vertex_;
-	PrimitiveMaterial material_;
+
+	std::unordered_map<LineColor, PrimitiveMaterial> lineMaterials_;
 
 	ViewProjectionBuffer viewProBuffer_;
 
