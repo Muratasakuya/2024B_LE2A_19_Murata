@@ -2,30 +2,21 @@
 
 #include "Game/Scenes/GameScene.h"
 #include "Game/Scenes/TitleScene.h"
-#include "Game/Scenes/TutorialScene.h"
-#include "Game/Scenes/SelectScene.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								シーン生成
+*						SceneFactory classMethod
 ////////////////////////////////////////////////////////////////////////////////*/
-IScene* SceneFactory::CreateScene(SceneNo sceneNo) {
 
-	// シーン遷移
-	switch (sceneNo) {
+std::shared_ptr<IScene> SceneFactory::CreateScene(const std::string& sceneName) {
 
-	case TITLE:
+	if (sceneName == "Game") {
 
-		return new TitleScene();
-	case TUTORIAL:
+		return std::make_shared<GameScene>();
+	} else if (sceneName == "Title") {
 
-		return new TutorialScene();
-	case SELECT:
-
-		return new SelectScene();
-	case GAME:
-
-		return new GameScene();
+		return std::make_shared<TitleScene>();
 	}
 
+	assert(false && "input scene Name does not Create Methods");
 	return nullptr;
 }

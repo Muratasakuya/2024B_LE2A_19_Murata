@@ -3,29 +3,42 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
+#include "Game/Components/BaseTransform.h"
+
+// c++
+#include <optional>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								TutorialScene Class
+*						AnimationTransform Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class TutorialScene :
-	public IScene {
+class AnimationTransform :
+	public BaseTransform {
 public:
 	//===================================================================*/
 	//							public Functions
 	//===================================================================*/
 
-	TutorialScene();
-	~TutorialScene();
+	AnimationTransform() = default;
+	~AnimationTransform() = default;
 
-	void Init()override;
-	void Update()override;
-	void Draw()override;
+	void Init(const std::string& modelName, const std::string& animationName);
+	void Update(const Matrix4x4& viewPro) override;
+
+	// Setter
+	void SetPlayAnimation(bool isPlayAnimation);
 
 private:
 	//===================================================================*/
 	//							private Variables
 	//===================================================================*/
 
+	//* Animation *//
+	AnimationData animationData_;
+	std::optional<Skeleton> skeleton_;
+	SkinCluster skinCluster_;
+	ModelData modelData_;
+
+	bool isPlayAnimation_;
+	float animationtime_;
 
 };

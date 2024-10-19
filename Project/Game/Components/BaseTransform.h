@@ -3,63 +3,42 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Engine/Methods/ScreenDimensions.h"
-#include "Game/Scenes/Methods/IScene.h"
-#include "Game/Scenes/Methods/SceneFactory.h"
-
-// c++
-#include <memory>
-#include <string>
-#include <map>
-#include <future>
+#include "Engine/MyDirectXClass/DXConstBuffer.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								SceneManager Class
+*								BaseTransform Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class SceneManager {
+class BaseTransform :
+	public DXConstBuffer<TransformationMatrix> {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	SceneManager();
-	~SceneManager();
+	BaseTransform() = default;
+	virtual ~BaseTransform() = default;
 
-	//* Loop *//
+	virtual void Init();
+	virtual void Update(const Matrix4x4& viewPro) = 0;
 
-	void Run();
+	virtual void SetCommand();
 
-	//* LoadMethods *//
+public:
+	//===================================================================*/
+	//							public Methods
+	//===================================================================*/
 
-	void SetNextScene(const std::string& sceneName);
+	Vector3 scale;
+	Vector3 rotation;
+	Vector3 translation;
 
-	//* SingletonMethod *//
-
-	static SceneManager* GetInstance();
-
-	// Getter
-	bool IsSceneSwitching() const;
+	TransformationMatrix matrix;
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	std::shared_ptr<IScene> currentScene_;
-
-	std::map<std::string, std::shared_ptr<IScene>> loadedScenes_;
-
-	std::string nextSceneName_;
-	bool isSceneSwitching_;
-	bool gameLoop_;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	//* LoadMethods *//
-
-	void LoadScene(const std::string& sceneName);
+	const UINT rootParameterIndex_ = 1;
 
 };

@@ -4,6 +4,7 @@
 //								include
 //===================================================================*/
 #include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
+#include "Game/Components/WorldTransform.h"
 #include "Game/Components/CameraObject.h"
 #include "Lib/Structure.h"
 
@@ -14,9 +15,39 @@
 *								Camera3D Class
 ////////////////////////////////////////////////////////////////////////////////*/
 class Camera3D {
+private:
+	//===================================================================*/
+	//							private Methods
+	//===================================================================*/
+
+	struct CameraData {
+
+		Matrix4x4 matrix;
+		Matrix4x4 viewMatrix;
+		Matrix4x4 projectionMatrix;
+
+		Matrix4x4 viewProjectionMatrix;
+		Matrix4x4 projectionInverseMatrix;
+
+		WorldTransform transform;
+
+		CameraData& operator=(const CameraData& other) {
+			if (this != &other) {
+				this->matrix = other.matrix;
+				this->viewMatrix = other.viewMatrix;
+				this->projectionMatrix = other.projectionMatrix;
+				this->viewProjectionMatrix = other.viewProjectionMatrix;
+				this->projectionInverseMatrix = other.projectionInverseMatrix;
+				this->transform.translation = other.transform.translation;
+				this->transform.rotation = other.transform.rotation;
+			}
+			return *this;
+		}
+	};
+
 public:
 	//===================================================================*/
-	//							public Function
+	//							public Methods
 	//===================================================================*/
 
 	Camera3D() = default;
@@ -27,11 +58,16 @@ public:
 	void Update();
 	void ImGui();
 
-	void CameraSetCommand(ID3D12GraphicsCommandList* commandList,const PipelineType& pipelineType);
+	void Reset();
+
+	void CameraSetCommand(ID3D12GraphicsCommandList* commandList, const PipelineType& pipelineType);
 	void ViewProSetCommand(ID3D12GraphicsCommandList* commandList);
 
 	// Setter
 	void SetViewMatrix(const Matrix4x4& viewMatrix);
+	void SetProjectionMatrix(const Matrix4x4& projectionMatrix);
+	void SetTranslate(const Vector3& translate);
+	void SetRotate(const Vector3& rotate);
 
 	// Getter
 	Vector3 GetWorldPos() const;
@@ -45,17 +81,11 @@ public:
 
 private:
 	//===================================================================*/
-	//							private variable
+	//							private Methods
 	//===================================================================*/
 
-	Matrix4x4 cameraMatrix_;
-	Matrix4x4 viewMatrix_;
-	Matrix4x4 projectionMatrix_;
-
-	Matrix4x4 viewProjectionMatrix_;
-	Matrix4x4 projectionInverseMatrix_;
-
-	Transform3D transform_;
+	CameraData data_;
+	CameraData resetData_;
 
 	CameraObject cameraBuffer_;
 	ViewProjectionBuffer viewProBuffer_;

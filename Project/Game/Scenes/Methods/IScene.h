@@ -1,13 +1,8 @@
 #pragma once
 
-// シーンの種類
-enum SceneNo {
-
-	TITLE,
-	TUTORIAL,
-	SELECT,
-	GAME,
-};
+// c++
+#include <cstdint>
+#include <string>
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								IScene Class
@@ -15,26 +10,18 @@ enum SceneNo {
 class IScene {
 public:
 	//===================================================================*/
-	//							public Functions
+	//							public Methods
 	//===================================================================*/
 
 	IScene() = default;
 	virtual ~IScene() = default;
 
+	virtual void Run() = 0;
+
 	virtual void Init() = 0;
+
 	virtual void Update() = 0;
-	virtual void Draw() = 0;
 
-	// getter
-
-	SceneNo GetSceneNo() const;
-
-protected:
-	//===================================================================*/
-	//							private Variables
-	//===================================================================*/
-
-	// シーン
-	static SceneNo sceneNo_;
+	virtual void Cleanup() = 0;
 
 };

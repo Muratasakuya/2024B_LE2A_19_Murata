@@ -117,6 +117,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\3D\Base\BaseGameObject.cpp" />
+    <ClCompile Include="Game\3D\AnimationModel.cpp" />
+    <ClCompile Include="Game\Components\AnimationTransform.cpp" />
+    <ClCompile Include="Game\Components\BaseTransform.cpp" />
     <ClCompile Include="Game\3D\Base\BaseModel.cpp" />
     <ClCompile Include="Lib\Camera\DebugCamera.cpp" />
     <ClCompile Include="Game\Managers\CameraManager.cpp" />
@@ -179,22 +183,22 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Managers\TextureManager.cpp" />
     <ClCompile Include="Game\2D\Sprite.cpp" />
     <ClCompile Include="Engine\Managers\SrvManager.cpp" />
-    <ClCompile Include="Game\Scenes\TitleScene.cpp" />
-    <ClCompile Include="Game\Scenes\TutorialScene.cpp" />
-    <ClCompile Include="Game\Scenes\SelectScene.cpp" />
     <ClCompile Include="Game\Components\WorldTransform.cpp" />
     <ClCompile Include="Game\3D\Triangle.cpp" />
     <ClCompile Include="Game\Components\VertexObject.cpp" />
     <ClCompile Include="Game\3D\Sphere.cpp" />
     <ClCompile Include="Game\Editor\RailEditor.cpp" />
     <ClCompile Include="Engine\Base\NewMoonGame.cpp" />
-    <ClCompile Include="Game\Scenes\Methods\TransitionScene.cpp" />
-    <ClCompile Include="Game\Objects\Wave.cpp" />
     <ClCompile Include="Game\Components\WaveBuffer.cpp" />
     <ClCompile Include="Lib\Camera\RailCamera.cpp" />
     <ClCompile Include="Game\Enetities\Player.cpp" />
+    <ClCompile Include="Game\Scenes\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\3D\Base\BaseGameObject.h" />
+    <ClInclude Include="Game\3D\AnimationModel.h" />
+    <ClInclude Include="Game\Components\AnimationTransform.h" />
+    <ClInclude Include="Game\Components\BaseTransform.h" />
     <ClInclude Include="Game\3D\Base\BaseModel.h" />
     <ClInclude Include="Lib\Camera\DebugCamera.h" />
     <ClInclude Include="Engine\Methods\ScreenDimensions.h" />
@@ -229,7 +233,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\3D\PrimitiveDrawer.h" />
     <ClInclude Include="Game\3D\Particle.h" />
     <ClInclude Include="Game\Scenes\Methods\SceneFactory.h" />
-    <ClInclude Include="Game\Scenes\Methods\AbstractSceneFactory.h" />
     <ClInclude Include="Game\Scenes\Methods\IScene.h" />
     <ClInclude Include="Game\Managers\SceneManager.h" />
     <ClInclude Include="Game\Scenes\GameScene.h" />
@@ -262,9 +265,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\MyDirectXClass\VertexResource.h" />
     <ClInclude Include="Game\2D\Sprite.h" />
     <ClInclude Include="Engine\Managers\SrvManager.h" />
-    <ClInclude Include="Game\Scenes\TitleScene.h" />
-    <ClInclude Include="Game\Scenes\TutorialScene.h" />
-    <ClInclude Include="Game\Scenes\SelectScene.h" />
     <ClInclude Include="Game\Components\WorldTransform.h" />
     <ClInclude Include="Game\3D\Triangle.h" />
     <ClInclude Include="Game\Components\VertexObject.h" />
@@ -272,11 +272,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Managers\LightManager.h" />
     <ClInclude Include="Game\Editor\RailEditor.h" />
     <ClInclude Include="Engine\Base\NewMoonGame.h" />
-    <ClInclude Include="Game\Scenes\Methods\TransitionScene.h" />
-    <ClInclude Include="Game\Objects\Wave.h" />
     <ClInclude Include="Game\Components\WaveBuffer.h" />
     <ClInclude Include="Lib\Camera\RailCamera.h" />
     <ClInclude Include="Game\Enetities\Player.h" />
+    <ClInclude Include="Game\Scenes\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

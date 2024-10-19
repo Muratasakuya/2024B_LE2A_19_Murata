@@ -10,20 +10,46 @@
 ////////////////////////////////////////////////////////////////////////////////*/
 
 GameScene::GameScene() {}
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	int test = 1;
+	test = 0;
+}
+
+void GameScene::Run() {
+
+	Init();
+
+	while (NewMoon::ProcessMessage() == 0) {
+		NewMoon::BeginFrame();
+		NewMoonGame::Update();
+
+		Update();
+
+		BackDraw();
+		NewMoon::ClearDepthBuffer();
+		FrontDraw();
+
+		NewMoonGame::Reset();
+		NewMoon::EndFrame();
+
+		if (SceneManager::GetInstance()->IsSceneSwitching()) {
+			break;
+		}
+	}
+
+	Cleanup();
+
+}
 
 void GameScene::Init() {
 
 	railEditor_ = std::make_unique<RailEditor>();
 	railEditor_->Init();
 
-	// レールカメラのセット
-	NewMoonGame::GameCamera()->SetUpRailCamera(railEditor_.get(), { 0.0f,0.0f,3.0f });
+	NewMoonGame::GameCamera()->SetUpRailCamera(railEditor_.get(), Vector3::Zero());
 
 	player_ = std::make_unique<Player>();
 	player_->Init();
-	// レールカメラとの親子関係
-	player_->SetParent(&NewMoonGame::GameCamera()->GetRailCamera()->GetWorldTransform());
 
 }
 
@@ -33,22 +59,23 @@ void GameScene::Update() {
 
 	player_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 
+	if (NewMoonGame::TriggerKey(DIK_SPACE)) {
+
+		SceneManager::GetInstance()->SetNextScene("Title");
+	}
+
 }
 
-void GameScene::Draw() {
-	//===================================================================*/
-	/// Back
+void GameScene::BackDraw() {
 
 	NewMoonGame::DrawGrid();
-
 	railEditor_->Draw();
-
 	player_->Draw();
 
-	NewMoon::ClearDepthBuffer();
-	//===================================================================*/
-	/// Front
+}
 
+void GameScene::FrontDraw() {
+}
 
-
+void GameScene::Cleanup() {
 }

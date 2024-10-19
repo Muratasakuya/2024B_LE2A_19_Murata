@@ -14,11 +14,10 @@ void RailEditor::Init() {
 	// スプライン曲線の頂点表示用の球の共通マテリアル
 	sphereMaterial_.Init();
 	sphereMaterial_.color = { 1.0f,0.0f,0.0f,1.0f };
+
+	NewMoonGame::SetToEditor(this);
 }
 void RailEditor::Update() {
-
-	// スプライン曲線の頂点設定
-	SetCatmullRomVertices();
 
 	for (auto& spherePair : spheres_) {
 		auto& sphereWorldTransform = spherePair.second;
@@ -29,24 +28,25 @@ void RailEditor::Update() {
 }
 void RailEditor::Draw() {
 
+	DrawRailLine();
+
+	if (NewMoonGame::GameCamera()->GetRailCamera()->IsStart()) {
+		return;
+	}
+
 	for (auto& spherePair : spheres_) {
 		auto& sphere = spherePair.first;
 		auto& transform = spherePair.second;
 
 		sphere->Draw(transform, sphereMaterial_);
 	}
-
-	DrawRailLine();
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *							スプライン曲線の頂点設定
 ////////////////////////////////////////////////////////////////////////////////*/
-void RailEditor::SetCatmullRomVertices() {
+void RailEditor::ImGui() {
 #ifdef _DEBUG
-	ImGui::Begin("RailEditor");
-
-	ImGui::Text("Spline Curve Editor");
 	ImGui::Separator();
 
 	// 頂点座標の入力
@@ -77,7 +77,7 @@ void RailEditor::SetCatmullRomVertices() {
 
 	ImGui::Separator();
 
-	if (4 < spheres_.size()) {
+	if (1 < spheres_.size()) {
 		if (ImGui::CollapsingHeader("Edit Vertices", ImGuiTreeNodeFlags_DefaultOpen)) {
 			ImGui::Text("Adjust existing vertices:");
 
@@ -94,8 +94,6 @@ void RailEditor::SetCatmullRomVertices() {
 			}
 		}
 	}
-
-	ImGui::End();
 #endif // _DEBUG
 }
 

@@ -5,9 +5,6 @@
 //===================================================================*/
 #include "Game/Scenes/Methods/IScene.h"
 
-// c++
-#include <memory>
-
 /*////////////////////////////////////////////////////////////////////////////////
 *								TitleScene Class
 ////////////////////////////////////////////////////////////////////////////////*/
@@ -15,21 +12,33 @@ class TitleScene :
 	public IScene {
 public:
 	//===================================================================*/
-	//							public Functions
+	//							public Methods
 	//===================================================================*/
 
 	TitleScene();
 	~TitleScene();
 
-	void Init()override;
-	void Update()override;
-	void Draw()override;
+	void Run() override;
+
+	void Init() override;
+
+	void Update() override;
+
+	void Cleanup() override;
 
 private:
 	//===================================================================*/
-	//							private Variables
+	//							private Methods
 	//===================================================================*/
 
 
+
+private:
+	//===================================================================*/
+	//							private Methods
+	//===================================================================*/
+
+	void BackDraw();  // 背景
+	void FrontDraw(); // 前景
 
 };

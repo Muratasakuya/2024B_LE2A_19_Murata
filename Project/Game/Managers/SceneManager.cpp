@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 
+#include "Engine/Base/NewMoon.h"
 #include "Engine/Managers/ImGuiManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -7,70 +8,67 @@
 ////////////////////////////////////////////////////////////////////////////////*/
 
 SceneManager* SceneManager::GetInstance() {
+
 	static SceneManager instance;
 	return &instance;
 }
 
-void SceneManager::SetTransitioning(bool isTransitioning) {
-	// 遷移管理
-	isTransitioning_ = isTransitioning;
+bool SceneManager::IsSceneSwitching() const {
+	return isSceneSwitching_;
 }
 
 SceneManager::SceneManager() {
 
-	isTransitioning_ = false;
+	isSceneSwitching_ = false;
+	gameLoop_ = true;
 
-	currentSceneNo_ = GAME;
-	currentScene_ = static_cast<std::unique_ptr<IScene>>(sceneFactory_.CreateScene(currentSceneNo_));
-	currentScene_->Init();
-
-	transitionScene_ = std::make_unique<TransitionScene>();
-	transitionScene_->Init();
+	LoadScene("Game");
 }
-
-SceneManager::~SceneManager() {
-
-	currentScene_.reset();
-	transitionScene_.reset();
-}
-
-void SceneManager::ChangeScene(SceneNo sceneNo, TransitionType transitiontype, float duration) {
-
-	transitionScene_->SetDuration(duration);
-	isTransitioning_ = true;
-
-	transitionScene_->Start(transitiontype, [this, sceneNo]() {
-
-		currentSceneNo_ = sceneNo;
-		currentScene_ = std::unique_ptr<IScene>(sceneFactory_.CreateScene(currentSceneNo_));
-		currentScene_->Init();
-		});
-}
+SceneManager::~SceneManager() {}
 
 void SceneManager::Run() {
 
-	while (NewMoon::ProcessMessage() == 0) {
+	while (gameLoop_) {
+		if (currentScene_) {
 
-		NewMoon::BeginFrame();
-		NewMoonGame::Update();
-
-		if (isTransitioning_) {
-
-			currentScene_->Update();
-			currentScene_->Draw();
-
-			transitionScene_->Update();
-			transitionScene_->Render();
-		} else {
-
- 			currentSceneNo_ = currentScene_->GetSceneNo();
-
-			currentScene_->Update();
-			currentScene_->Draw();
+			currentScene_->Run();
 		}
 
-		NewMoonGame::Reset();
-		NewMoon::EndFrame();
+		if (NewMoon::ProcessMessage() == 0 && !isSceneSwitching_) {
+			gameLoop_ = false;
+		}
+
+		if (isSceneSwitching_) {
+
+			// Load
+			LoadScene(nextSceneName_);
+
+			isSceneSwitching_ = false;
+		}
+	}
+}
+
+void SceneManager::SetNextScene(const std::string& sceneName) {
+
+	nextSceneName_ = sceneName;
+	isSceneSwitching_ = true;
+}
+
+void SceneManager::LoadScene(const std::string& sceneName) {
+
+	auto it = loadedScenes_.find(sceneName);
+	if (it != loadedScenes_.end()) {
+
+		currentScene_ = it->second;
+		currentScene_->Init();
+		return;
 	}
 
+	//* CreateNewScene *//
+	std::shared_ptr<IScene> scene = SceneFactory::CreateScene(sceneName);
+	if (scene) {
+
+		currentScene_ = scene;
+		loadedScenes_[sceneName] = scene;
+	}
 }

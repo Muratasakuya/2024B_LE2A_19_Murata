@@ -3,13 +3,13 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/3D/Base/BaseModel.h"
+#include "Game/3D/Base/BaseGameObject.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								Player Class
 ////////////////////////////////////////////////////////////////////////////////*/
 class Player :
-	public BaseModel {
+	public BaseGameObject {
 public:
 	//===================================================================*/
 	//							public Function
@@ -22,11 +22,8 @@ public:
 	void Update(const Matrix4x4& viewPro);
 	void Draw();
 
-	void ImGui();
-
 	// Setter
 	void SetForward(const Vector3& forward);
-	void SetParent(const WorldTransform* parent);
 
 public:
 	//===================================================================*/

@@ -17,24 +17,35 @@ class GameScene :
 	public IScene {
 public:
 	//===================================================================*/
-	//							public Functions
+	//							public Methods
 	//===================================================================*/
 
 	GameScene();
 	~GameScene();
 
-	// Main -> IScene
-	void Init()override;
-	void Update()override;
-	void Draw()override;
+	void Run() override;
+
+	void Init() override;
+
+	void Update() override;
+
+	void Cleanup() override;
 
 private:
 	//===================================================================*/
-	//							private Variables
+	//							private Methods
 	//===================================================================*/
 
 	std::unique_ptr<RailEditor> railEditor_;
 
 	std::unique_ptr<Player> player_;
+
+private:
+	//===================================================================*/
+	//							private Methods
+	//===================================================================*/
+
+	void BackDraw();  // 背景
+	void FrontDraw(); // 前景
 
 };

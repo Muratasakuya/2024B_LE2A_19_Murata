@@ -3,18 +3,22 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/AbstractSceneFactory.h"
+#include "Game/Scenes/Methods/IScene.h"
+
+// c++
+#include <string>
+#include <memory>
+#include <cassert>
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								IScene Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class SceneFactory :
-	public AbstractSceneFactory {
+class SceneFactory {
 public:
 	//===================================================================*/
 	//							public Functions
 	//===================================================================*/
 
-	IScene* CreateScene(SceneNo sceneNo) override;
+	static std::shared_ptr<IScene> CreateScene(const std::string& sceneName);
 
 };

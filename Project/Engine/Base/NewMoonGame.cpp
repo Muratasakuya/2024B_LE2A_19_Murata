@@ -15,6 +15,8 @@ std::unique_ptr<Input> NewMoonGame::input_ = nullptr;
 std::unique_ptr<CameraManager> NewMoonGame::cameraManager_ = nullptr;
 std::unique_ptr<LightManager> NewMoonGame::lightManager_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::primitiveDrawer_ = nullptr;
+std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
+RailEditor* NewMoonGame::railEditor_ = nullptr;
 #pragma endregion
 ///===============================================================================
 
@@ -49,25 +51,38 @@ void NewMoonGame::Init() {
 void NewMoonGame::ImGui() {
 #ifdef _DEBUG
 	ImGui::Begin("Game Debug");
-	if (ImGui::BeginTabBar("Tabs")) {
-		if (ImGui::BeginTabItem("Performance")) {
-			ImGui::Text("Frame Rate: %.1f FPS", ImGui::GetIO().Framerate); // フレームレート情報
-			ImGui::Text("Delta Time: %.3f seconds", deltaTime_);           // ΔTime
-			ImGui::EndTabItem();
-		}
 
-		if (ImGui::BeginTabItem("Input")) {
-			input_->ImGui();
-			ImGui::EndTabItem();
-		}
+	// Performance情報は常に表示する
+	ImGui::Text("Frame Rate: %.1f fps", ImGui::GetIO().Framerate); // フレームレート情報
+	ImGui::Text("Delta Time: %.3f s", deltaTime_);                 // ΔTime
+
+	if (ImGui::BeginTabBar("Tabs")) {
 
 		if (ImGui::BeginTabItem("Camera")) {
 			cameraManager_->ImGui();
 			ImGui::EndTabItem();
 		}
+		if (ImGui::BeginTabItem("Input")) {
+			input_->ImGui();
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("GameObject")) {
+			for (auto& gameObject : gameObjects_) {
+				if (ImGui::CollapsingHeader(gameObject->GetName().c_str())) {
 
-		if (ImGui::BeginTabItem("Light")) {
-			lightManager_->ImGui();
+					gameObject->ImGui();
+				}
+			}
+			ImGui::EndTabItem();
+		}
+		// Editors
+		if (ImGui::BeginTabItem("Editor")) {
+
+			// Rail Editor
+			if (ImGui::CollapsingHeader("Rail Editor")) {
+				railEditor_->ImGui();
+			}
+
 			ImGui::EndTabItem();
 		}
 
@@ -229,6 +244,17 @@ void NewMoonGame::DrawLine(const Vector3& pointA, const Vector3& pointB, const V
 
 void NewMoonGame::DrawGrid() {
 	primitiveDrawer_->DrawGrid();
+}
+
+///===================================================================
+// Setter
+
+void NewMoonGame::SetToImGui(BaseGameObject* gameObject) {
+	gameObjects_.push_back(gameObject);
+}
+
+void NewMoonGame::SetToEditor(RailEditor* railEditor) {
+	railEditor_ = railEditor;
 }
 
 ///===================================================================

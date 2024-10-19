@@ -14,36 +14,26 @@ void Player::Init() {
 	const std::string textureName = "white";
 	NewMoonGame::LoadTexture(textureName);
 
-	BaseModel::Init(modelName);
-	BaseModel::model_->SetTexture(textureName);
+	BaseGameObject::Init(modelName);
+	model_->SetTexture(textureName);
 
-	BaseModel::transform_.scale = { 0.25f,0.25f,0.25f };
+	transform_.scale = { 0.25f,0.25f,0.25f };
+	transform_.translation.z = 24.0f;
 
-	BaseModel::materials_.front().color = { 1.0f,0.0f,0.0f,1.0f };
+	transform_.parent_ = &NewMoonGame::GameCamera()->GetRailCamera()->GetTransform();
+
+	BaseGameObject::SetName("Player");
 
 }
 
 void Player::Update(const Matrix4x4& viewPro) {
 
-	ImGui();
-
-	BaseModel::transform_.Update(viewPro);
-	BaseModel::materials_.front().Update();
+	BaseGameObject::Update(viewPro);
 }
 
 void Player::Draw() {
 
-	BaseModel::Draw();
-}
-
-void Player::ImGui() {
-#ifdef _DEBUG
-	ImGui::Begin("Player");
-	ImGui::DragFloat3("Translate", &BaseModel::transform_.translation.x, 0.01f);
-	ImGui::DragFloat3("Rotate", &BaseModel::transform_.rotation.x, 0.01f);
-	ImGui::DragFloat3("Scale", &BaseModel::transform_.scale.x, 0.01f);
-	ImGui::End();
-#endif // _DEBUG
+	BaseGameObject::Draw();
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +41,4 @@ void Player::ImGui() {
 ////////////////////////////////////////////////////////////////////////////////*/
 void Player::SetForward(const Vector3& forward) {
 	forward_ = forward;
-}
-void Player::SetParent(const WorldTransform* parent) {
-	BaseModel::transform_.parent_ = parent;
 }

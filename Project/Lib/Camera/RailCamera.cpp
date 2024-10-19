@@ -11,8 +11,8 @@ void RailCamera::Init(RailEditor* railEditor, const Vector3& worldPos) {
 
 	railEditor_ = railEditor;
 
-	worldTransform_.Init();
-	worldTransform_.translation = worldPos;
+	transform_.Init();
+	transform_.translation = worldPos;
 
 	camera_ = std::make_unique<Camera3D>();
 	camera_->Init();
@@ -46,7 +46,7 @@ void RailCamera::Update() {
 			Vector3 eye = railEditor_->SetCatmullRomPos(railEditor_->GetControlPoints(), eyeT_);
 			Vector3 target = railEditor_->SetCatmullRomPos(railEditor_->GetControlPoints(), targetT_);
 
-			worldTransform_.translation = eye;
+			transform_.translation = eye;
 
 			// targetとeyeの差分ベクトル
 			forward_ = target - eye;
@@ -61,13 +61,16 @@ void RailCamera::Update() {
 			float length = Vector3::Length({ forward_.x, 0.0f, forward_.z });
 			rotate.x = std::atan2(-forward_.y, length);
 
-			worldTransform_.rotation = rotate;
+			transform_.rotation = rotate;
 		}
+
+		NewMoonGame::GameCamera()->GetCamera3D()->SetTranslate(transform_.translation);
+		NewMoonGame::GameCamera()->GetCamera3D()->SetRotate(transform_.rotation);
 	}
 
-	worldTransform_.Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
+	transform_.Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 
-	camera_->SetViewMatrix(Matrix4x4::Inverse(worldTransform_.matrix.World));
+	camera_->SetViewMatrix(Matrix4x4::Inverse(transform_.matrix.World));
 	camera_->Update();
 
 	// ConstBuffer転送
@@ -77,6 +80,9 @@ void RailCamera::Update() {
 
 void RailCamera::ImGui() {
 #ifdef _DEBUG
+	ImGui::Text("RailCamera");
+	ImGui::DragFloat3("Translate##Rail", &transform_.translation.x, 0.01f);
+	ImGui::DragFloat3("Rotation##Rail", &transform_.rotation.x, 0.01f);
 	if (!isStart_) {
 		if (ImGui::Button("Start")) {
 			isStart_ = true;
@@ -85,10 +91,12 @@ void RailCamera::ImGui() {
 	if (isStart_) {
 		if (ImGui::Button("STOP")) {
 			isStart_ = false;
+			targetT_ = 0.0f;
+			eyeT_ = 0.0f;
+
+			NewMoonGame::GameCamera()->GetCamera3D()->Reset();
 		}
 	}
-	ImGui::DragFloat3("Translate", &worldTransform_.translation.x, 0.01f);
-	ImGui::DragFloat3("Rotation", &worldTransform_.rotation.x, 0.01f);
 #endif
 }
 
@@ -97,9 +105,9 @@ void RailCamera::ImGui() {
 ////////////////////////////////////////////////////////////////////////////////*/
 Vector3 RailCamera::GetWorldPos() const {
 	Vector3 worldPos{};
-	worldPos.x = worldTransform_.matrix.World.m[3][0];
-	worldPos.y = worldTransform_.matrix.World.m[3][1];
-	worldPos.z = worldTransform_.matrix.World.m[3][2];
+	worldPos.x = transform_.matrix.World.m[3][0];
+	worldPos.y = transform_.matrix.World.m[3][1];
+	worldPos.z = transform_.matrix.World.m[3][2];
 
 	return worldPos;
 }
@@ -110,6 +118,10 @@ Vector3 RailCamera::GetFoward() const {
 Matrix4x4 RailCamera::GetViewProjectionMatrix() const {
 	return camera_->GetViewProjectionMatrix();
 }
-WorldTransform& RailCamera::GetWorldTransform() {
-	return worldTransform_;
+WorldTransform& RailCamera::GetTransform() {
+	return transform_;
+}
+
+bool RailCamera::IsStart() const {
+	return isStart_;
 }

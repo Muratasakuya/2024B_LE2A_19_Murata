@@ -34,16 +34,17 @@ public:
 	Vector3 GetWorldPos() const;
 	Vector3 GetFoward() const;
 	Matrix4x4 GetViewProjectionMatrix() const;
-	WorldTransform& GetWorldTransform();
+	WorldTransform& GetTransform();
+	bool IsStart() const;
 
-public:
+private:
 	//===================================================================*/
 	//							private variable
 	//===================================================================*/
 
 	RailEditor* railEditor_ = nullptr;
 
-	WorldTransform worldTransform_;
+	WorldTransform transform_;
 	std::unique_ptr<Camera3D> camera_;
 
 	Vector3 forward_;
