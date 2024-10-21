@@ -47,7 +47,7 @@ void Triangle::Update(const std::array<Vector3, kTriangleVertexNum>& vertices) {
 void Triangle::Draw(BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
-	auto cameraBuffer = NewMoonGame::GetGameCamera()->GetCameraBuffer();
+	auto cameraBuffer = NewMoonGame::GameCamera()->GetCamera3D()->GetCameraBuffer();
 	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
 	DXConstBufferManager constBuffer;
 

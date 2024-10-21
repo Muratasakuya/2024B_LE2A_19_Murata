@@ -3,63 +3,56 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Engine/Methods/ScreenDimensions.h"
-#include "Game/Scenes/Methods/IScene.h"
-#include "Game/Scenes/Methods/SceneFactory.h"
+#include "Game/3D/Model.h"
+#include "Game/3D/AnimationModel.h"
 
 // c++
+#include <vector>
 #include <memory>
 #include <string>
-#include <map>
-#include <future>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								SceneManager Class
+*						BaseGameObject Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class SceneManager {
+class BaseGameObject {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	SceneManager();
-	~SceneManager();
+	BaseGameObject() = default;
+	virtual ~BaseGameObject() = default;
 
-	//* Loop *//
+	virtual void Init(const std::string& modelName);
 
-	void Run();
+	virtual void Update(const Matrix4x4& viewPro);
 
-	//* LoadMethods *//
+	virtual void Draw(BlendMode blendMode = kBlendModeNormal);
 
-	void SetNextScene(const std::string& sceneName);
+	virtual void ImGui();
 
-	//* SingletonMethod *//
-
-	static SceneManager* GetInstance();
+	// Setter
+	void SetName(const std::string& name);
 
 	// Getter
-	bool IsSceneSwitching() const;
+	std::string GetName() const;
+
+protected:
+	//===================================================================*/
+	//							protected Methods
+	//===================================================================*/
+
+	std::unique_ptr<Model> model_;
+
+	WorldTransform transform_;
 
 private:
 	//===================================================================*/
-	//							private Methods
+	//							  private Methods
 	//===================================================================*/
 
-	std::shared_ptr<IScene> currentScene_;
+	std::vector<MaterialObject3D> materials_;
 
-	std::map<std::string, std::shared_ptr<IScene>> loadedScenes_;
-
-	std::string nextSceneName_;
-	bool isSceneSwitching_;
-	bool gameLoop_;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	//* LoadMethods *//
-
-	void LoadScene(const std::string& sceneName);
+	std::string name_ = "object";
 
 };

@@ -3,29 +3,34 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
+#include "Game/3D/Base/BaseGameObject.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								TutorialScene Class
+*								Player Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class TutorialScene :
-	public IScene {
+class Player :
+	public BaseGameObject {
 public:
 	//===================================================================*/
-	//							public Functions
+	//							public Function
 	//===================================================================*/
 
-	TutorialScene();
-	~TutorialScene();
+	Player() = default;
+	~Player() = default;
 
-	void Init()override;
-	void Update()override;
-	void Draw()override;
+	void Init();
+	void Update(const Matrix4x4& viewPro);
+	void Draw();
 
-private:
+	// Setter
+	void SetForward(const Vector3& forward);
+
+public:
 	//===================================================================*/
-	//							private Variables
+	//							private variable
 	//===================================================================*/
 
+	// 前方ベクトル
+	Vector3 forward_;
 
 };

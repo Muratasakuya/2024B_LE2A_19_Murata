@@ -61,7 +61,7 @@ public:
 
 	// 0.0f初期化
 	void Init();
-	Vector3 Zero();
+	static Vector3 Zero();
 	// 任意初期化
 	void SetInit(float value);
 

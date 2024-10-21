@@ -232,11 +232,34 @@ void Input::Update() {
 ////////////////////////////////////////////////////////////////////////////////*/
 void Input::ImGui() {
 #ifdef _DEBUG
-	Vector2 mouseMoveValue = GetMouseMoveValue();
+	if (ImGui::CollapsingHeader("Mouse Input")) {
 
-	ImGui::Text("Mouse Position: { %4.1f, %4.1f }", mousePos_.x, mousePos_.y);
-	ImGui::Text("Mouse Movement: { %4.1f, %4.1f }", mouseMoveValue.x, mouseMoveValue.y);
-	ImGui::Text("Left Mouse Button: %d", mouseButtons_[0]);
-	ImGui::Text("Right Mouse Button: %d", mouseButtons_[1]);
+		Vector2 mouseMoveValue = GetMouseMoveValue();
+		ImGui::Text("Position: { %4.1f, %4.1f }", mousePos_.x, mousePos_.y);
+		ImGui::Text("Movement: { %4.1f, %4.1f }", mouseMoveValue.x, mouseMoveValue.y);
+		ImGui::Text("Left Button:  %d", mouseButtons_[0]);
+		ImGui::Text("Right Button: %d", mouseButtons_[1]);
+	}
+
+	// ゲームパッドが接続されている場合にのみ表示
+	if (ImGui::CollapsingHeader("Gamepad Input") && XInputGetState(0, &gamepadState_) == ERROR_SUCCESS) {
+		
+		ImGui::Text("Button A: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::A)]);
+		ImGui::Text("Button B: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::B)]);
+		ImGui::Text("Button X: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::X)]);
+		ImGui::Text("Button Y: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::Y)]);
+		ImGui::Text("D-Pad Up: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_UP)]);
+		ImGui::Text("D-Pad Down: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_DOWN)]);
+		ImGui::Text("D-Pad Left: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_LEFT)]);
+		ImGui::Text("D-Pad Right: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_RIGHT)]);
+		ImGui::Text("Left Shoulder: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::LEFT_SHOULDER)]);
+		ImGui::Text("Right Shoulder: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::RIGHT_SHOULDER)]);
+		ImGui::Text("Start: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::START)]);
+		ImGui::Text("Back: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::BACK)]);
+
+		ImGui::DragFloat("DeadZone", &deadZone_);
+		ImGui::Text("Left Stick: { %4.1f, %4.1f }", leftThumbX_, leftThumbY_);
+		ImGui::Text("Right Stick: { %4.1f, %4.1f }", rightThumbX_, rightThumbY_);
+	}
 #endif
 }

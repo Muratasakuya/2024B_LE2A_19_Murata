@@ -14,20 +14,25 @@ void RailEditor::Init() {
 	// スプライン曲線の頂点表示用の球の共通マテリアル
 	sphereMaterial_.Init();
 	sphereMaterial_.color = { 1.0f,0.0f,0.0f,1.0f };
+
+	NewMoonGame::SetToEditor(this);
 }
 void RailEditor::Update() {
-
-	// スプライン曲線の頂点設定
-	SetCatmullRomVertices();
 
 	for (auto& spherePair : spheres_) {
 		auto& sphereWorldTransform = spherePair.second;
 
-		sphereWorldTransform.Update();
+		sphereWorldTransform.Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 	}
 	sphereMaterial_.Update();
 }
 void RailEditor::Draw() {
+
+	DrawRailLine();
+
+	if (NewMoonGame::GameCamera()->GetRailCamera()->IsStart()) {
+		return;
+	}
 
 	for (auto& spherePair : spheres_) {
 		auto& sphere = spherePair.first;
@@ -35,52 +40,44 @@ void RailEditor::Draw() {
 
 		sphere->Draw(transform, sphereMaterial_);
 	}
-
-	DrawRailLine();
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *							スプライン曲線の頂点設定
 ////////////////////////////////////////////////////////////////////////////////*/
-void RailEditor::SetCatmullRomVertices() {
+void RailEditor::ImGui() {
 #ifdef _DEBUG
-	ImGui::Begin("RailEditor");
-
-	ImGui::Text("Spline Curve Editor");
 	ImGui::Separator();
 
 	// 頂点座標の入力
 	if (ImGui::CollapsingHeader("Vertex Input", ImGuiTreeNodeFlags_DefaultOpen)) {
 		ImGui::Text("Set position for the next vertex:");
 		ImGui::DragFloat3("RailPoints", &spherePos_.x, 0.05f);
+		if (ImGui::Button("Create Point")) {
+			// レール座標に追加
+			railPoints_.push_back(spherePos_);
 
-		if (spherePos_ != Vector3(0.0f, 0.0f, 0.0f)) {
-			if (ImGui::Button("Create Point")) {
-				// レール座標に追加
-				railPoints_.push_back(spherePos_);
+			// 頂点表示用球の作成
+			WorldTransform worldTransform;
+			worldTransform.Init();
+			// ST設定
+			worldTransform.translation = spherePos_;
+			worldTransform.scale.SetInit(sphereScale_);
 
-				// 頂点表示用球の作成
-				WorldTransform worldTransform;
-				worldTransform.Init();
-				// ST設定
-				worldTransform.translation = spherePos_;
-				worldTransform.scale.SetInit(sphereScale_);
+			auto sphere = std::make_unique<Sphere>();
+			sphere->Init(sphereTexture_);
 
-				auto sphere = std::make_unique<Sphere>();
-				sphere->Init(sphereTexture_);
+			// 追加
+			spheres_.push_back(std::make_pair(std::move(sphere), worldTransform));
 
-				// 追加
-				spheres_.push_back(std::make_pair(std::move(sphere), worldTransform));
-
-				// 入力座標リセット
-				spherePos_.Init();
-			}
+			// 入力座標リセット
+			spherePos_.Init();
 		}
 	}
 
 	ImGui::Separator();
 
-	if (4 < spheres_.size()) {
+	if (1 < spheres_.size()) {
 		if (ImGui::CollapsingHeader("Edit Vertices", ImGuiTreeNodeFlags_DefaultOpen)) {
 			ImGui::Text("Adjust existing vertices:");
 
@@ -97,8 +94,6 @@ void RailEditor::SetCatmullRomVertices() {
 			}
 		}
 	}
-
-	ImGui::End();
 #endif // _DEBUG
 }
 
@@ -192,7 +187,7 @@ void RailEditor::DrawRailLine() {
 		Vector3 start = pointsDrawing[i];
 		Vector3 end = pointsDrawing[i + 1];
 
-		NewMoonGame::DrawLine(start, end, { 1.0f,1.0f,1.0f,1.0f });
+		NewMoonGame::DrawLine(start, end, LineColor::Red);
 	}
 }
 

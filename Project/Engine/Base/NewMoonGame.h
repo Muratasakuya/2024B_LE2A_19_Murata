@@ -10,9 +10,12 @@
 #include "Game/Managers/CameraManager.h"
 #include "Game/Managers/LightManager.h"
 #include "Game/3D/PrimitiveDrawer.h"
+#include "Game/3D/Base/BaseGameObject.h"
+#include "Game/Editor/RailEditor.h"
 
 // c++
 #include <memory>
+#include <vector>
 #include <string>
 #include <chrono>
 
@@ -80,15 +83,22 @@ public:
 	///===================================================================
 	// Draw
 
-	static void DrawLine(const Vector3& pointA, const Vector3& pointB, const Vector4& color);
+	static void DrawLine(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
 	static void DrawGrid();
+
+	///===================================================================
+	// Setter
+
+	static void SetToImGui(BaseGameObject* gameObject);
+
+	static void SetToEditor(RailEditor* railEditor);
 
 	///===================================================================
 	// Getter
 
 	static TextureManager* GetTextureManager();
 	static ModelManager* GetModelMangager();
-	static CameraManager* GetGameCamera();
+	static CameraManager* GameCamera();
 	static LightManager* GetGameLight();
 	static float GetDeltaTime();
 
@@ -110,6 +120,10 @@ private:
 	static std::unique_ptr<LightManager> lightManager_;
 
 	static std::unique_ptr<PrimitiveDrawer> primitiveDrawer_;
+
+	static std::vector<BaseGameObject*> gameObjects_;
+
+	static RailEditor* railEditor_;
 
 	static void ImGui();
 

@@ -1,4 +1,11 @@
+
+//===================================================================*/
+//								include
+//===================================================================*/
+#include "Engine/Base/NewMoon.h"
+#include "Engine/Base/NewMoonGame.h"
 #include "Game/Managers/SceneManager.h"
+#include <Windows.h>
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 

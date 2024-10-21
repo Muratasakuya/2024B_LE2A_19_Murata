@@ -4,10 +4,8 @@
 //								include
 //===================================================================*/
 #include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
-#include "Game/Components/WorldTransform.h"
-#include "Game/Components/MaterialObject.h"
-#include "Game/Components/WaveBuffer.h"
-#include "Game/3D/Model.h"
+#include "Game/Components/VertexObject.h"
+#include "Game/Components/IndexObject.h"
 
 // c++
 #include <memory>
@@ -17,35 +15,51 @@
 *							BaseModel Class
 ////////////////////////////////////////////////////////////////////////////////*/
 class BaseModel {
+private:
+	//===================================================================*/
+	//							private Methods
+	//===================================================================*/
+
+	//* IA *//
+	struct InputAssembler {
+
+		std::vector<VertexObject<VertexData3D>> vertices;
+		std::vector<UINT> verticesNum;
+
+		std::vector<IndexObject> indices;
+		std::vector<UINT> indicesNum;
+
+		void SetBuffer(ID3D12GraphicsCommandList* commandList, uint32_t meshIndex = 0) {
+
+			commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			commandList->IASetVertexBuffers(0, 1, &vertices[meshIndex].GetVertexBuffer());
+			commandList->IASetIndexBuffer(&indices[meshIndex].GetIndexBuffer());
+		}
+		void DrawCall(ID3D12GraphicsCommandList* commandList, uint32_t meshIndex = 0) {
+
+			commandList->DrawIndexedInstanced(static_cast<UINT>(indices[meshIndex].data.size()), 1, 0, 0, 0);
+		}
+	};
+
 public:
 	//===================================================================*/
-	//							public Functions
+	//							public Methods
 	//===================================================================*/
 
 	BaseModel() = default;
 	virtual ~BaseModel() = default;
+
+	virtual void Init(const std::string& modelName);
 
 protected:
 	//===================================================================*/
 	//							protected Methods
 	//===================================================================*/
 
-	//===================================================================*/
-	/// Variables
+	size_t meshNum_;
+	ModelData modelData_;
+	PipelineType pipelineType_;
 
-	std::unique_ptr<Model> model_;
-
-	WorldTransform transform_;
-	std::vector<MaterialObject3D> materials_;
-
-	WaveBuffer waveBuffer_;
-
-	//===================================================================*/
-	/// Functions
-
-	void Init(const std::string& modelName);
-	void Update();
-	void Draw(BlendMode blendMode = BlendMode::kBlendModeNormal);
+	InputAssembler inputAssembler_;
 
 };
-

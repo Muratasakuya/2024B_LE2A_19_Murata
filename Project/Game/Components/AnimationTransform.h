@@ -3,30 +3,42 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/3D/Base/BaseModel.h"
+#include "Game/Components/BaseTransform.h"
+
+// c++
+#include <optional>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*									Wave Class
+*						AnimationTransform Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class Wave :
-	public BaseModel {
+class AnimationTransform :
+	public BaseTransform {
 public:
 	//===================================================================*/
 	//							public Functions
 	//===================================================================*/
 
-	Wave() = default;
-	~Wave() = default;
+	AnimationTransform() = default;
+	~AnimationTransform() = default;
 
-	void Init();
-	void Update();
-	void Draw();
+	void Init(const std::string& modelName, const std::string& animationName);
+	void Update(const Matrix4x4& viewPro) override;
 
-	void ImGui();
+	// Setter
+	void SetPlayAnimation(bool isPlayAnimation);
 
 private:
 	//===================================================================*/
 	//							private Variables
 	//===================================================================*/
+
+	//* Animation *//
+	AnimationData animationData_;
+	std::optional<Skeleton> skeleton_;
+	SkinCluster skinCluster_;
+	ModelData modelData_;
+
+	bool isPlayAnimation_;
+	float animationtime_;
 
 };

@@ -1,8 +1,11 @@
 #include "CameraManager.h"
 
+#include "Engine/Managers/ImGuiManager.h"
+
 /*////////////////////////////////////////////////////////////////////////////////
-*									 Main
+*						CameraManager classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
+
 void CameraManager::Init() {
 
 	// 2D
@@ -12,45 +15,50 @@ void CameraManager::Init() {
 	// 3D
 	camera3D_ = std::make_unique<Camera3D>();
 	camera3D_->Init();
-
-	// ConstBuffer初期化
-	cameraBuffer_.Init();
-	viewProjectionBuffer_.Init();
 }
 void CameraManager::Update() {
 
 	camera2D_->Update();
 	camera3D_->Update();
 
-	// ConstBuffer転送
-	cameraBuffer_.Update(camera3D_->GetWorldPos());
-	viewProjectionBuffer_.Update(camera3D_->GetViewProjectionMatrix());
+	if (railCamera_) {
+
+		railCamera_->Update();
+	}
 }
 
 void CameraManager::ImGui() {
 
-	camera3D_->ImGui();
+	if (ImGui::CollapsingHeader("3D MainCamera")) {
+		camera3D_->ImGui();
+	}
+	ImGui::Separator();
+	if (railCamera_) {
+		if (ImGui::CollapsingHeader("Rail Camera")) {
+			railCamera_->ImGui();
+		}
+	}
+}
+
+void CameraManager::SetUpRailCamera(RailEditor* railEditor, const Vector3& initPos) {
+
+	if (railCamera_) {
+		return;
+	}
+
+	railCamera_ = std::make_unique<RailCamera>();
+	railCamera_->Init(railEditor, initPos);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *									Getter
 ////////////////////////////////////////////////////////////////////////////////*/
-Matrix4x4 CameraManager::GetViewProjection(CameraType cameraType) {
-
-	switch (cameraType) {
-	case CameraType::Perspective:
-
-		// 3D
-		return camera3D_->GetViewProjectionMatrix();
-		break;
-	case CameraType::Orthographic:
-
-		// 2D
-		return camera2D_->GetViewProjectionMatrix();
-		break;
-	}
-
-	return Matrix4x4::MakeIdentity4x4();
+Camera2D* CameraManager::GetCamera2D() const {
+	return camera2D_.get();
 }
-CameraObject CameraManager::GetCameraBuffer() const { return cameraBuffer_; }
-ViewProjectionBuffer CameraManager::GetViewProjectionBuffer() const { return viewProjectionBuffer_; }
+Camera3D* CameraManager::GetCamera3D() const {
+	return camera3D_.get();
+}
+RailCamera* CameraManager::GetRailCamera() const{
+	return railCamera_.get();
+}
