@@ -3,45 +3,63 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
-#include "Game/Editor/RailEditor.h"
-#include "Game/Enetities/Player.h"
+#include "Game/2D/Sprite.h"
 
 // c++
 #include <memory>
+#include <vector>
+#include <string>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								GameScene Class
+*								UIEditor Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class GameScene :
-	public IScene {
+class UIEditor {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	GameScene();
-	~GameScene();
+	UIEditor() = default;
+	~UIEditor() = default;
 
-	void Run() override;
+	void Init();
 
-	void Init() override;
+	void Update();
 
-	void Update() override;
+	void Draw();
 
-	void Cleanup() override;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
+	void ImGui();
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	void BackDraw();  // 背景
-	void FrontDraw(); // 前景
+	//* EditorSelectState *//
+	enum class UIState {
+
+		TexturePreviewList, // 全てのテクスチャプレビュー表示画面
+		CreateTextureScreen // Create画面
+	};
+
+private:
+	//===================================================================*/
+	//							private Methods
+	//===================================================================*/
+
+	Vector2 previewTextureSize_;
+
+	std::vector<std::unique_ptr<Sprite>> sprites_;
+
+	UIState currentState_;
+	std::string selectedTextureName;
+
+private:
+	//===================================================================*/
+	//							private Methods
+	//===================================================================*/
+
+	void DisplayTexturePreviewList();
+	void DisplayCreateScreen();
 
 };

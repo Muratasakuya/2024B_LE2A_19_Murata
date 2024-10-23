@@ -47,7 +47,9 @@ public:
 	// Main
 	void Init(const ViewProjectionBuffer& viewProBuffer);
 	void Update();
-	void DrawLine(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
+
+	void DrawLine2D(const Vector2& pointA, const Vector2& pointB, const LineColor& color);
+	void DrawLine3D(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
 
 	void DrawGrid(); // 平面描画
 

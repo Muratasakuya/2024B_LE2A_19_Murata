@@ -187,7 +187,7 @@ void RailEditor::DrawRailLine() {
 		Vector3 start = pointsDrawing[i];
 		Vector3 end = pointsDrawing[i + 1];
 
-		NewMoonGame::DrawLine(start, end, LineColor::Red);
+		NewMoonGame::DrawLine3D(start, end, LineColor::Red);
 	}
 }
 

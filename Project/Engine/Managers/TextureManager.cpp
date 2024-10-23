@@ -7,17 +7,33 @@
 
 const DirectX::TexMetadata& TextureManager::GetMetaData(const std::string textureName) {
 
-	// テクスチャ名が存在するかチェック
 	auto it = textures_.find(textureName);
 	if (it == textures_.end()) {
 
 		throw std::runtime_error("Texture not found: " + textureName);
 	}
 
-	// テクスチャデータの参照を取得してメタデータを返す
 	TextureData& textureData = it->second;
 
 	return textureData.metadata;
+}
+
+D3D12_GPU_DESCRIPTOR_HANDLE& TextureManager::GetTextureGpuHandle(const std::string textureName) {
+
+	auto it = textures_.find(textureName);
+	if (it == textures_.end()) {
+
+		throw std::runtime_error("Texture not found: " + textureName);
+	}
+
+	TextureData& textureData = it->second;
+
+	return textureData.gpuHandle;
+}
+
+const std::vector<std::string>& TextureManager::GetAllTextureNames() const {
+
+	return textureNames_;
 }
 
 // DescriptorHandleCPUの生成
@@ -151,6 +167,7 @@ void TextureManager::LoadTexture(const std::string& textureName) {
 
 	// ファイルパスからファイル名を取得
 	std::string identifier = filePath.stem().string();
+	textureNames_.push_back(identifier);
 
 	// テクスチャデータを追加して書き込む
 	TextureData& texture = textures_[identifier];

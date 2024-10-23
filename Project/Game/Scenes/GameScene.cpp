@@ -29,6 +29,8 @@ void GameScene::Run() {
 		NewMoon::ClearDepthBuffer();
 		FrontDraw();
 
+		NewMoonGame::Renderer2D();
+
 		NewMoonGame::Reset();
 		NewMoon::EndFrame();
 
