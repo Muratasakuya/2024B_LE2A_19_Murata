@@ -106,6 +106,7 @@
     <ClCompile Include="Game\Components\AnimationTransform.cpp" />
     <ClCompile Include="Game\3D\AnimationModel.cpp" />
     <ClCompile Include="Game\3D\Base\BaseGameObject.cpp" />
+    <ClCompile Include="Game\Editor\UIEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Game\Components\AnimationTransform.h" />
     <ClInclude Include="Game\3D\AnimationModel.h" />
     <ClInclude Include="Game\3D\Base\BaseGameObject.h" />
+    <ClInclude Include="Game\Editor\UIEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

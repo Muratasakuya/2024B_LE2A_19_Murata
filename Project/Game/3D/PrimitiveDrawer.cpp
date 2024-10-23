@@ -32,14 +32,34 @@ void PrimitiveDrawer::Update() {
 
 	// ConstBuffer転送
 	vertex_.Update();
-	
+
 	for (auto& material : lineMaterials_) {
 
 		material.second.Update();
 	}
 }
 
-void PrimitiveDrawer::DrawLine(const Vector3& pointA, const Vector3& pointB, const LineColor& color) {
+void PrimitiveDrawer::DrawLine2D(const Vector2& pointA, const Vector2& pointB, const LineColor& color) {
+
+	assert(indexLine_ < kMaxLineCount_);
+
+	auto commandList = NewMoon::GetCommandList();
+	PrimitiveMaterial& material = lineMaterials_[color];
+
+	vertex_.pos[indexLine_] = { pointA.x,pointA.y,0.0f,1.0f };
+	indexLine_++;
+	vertex_.pos[indexLine_] = { pointB.x,pointB.y,0.0f,1.0f };
+	indexLine_++;
+
+	NewMoon::SetGraphicsPipeline(commandList, PrimitiveLine, kBlendModeNormal);
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+	commandList->IASetVertexBuffers(0, 1, &vertex_.GetVertexBuffer());
+	material.SetCommand(commandList, 0);
+	viewProBuffer_.SetCommand(commandList, viewProBuffer_.GetRootParameterIndex());
+	commandList->DrawInstanced(kVertexCountLine_, 1, indexLine_ - kVertexCountLine_, 0);
+}
+
+void PrimitiveDrawer::DrawLine3D(const Vector3& pointA, const Vector3& pointB, const LineColor& color) {
 
 	assert(indexLine_ < kMaxLineCount_);
 
@@ -72,12 +92,12 @@ void PrimitiveDrawer::DrawGrid() {
 		// 横
 		Vector3 verticalStart(offset, 0.0f, kGridHalfWidth);
 		Vector3 verticalEnd(offset, 0.0f, -kGridHalfWidth);
-		DrawLine(verticalStart, verticalEnd, LineColor::White);
+		DrawLine3D(verticalStart, verticalEnd, LineColor::White);
 
 		// 縦
 		Vector3 horizontalStart(-kGridHalfWidth, 0.0f, offset);
 		Vector3 horizontalEnd(kGridHalfWidth, 0.0f, offset);
-		DrawLine(horizontalStart, horizontalEnd, LineColor::White);
+		DrawLine3D(horizontalStart, horizontalEnd, LineColor::White);
 	}
 }
 

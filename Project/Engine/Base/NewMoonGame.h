@@ -12,6 +12,7 @@
 #include "Game/3D/PrimitiveDrawer.h"
 #include "Game/3D/Base/BaseGameObject.h"
 #include "Game/Editor/RailEditor.h"
+#include "Game/Editor/UIEditor.h"
 
 // c++
 #include <memory>
@@ -83,8 +84,11 @@ public:
 	///===================================================================
 	// Draw
 
-	static void DrawLine(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
+	static void DrawLine2D(const Vector2& pointA, const Vector2& pointB, const LineColor& color);
+	static void DrawLine3D(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
 	static void DrawGrid();
+
+	static void Renderer2D();
 
 	///===================================================================
 	// Setter
@@ -119,11 +123,13 @@ private:
 	static std::unique_ptr<CameraManager> cameraManager_;
 	static std::unique_ptr<LightManager> lightManager_;
 
-	static std::unique_ptr<PrimitiveDrawer> primitiveDrawer_;
+	static std::unique_ptr<PrimitiveDrawer> lineDrawer2D_;
+	static std::unique_ptr<PrimitiveDrawer> lineDrawer3D_;
 
 	static std::vector<BaseGameObject*> gameObjects_;
 
 	static RailEditor* railEditor_;
+	static std::unique_ptr<UIEditor> uiEditor_;
 
 	static void ImGui();
 

@@ -46,7 +46,9 @@ public:
 
 	// Getter
 	const DirectX::TexMetadata& GetMetaData(const std::string textureName);
-
+	D3D12_GPU_DESCRIPTOR_HANDLE& GetTextureGpuHandle(const std::string textureName);
+	const std::vector<std::string>& GetAllTextureNames() const;
+	
 private:
 	//===================================================================*/
 	//							private Variables
@@ -65,6 +67,7 @@ private:
 	};
 
 	std::unordered_map<std::string, TextureData> textures_;
+	std::vector<std::string> textureNames_;
 
 private:
 	//===================================================================*/

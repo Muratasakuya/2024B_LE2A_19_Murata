@@ -3,6 +3,7 @@
 //===================================================================*/
 //								include
 //===================================================================*/
+#include "Game/Components/CameraObject.h"
 #include "Lib/Structure.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -17,15 +18,19 @@ public:
 	Camera2D() = default;
 	~Camera2D() = default;
 
-	// Main
 	void Init();
+
 	void Update();
+
 	void ImGui();
+
+	void ViewProSetCommand(ID3D12GraphicsCommandList* commandList);
 
 	// Getter
 	Matrix4x4 GetViewMatrix() const;
 	Matrix4x4 GetOrthoMatrix() const;
 	Matrix4x4 GetViewProjectionMatrix() const;
+	ViewProjectionBuffer GetViewProBuffer() const;
 
 public:
 	//===================================================================*/
@@ -39,4 +44,7 @@ public:
 	Matrix4x4 viewProjectionMatrix_;
 
 	Transform3D transform_;
+
+	ViewProjectionBuffer viewProBuffer_;
+
 };

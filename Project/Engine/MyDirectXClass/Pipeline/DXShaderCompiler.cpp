@@ -75,7 +75,7 @@ IDxcBlob* DXShaderCompiler::CompileShader(const std::wstring& filePath,
 	// もう使わないリソースを解放
 	shaderSouce->Release();
 	shaderResult->Release();
-	shaderError->Release();
+	shaderError.Reset();
 	// 実行用のバイナリを返却
 	return shaderBlob;
 }
