@@ -25,9 +25,7 @@ void GameScene::Run() {
 
 		Update();
 
-		BackDraw();
-		NewMoon::ClearDepthBuffer();
-		FrontDraw();
+		Draw();
 
 		NewMoonGame::Renderer2D();
 
@@ -45,19 +43,31 @@ void GameScene::Run() {
 
 void GameScene::Init() {
 
+	railEditor_ = std::make_unique<RailEditor>();
+	railEditor_->Init();
+
+	NewMoonGame::GameCamera()->SetUpRailCamera(railEditor_.get(), { 0.0f,0.0f,3.0f });
+
+	player_ = std::make_unique<Player>();
+	player_->Init();
+
 }
 
 void GameScene::Update() {
 
-}
-
-void GameScene::BackDraw() {
-
 	NewMoonGame::DrawGrid();
 
+	railEditor_->Update();
+
+	player_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 }
 
-void GameScene::FrontDraw() {
+void GameScene::Draw() {
+
+	railEditor_->Draw();
+
+	player_->Draw();
+
 }
 
 void GameScene::Cleanup() {

@@ -101,7 +101,7 @@ void DXRootSignature::CreateGraphicsRootSignature(DXCommon* dxCommon, PipelineTy
 		hr = dxCommon->GetDevice()->CreateRootSignature(0, signatureBlob_->GetBufferPointer(),
 			signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&graphicsRootSignature_[pipelineType]));
 		assert(SUCCEEDED(hr));
-	} else if (pipelineType == pObject3D) {
+	} else if (pipelineType == pObject3D || pipelineType == RailNoneBackCulling) {
 
 		D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
 
@@ -592,7 +592,7 @@ void DXRootSignature::CreateGraphicsRootSignature(DXCommon* dxCommon, PipelineTy
 		hr = dxCommon->GetDevice()->CreateRootSignature(0, signatureBlob_->GetBufferPointer(),
 			signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&graphicsRootSignature_[pipelineType]));
 		assert(SUCCEEDED(hr));
-	}  else if (pipelineType == WaveBort) {
+	} else if (pipelineType == WaveBort) {
 
 		D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
 

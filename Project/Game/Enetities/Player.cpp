@@ -27,14 +27,6 @@ void Player::Init() {
 
 void Player::Update(const Matrix4x4& viewPro) {
 
-	if (NewMoonGame::GameCamera()->GetRailCamera()->IsStart()) {
-
-		transform_.translation.z = 24.0f;
-	} else {
-
-		transform_.translation.z = 0.0f;
-	}
-
 	BaseGameObject::Update(viewPro);
 }
 

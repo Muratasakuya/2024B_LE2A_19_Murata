@@ -45,6 +45,7 @@ protected:
 	std::unique_ptr<Model> model_;
 
 	WorldTransform transform_;
+	Vector4 color_;
 
 private:
 	//===================================================================*/

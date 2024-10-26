@@ -3,48 +3,31 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
-#include "Game/Editor/RailEditor.h"
-#include "Game/Enetities/Player.h"
+#include "Game/3D/Base/BaseGameObject.h"
 
 // c++
-#include <memory>
+#include <string>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								GameScene Class
+*								Rail Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class GameScene :
-	public IScene {
+class Rail :
+	public BaseGameObject {
 public:
 	//===================================================================*/
-	//							public Methods
+	//							public Function
 	//===================================================================*/
 
-	GameScene();
-	~GameScene();
+	Rail() = default;
+	~Rail() = default;
 
-	void Run() override;
-
-	void Init() override;
-
-	void Update() override;
-
-	void Cleanup() override;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	std::unique_ptr<RailEditor> railEditor_;
-
-	std::unique_ptr<Player> player_;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
+	void Init(const std::string& modelName, const std::string& textureName);
+	void Update(const Matrix4x4& viewPro);
 	void Draw();
+
+public:
+	//===================================================================*/
+	//							private variable
+	//===================================================================*/
 
 };

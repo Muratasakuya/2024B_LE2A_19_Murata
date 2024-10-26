@@ -19,7 +19,8 @@ void CameraObject::Update(const Vector3& worldPos) {
 UINT CameraObject::GetRootParameterIndex(const PipelineType& pipelineType) const {
 
 	if (pipelineType == PipelineType::pObject3D ||
-		pipelineType == PipelineType::SkinningObject3D) {
+		pipelineType == PipelineType::SkinningObject3D ||
+		pipelineType == PipelineType::RailNoneBackCulling) {
 
 		return 4;
 	}

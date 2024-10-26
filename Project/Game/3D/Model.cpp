@@ -20,6 +20,9 @@ void Model::Draw(WorldTransform transform, std::vector<MaterialObject3D>& materi
 		} else {
 			pipelineType_ = PipelineType::Object3DUnTex;
 		}
+		if (setPipelineType_) {
+			pipelineType_ = setPipelineType_.value();
+		}
 
 		NewMoon::SetGraphicsPipeline(commandList, pipelineType_, blendMode);
 		inputAssembler_.SetBuffer(commandList, meshIndex);

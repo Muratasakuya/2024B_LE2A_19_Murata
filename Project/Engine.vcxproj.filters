@@ -37,7 +37,7 @@
     <ClCompile Include="Game\Components\LightObject.cpp" />
     <ClCompile Include="Game\Components\IndexObject.cpp" />
     <ClCompile Include="Externals\MagAudio\MagAudio.cpp" />
-    <ClCompile Include="Game\Managers\JsonManager.cpp" />
+    <ClCompile Include="Lib\Adapter\JsonAdapter.cpp" />
     <ClCompile Include="Engine\Managers\DXConstBufferManager.cpp" />
     <ClCompile Include="Lib\Math\Math.cpp" />
     <ClCompile Include="Game\Components\MaterialObject.cpp" />
@@ -107,6 +107,7 @@
     <ClCompile Include="Game\3D\AnimationModel.cpp" />
     <ClCompile Include="Game\3D\Base\BaseGameObject.cpp" />
     <ClCompile Include="Game\Editor\UIEditor.cpp" />
+    <ClCompile Include="Game\Enetities\Rail.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -114,7 +115,7 @@
     <ClInclude Include="Game\Components\CameraObject.h" />
     <ClInclude Include="Game\Components\IndexObject.h" />
     <ClInclude Include="Externals\MagAudio\MagAudio.h" />
-    <ClInclude Include="Game\Managers\JsonManager.h" />
+    <ClInclude Include="Lib\Adapter\JsonAdapter.h" />
     <ClInclude Include="Engine\Managers\DXConstBufferManager.h" />
     <ClInclude Include="Engine\MyDirectXClass\DXConstBuffer.h" />
     <ClInclude Include="Game\Components\LightObject.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Game\3D\AnimationModel.h" />
     <ClInclude Include="Game\3D\Base\BaseGameObject.h" />
     <ClInclude Include="Game\Editor\UIEditor.h" />
+    <ClInclude Include="Game\Enetities\Rail.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

@@ -35,4 +35,12 @@ void BaseModel::Init(const std::string& modelName) {
 		inputAssembler_.vertices[index].Update();
 		inputAssembler_.indices[index].Update();
 	}
+
+	// ここでnullopt
+	setPipelineType_ = std::nullopt;
+}
+
+void BaseModel::SetPipelineType(const PipelineType& pipelineType) {
+
+	setPipelineType_ = pipelineType;
 }
