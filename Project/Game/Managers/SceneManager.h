@@ -29,7 +29,7 @@ public:
 
 	void Run();
 
-	//* LoadMethods *//
+	//* LoadMethod *//
 
 	void SetNextScene(const std::string& sceneName);
 

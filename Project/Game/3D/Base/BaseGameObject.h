@@ -33,6 +33,7 @@ public:
 
 	// Setter
 	void SetName(const std::string& name);
+	void SetLightingEnable(bool enable);
 
 	// Getter
 	std::string GetName() const;

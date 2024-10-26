@@ -219,8 +219,16 @@ bool NewMoonGame::PushMouseRight() {
 	return input_->PushMouseRight();
 }
 
+bool NewMoonGame::PushMouseCenter() {
+	return input_->PushMouseCenter();
+}
+
 Vector2 NewMoonGame::GetMousePos() {
 	return input_->GetMousePos();
+}
+
+float NewMoonGame::GetMouseWheel() {
+	return input_->GetMouseWheel();
 }
 
 void NewMoonGame::InputInformation() {

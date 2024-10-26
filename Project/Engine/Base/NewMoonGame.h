@@ -64,7 +64,9 @@ public:
 	static void SetDeadZone(float deadZone);                      // デッドゾーンの設定
 	static bool PushMouseLeft();                                  // 左マウスの入力判定
 	static bool PushMouseRight();                                 // 右マウスの入力判定
+	static bool PushMouseCenter();                                // マウスホイールの入力判定
 	static Vector2 GetMousePos();                                 // マウスカーソル座標の取得
+	static float GetMouseWheel();                                 // マウスホイールの値の取得
 	static void InputInformation();                               // Input情報表示
 
 	///===================================================================

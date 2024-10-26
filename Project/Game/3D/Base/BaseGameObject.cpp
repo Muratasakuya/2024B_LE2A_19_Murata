@@ -91,6 +91,12 @@ void BaseGameObject::SetName(const std::string& name) {
 	NewMoonGame::SetToImGui(this);
 }
 
+void BaseGameObject::SetLightingEnable(bool enable) {
+	for (auto& material : materials_) {
+		material.properties.enableLighting = enable;
+	}
+}
+
 std::string BaseGameObject::GetName() const {
 	return name_;
 }

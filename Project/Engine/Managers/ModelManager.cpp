@@ -225,7 +225,7 @@ ModelData ModelManager::LoadObjFile(const std::string& directoryPath, const std:
 
 			// 座標系の変換
 			meshModelData.vertices[vertexIndex].pos = { -pos.x,pos.y,pos.z,1.0f };
-			meshModelData.vertices[vertexIndex].normal = { -normal.x,pos.y,pos.z };
+			meshModelData.vertices[vertexIndex].normal = { normal.x,normal.y,normal.z };
 			meshModelData.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
 		}
 

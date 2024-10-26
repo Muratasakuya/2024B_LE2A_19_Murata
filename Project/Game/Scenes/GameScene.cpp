@@ -51,6 +51,9 @@ void GameScene::Init() {
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
+	//skydome_ = std::make_unique<Skydome>();
+	//skydome_->Init();
+
 }
 
 void GameScene::Update() {
@@ -60,6 +63,8 @@ void GameScene::Update() {
 	railEditor_->Update();
 
 	player_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
+
+	//skydome_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 }
 
 void GameScene::Draw() {
@@ -67,6 +72,8 @@ void GameScene::Draw() {
 	railEditor_->Draw();
 
 	player_->Draw();
+
+	//skydome_->Draw();
 
 }
 

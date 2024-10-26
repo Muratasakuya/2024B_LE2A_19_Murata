@@ -1,11 +1,9 @@
 #include "Rail.h"
 
 #include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
-#include "Engine/Base/NewMoonGame.h"
-#include "Engine/Managers/ImGuiManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Player classMethods
+*								Rail classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
 
 void Rail::Init(const std::string& modelName, const std::string& textureName) {

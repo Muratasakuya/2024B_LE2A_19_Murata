@@ -195,6 +195,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Scenes\TitleScene.cpp" />
     <ClCompile Include="Game\Editor\UIEditor.cpp" />
     <ClCompile Include="Game\Enetities\Rail.cpp" />
+    <ClCompile Include="Game\Objects\Skydome.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\3D\Base\BaseGameObject.h" />
@@ -280,6 +281,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Scenes\TitleScene.h" />
     <ClInclude Include="Game\Editor\UIEditor.h" />
     <ClInclude Include="Game\Enetities\Rail.h" />
+    <ClInclude Include="Game\Objects\Skydome.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

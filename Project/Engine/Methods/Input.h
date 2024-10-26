@@ -45,7 +45,6 @@ enum class InputGamePadButtons {
 	Counts          // ボタンの数を表すための定数
 };
 
-
 /*////////////////////////////////////////////////////////////////////////////////
 *									Input Class
 ////////////////////////////////////////////////////////////////////////////////*/
@@ -81,6 +80,7 @@ public:
 	// マウスの入力判定
 	bool PushMouseLeft() const;
 	bool PushMouseRight() const;
+	bool PushMouseCenter() const;
 
 	// getter
 
@@ -90,6 +90,7 @@ public:
 	Vector2 GetRightStickVal() const;
 	Vector2 GetMousePos() const;
 	Vector2 GetMouseMoveValue() const;
+	float GetMouseWheel();
 
 	// setter
 
@@ -136,14 +137,15 @@ private:
 
 	ComPtr<IDirectInputDevice8> mouse_;  // マウスデバイス
 
-	std::array<bool, 2> mouseButtons_;   // マウスボタンの状態
+	std::array<bool, 3> mouseButtons_;   // マウスボタンの状態
 	Vector2 mousePos_;                   // マウスの移動量
+	float wheelValue_;                   // ホイール移動量
 
 private:
 	//===================================================================*/
 	//							private Functions
 	//===================================================================*/
 
-
 	float ApplyDeadZone(float value);
+
 };
