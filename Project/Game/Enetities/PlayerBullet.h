@@ -3,45 +3,39 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Engine/MyDirectXClass/DXConstBuffer.h"
+#include "Game/3D/Base/BaseGameObject.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								BaseTransform Class
+*								Player Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class BaseTransform :
-	public DXConstBuffer<TransformationMatrix> {
+class PlayerBullet
+	: public BaseGameObject {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	BaseTransform() = default;
-	virtual ~BaseTransform() = default;
+	PlayerBullet() = default;
+	~PlayerBullet() = default;
 
-	virtual void Init();
-	virtual void Update(const Matrix4x4& viewPro) = 0;
+	void Init(const Vector3& pos, const Vector3& velocity, const Vector3& direction);
 
-	virtual void SetCommand();
+	void Update(const Matrix4x4& viewPro);
+
+	void Draw();
 
 	// Getter
-	virtual Vector3 GetWorldPos() const;
-
-public:
-	//===================================================================*/
-	//							public Methods
-	//===================================================================*/
-
-	Vector3 scale;
-	Vector3 rotation;
-	Vector3 translation;
-
-	TransformationMatrix matrix;
+	bool IsAlive();
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	const UINT rootParameterIndex_ = 1;
+	Vector3 velocity_; //* 速度
+
+	const uint32_t deathTime_ = 180; //* 生存時間
+	int32_t deathTimer_;             //* 生存管理
+	bool isAlive_;                   //* 生存フラグ
 
 };

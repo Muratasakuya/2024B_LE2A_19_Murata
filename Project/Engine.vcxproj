@@ -98,7 +98,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)/Externals/MagAudio;$(ProjectDir)/Externals/imgui;$(ProjectDir)/Externals/assimp/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/;$(ProjectDir)/Externals/MagAudio;$(ProjectDir)/Externals/imgui;$(ProjectDir)/Externals/assimp/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -196,6 +196,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Editor\UIEditor.cpp" />
     <ClCompile Include="Game\Enetities\Rail.cpp" />
     <ClCompile Include="Game\Objects\Skydome.cpp" />
+    <ClCompile Include="Game\Enetities\PlayerBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\3D\Base\BaseGameObject.h" />
@@ -282,6 +283,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Editor\UIEditor.h" />
     <ClInclude Include="Game\Enetities\Rail.h" />
     <ClInclude Include="Game\Objects\Skydome.h" />
+    <ClInclude Include="Game\Enetities\PlayerBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

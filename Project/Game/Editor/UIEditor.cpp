@@ -10,11 +10,6 @@
 
 void UIEditor::Init() {
 
-	NewMoonGame::LoadTexture("uvChecker");
-	NewMoonGame::LoadTexture("monsterBall");
-	NewMoonGame::LoadTexture("checkerBoard");
-	NewMoonGame::LoadTexture("AnimatedCube_BaseColor");
-
 	previewTextureSize_ = Vector2(128.0f, 128.0f);
 
 	currentState_ = UIState::TexturePreviewList; // 初期状態

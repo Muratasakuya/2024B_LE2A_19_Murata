@@ -13,9 +13,6 @@ void RailEditor::Init() {
 	// レールサイズ
 	railSize_ = 1.0f;
 
-	// 使用するテクスチャの読み込み
-	NewMoonGame::LoadTexture(sphereTexture_);
-
 	// スプライン曲線の頂点表示用の球の共通マテリアル
 	sphereMaterial_.Init();
 	sphereMaterial_.color = { 1.0f,0.0f,0.0f,1.0f };

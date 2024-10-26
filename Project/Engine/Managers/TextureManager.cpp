@@ -147,6 +147,10 @@ ComPtr<ID3D12Resource> TextureManager::UploadTextureData(ID3D12Resource* texture
 ////////////////////////////////////////////////////////////////////////////////*/
 void TextureManager::LoadTexture(const std::string& textureName) {
 
+	if (textures_.contains(textureName)) {
+		return;
+	}
+
 	// defaultFilePath
 	std::string baseDirectory = "./Resources/Images/";
 	std::filesystem::path filePath;

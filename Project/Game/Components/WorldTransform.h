@@ -20,6 +20,9 @@ public:
 
 	void Update(const Matrix4x4& viewPro) override;
 
+	// Getter
+	Vector3 GetWorldPos() const override;
+
 public:
 	//===================================================================*/
 	//							public Variables
