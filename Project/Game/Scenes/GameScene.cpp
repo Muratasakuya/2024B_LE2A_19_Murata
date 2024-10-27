@@ -46,6 +46,7 @@ void GameScene::Load() {
 	//* player *//
 
 	NewMoonGame::LoadModel("./Resources/Obj", "cube.obj");
+	NewMoonGame::LoadModel("./Resources/Obj", "sphere.obj");
 	NewMoonGame::LoadTexture("white");
 	NewMoonGame::LoadTexture("bulletTargetReticle");
 }

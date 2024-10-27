@@ -9,8 +9,7 @@
 
 void PlayerBullet::Init(const Vector3& pos, const Vector3& velocity, const Vector3& direction) {
 
-	BaseGameObject::Init("cube.obj");
-	model_->SetTexture("white");
+	BaseGameObject::Init("sphere.obj");
 
 	velocity_ = velocity;
 	transform_.translation = pos;

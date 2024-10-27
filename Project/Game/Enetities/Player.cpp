@@ -23,7 +23,7 @@ void Player::Init() {
 	bulletReticle_->Init("bulletTargetReticle");
 
 	bulletReticle_->AjustTextureSize(false);
-	bulletReticle_->SetOriginalTextureSize(Vector2(48.0f, 48.0f));
+	bulletReticle_->SetOriginalTextureSize(Vector2(72.0f, 72.0f));
 
 	bulletReticleTransform_.Init();
 
@@ -44,7 +44,6 @@ void Player::Draw() {
 
 		bullet->Draw();
 	}
-	BaseGameObject::Draw();
 	bulletReticle_->Draw();
 }
 
@@ -99,7 +98,7 @@ void Player::UpdateBulletReticle(const Matrix4x4& viewPro) {
 	mouseDirection = Vector3::Normalize(mouseDirection);
 
 	// カメラから照準オブジェクトの距離
-	const float kDistanceTestObject = 16.0f;
+	const float kDistanceTestObject = 8.0f;
 	bulletReticleTransform_.translation = posNear + mouseDirection * kDistanceTestObject;
 
 	bulletReticle_->Update();

@@ -110,6 +110,8 @@
     <ClCompile Include="Game\Enetities\Rail.cpp" />
     <ClCompile Include="Game\Objects\Skydome.cpp" />
     <ClCompile Include="Game\Enetities\PlayerBullet.cpp" />
+    <ClCompile Include="Game\3D\Base\Collider.cpp" />
+    <ClCompile Include="Game\Managers\CollisionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -197,6 +199,8 @@
     <ClInclude Include="Game\Enetities\Rail.h" />
     <ClInclude Include="Game\Objects\Skydome.h" />
     <ClInclude Include="Game\Enetities\PlayerBullet.h" />
+    <ClInclude Include="Game\3D\Base\Collider.h" />
+    <ClInclude Include="Game\Managers\CollisionManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />
