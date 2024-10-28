@@ -6,7 +6,7 @@
 
 void EnemyManager::Init() {
 
-
+	// 敵の発生めんどくさいので先にTDのEngine
 }
 
 void EnemyManager::Update() {

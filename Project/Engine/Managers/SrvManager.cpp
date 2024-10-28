@@ -1,6 +1,7 @@
 #include "SrvManager.h"
 
 #include "Engine/Base/NewMoon.h"
+#include "Engine/Managers/ImGuiManager.h"
 
 // SRVの最大数
 const uint32_t SrvManager::kMaxSRVCount_ = 512;
@@ -137,6 +138,11 @@ void SrvManager::Init() {
 		MakeDescriptorHeap(device);
 	// デスクリプタ1個のサイズの取得
 	descriptorSize_ = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+}
+
+void SrvManager::ImGui() {
+
+	ImGui::Text("SrvUse: %d", useIndex_);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
