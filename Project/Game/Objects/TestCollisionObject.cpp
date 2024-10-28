@@ -10,22 +10,23 @@ void TestCollisionObject::Init() {
 	BaseGameObject::SetName("TestCollisionObject");
 
 	//* スケール *//
-	const float kInitScale = 0.1f;
+	const float kInitScale = 1.5f;
 	transform_.scale.SetInit(kInitScale);
 
-	Collider::SetCollisionShapeSphere({ .radius = {1.0f * kInitScale} });
+	Collider::SetCollisionShapeSphere({ .radius = {1.0f * kInitScale + 0.1f} });
 
 	Collider::type_ = ColliderType::Type_Test;
 	Collider::targetType_ = ColliderType::Type_PlayerBullet;
 
-	Collider::centerPos_ = transform_.GetWorldPos();
+	Collider::centerPos_ = transform_.translation;
+
 }
 
 void TestCollisionObject::Update(const Matrix4x4& viewPro) {
 
-	BaseGameObject::Update(viewPro);
+	Collider::centerPos_ = transform_.translation;
 
-	Collider::centerPos_ = transform_.GetWorldPos();
+	BaseGameObject::Update(viewPro);
 }
 
 void TestCollisionObject::Draw() {

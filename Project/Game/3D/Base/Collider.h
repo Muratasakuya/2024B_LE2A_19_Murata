@@ -37,6 +37,8 @@ public:
 
 	virtual void OnCollisionExit([[maybe_unused]] Collider* other) {};
 
+	virtual void DrawCollider();
+
 	// Setter
 	void SetCollisionShapeSphere(const CollisionShapes::Sphere& sphere = CollisionShapes::Sphere::Default());
 

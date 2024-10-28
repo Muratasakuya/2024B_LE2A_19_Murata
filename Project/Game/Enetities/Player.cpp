@@ -38,7 +38,7 @@ void Player::Update(const Matrix4x4& viewPro) {
 	BaseGameObject::Update(viewPro);
 }
 
-void Player::Draw() {
+void Player::Draw() { 
 
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) {
 

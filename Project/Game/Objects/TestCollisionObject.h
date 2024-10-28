@@ -28,7 +28,9 @@ public:
 	//* collision *//
 
 	void OnCollisionEnter(Collider* collider) override;
+
 	void OnCollisionStay(Collider* collider) override;
+
 	void OnCollisionExit(Collider* collider) override;
 
 public:

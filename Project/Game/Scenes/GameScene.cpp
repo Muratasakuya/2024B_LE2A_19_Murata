@@ -70,7 +70,7 @@ void GameScene::Init() {
 
 void GameScene::Update() {
 
-	NewMoonGame::DrawGrid();
+	//NewMoonGame::DrawGrid();
 
 	railEditor_->Update();
 
