@@ -1,23 +1,39 @@
 #include "RailEditor.h"
 
-#include "Engine/Managers/ImGuiManager.h"
 #include "Engine/Base/NewMoonGame.h"
+#include "Engine/Managers/ImGuiManager.h"
+#include "Engine/Managers/ModelManager.h"
+#include "Lib/Adapter/JsonAdapter.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *									Main
 ////////////////////////////////////////////////////////////////////////////////*/
 void RailEditor::Init() {
 
-	// 使用するテクスチャの読み込み
-	NewMoonGame::LoadTexture(sphereTexture_);
+	// レールサイズ
+	railSize_ = 1.0f;
 
 	// スプライン曲線の頂点表示用の球の共通マテリアル
 	sphereMaterial_.Init();
 	sphereMaterial_.color = { 1.0f,0.0f,0.0f,1.0f };
 
+	// Defaultのレール
+	defaultRailPoints_.resize(8); // 適当な数
+	for (size_t index = 0; index < defaultRailPoints_.size(); ++index) {
+
+		defaultRailPoints_[index] = Vector3(0.0f, 0.0f + index * 0.4f, 0.0f + index * 4.0f);
+	}
+
 	NewMoonGame::SetToEditor(this);
+
+	LoadRailPoints();
 }
 void RailEditor::Update() {
+
+	if (rail_) {
+
+		rail_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
+	}
 
 	for (auto& spherePair : spheres_) {
 		auto& sphereWorldTransform = spherePair.second;
@@ -28,11 +44,16 @@ void RailEditor::Update() {
 }
 void RailEditor::Draw() {
 
-	DrawRailLine();
+	if (rail_) {
+
+		rail_->Draw();
+	}
 
 	if (NewMoonGame::GameCamera()->GetRailCamera()->IsStart()) {
 		return;
 	}
+
+	DrawRailLine();
 
 	for (auto& spherePair : spheres_) {
 		auto& sphere = spherePair.first;
@@ -51,8 +72,35 @@ void RailEditor::ImGui() {
 
 	// 頂点座標の入力
 	if (ImGui::CollapsingHeader("Vertex Input", ImGuiTreeNodeFlags_DefaultOpen)) {
-		ImGui::Text("Set position for the next vertex:");
+		if (railPoints_.empty()) {
+
+			ImGui::Text("set position for the next vertex:");
+		} else {
+
+			ImGui::Text("preRailPoint : %4.1f, %4.1f, %4.1f",railPoints_.back().x, railPoints_.back().y, railPoints_.back().z);
+		}
 		ImGui::DragFloat3("RailPoints", &spherePos_.x, 0.05f);
+		if (ImGui::Button("SetDefaultPoints")) {
+
+			railPoints_ = defaultRailPoints_;
+
+			for (size_t index = 0; index < railPoints_.size(); ++index) {
+
+				// 頂点表示用球の作成
+				WorldTransform worldTransform;
+				worldTransform.Init();
+				// ST設定
+				worldTransform.translation = railPoints_[index];
+				worldTransform.scale.SetInit(sphereScale_);
+
+				auto sphere = std::make_unique<Sphere>();
+				sphere->Init(sphereTexture_);
+
+				// 追加
+				spheres_.push_back(std::make_pair(std::move(sphere), worldTransform));
+			}
+		}
+		ImGui::SameLine();
 		if (ImGui::Button("Create Point")) {
 			// レール座標に追加
 			railPoints_.push_back(spherePos_);
@@ -73,13 +121,35 @@ void RailEditor::ImGui() {
 			// 入力座標リセット
 			spherePos_.Init();
 		}
+		if (!rail_) {
+			if (3 < spheres_.size()) {
+				if (ImGui::Button("Create RailModel")) {
+
+					CreateRailModel();
+				}
+			}
+		}
+		if (rail_) {
+			if (ImGui::Button("Reset Rail")) {
+
+				rail_.reset();
+				railPoints_.clear();
+			}
+		}
+		ImGui::SameLine();
+		if (!railPoints_.empty()) {
+			if (ImGui::Button("Save Rail")) {
+
+				SaveRailPoints();
+			}
+		}
+		ImGui::SameLine();
 	}
 
 	ImGui::Separator();
 
 	if (1 < spheres_.size()) {
 		if (ImGui::CollapsingHeader("Edit Vertices", ImGuiTreeNodeFlags_DefaultOpen)) {
-			ImGui::Text("Adjust existing vertices:");
 
 			int index = 0;
 			for (auto& sphere : spheres_) {
@@ -192,3 +262,150 @@ void RailEditor::DrawRailLine() {
 }
 
 const std::vector<Vector3>& RailEditor::GetControlPoints() const { return railPoints_; }
+
+/*////////////////////////////////////////////////////////////////////////////////
+*							RailModelの自作
+////////////////////////////////////////////////////////////////////////////////*/
+void RailEditor::CreateRailModel() {
+
+	// 頂点データを保持
+	std::vector<VertexData3D> allVertexData;
+
+	Vector3 prevTopVertex2 = Vector3::Zero();    // 前回の上面の左上頂点
+	Vector3 prevTopVertex3 = Vector3::Zero();    // 前回の上面の右上頂点
+	Vector3 prevBottomVertex2 = Vector3::Zero(); // 前回の下面の左上頂点
+	Vector3 prevBottomVertex3 = Vector3::Zero(); // 前回の下面の右上頂点
+	bool isFirstSegment = true;                  // 最初のモデルかどうか
+
+	const float railHeight = 0.25f;               // レールの厚み
+
+	for (size_t index = 0; index < segmentCount_; ++index) {
+
+		// セグメントの始点と終点を取得
+		float t0 = 1.0f / segmentCount_ * index;
+		float t1 = 1.0f / segmentCount_ * (index + 1);
+
+		Vector3 p0 = SetCatmullRomPos(railPoints_, t0);
+		Vector3 p1 = SetCatmullRomPos(railPoints_, t1);
+
+		// 方向ベクトル
+		Vector3 direction = p1 - p0;
+		direction = Vector3::Normalize(direction);
+
+		// 上向きのベクトル
+		Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
+		Vector3 right = Vector3::Cross(up, direction);
+		right = Vector3::Normalize(right);
+
+		// 上面の頂点位置を計算
+		Vector3 topVertex0 = p0 + right * (railSize_ * 0.5f); // 左下（上面）
+		Vector3 topVertex1 = p0 - right * (railSize_ * 0.5f); // 右下（上面）
+		Vector3 topVertex2 = p1 - right * (railSize_ * 0.5f); // 右上（上面）
+		Vector3 topVertex3 = p1 + right * (railSize_ * 0.5f); // 左上（上面）
+
+		// 下面の頂点位置を計算
+		Vector3 bottomVertex0 = topVertex0 - up * railHeight; // 左下（下面）
+		Vector3 bottomVertex1 = topVertex1 - up * railHeight; // 右下（下面）
+		Vector3 bottomVertex2 = topVertex2 - up * railHeight; // 右上（下面）
+		Vector3 bottomVertex3 = topVertex3 - up * railHeight; // 左上（下面）
+
+		// 法線ベクトルの計算
+		Vector3 edge1 = topVertex1 - topVertex0;
+		Vector3 edge2 = topVertex3 - topVertex0;
+		Vector3 normal = Vector3::Cross(edge1, edge2);
+		normal = Vector3::Normalize(normal);
+
+		Vector2 texcoord0(0.0f, 0.0f); // 左下
+		Vector2 texcoord1(1.0f, 0.0f); // 右下
+		Vector2 texcoord2(1.0f, 1.0f); // 右上
+		Vector2 texcoord3(0.0f, 1.0f); // 左上
+
+		if (isFirstSegment) {
+
+			// 最初はそのまま頂点座標を設定する
+			allVertexData.push_back(VertexData3D{ Vector4(topVertex0.x, topVertex0.y, topVertex0.z, 1.0f), texcoord0, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(topVertex1.x, topVertex1.y, topVertex1.z, 1.0f), texcoord1, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(topVertex2.x, topVertex2.y, topVertex2.z, 1.0f), texcoord2, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(topVertex3.x, topVertex3.y, topVertex3.z, 1.0f), texcoord3, normal });
+
+			allVertexData.push_back(VertexData3D{ Vector4(bottomVertex0.x, bottomVertex0.y, bottomVertex0.z, 1.0f), texcoord0, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(bottomVertex1.x, bottomVertex1.y, bottomVertex1.z, 1.0f), texcoord1, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(bottomVertex2.x, bottomVertex2.y, bottomVertex2.z, 1.0f), texcoord2, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(bottomVertex3.x, bottomVertex3.y, bottomVertex3.z, 1.0f), texcoord3, normal });
+
+			isFirstSegment = false;
+		} else {
+
+			// 2個目のモデル以降は前回の頂点を使う
+			allVertexData.push_back(VertexData3D{ Vector4(prevTopVertex2.x, prevTopVertex2.y, prevTopVertex2.z, 1.0f), texcoord0, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(prevTopVertex3.x, prevTopVertex3.y, prevTopVertex3.z, 1.0f), texcoord1, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(topVertex2.x, topVertex2.y, topVertex2.z, 1.0f), texcoord2, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(topVertex3.x, topVertex3.y, topVertex3.z, 1.0f), texcoord3, normal });
+
+			allVertexData.push_back(VertexData3D{ Vector4(prevBottomVertex2.x, prevBottomVertex2.y, prevBottomVertex2.z, 1.0f), texcoord0, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(prevBottomVertex3.x, prevBottomVertex3.y, prevBottomVertex3.z, 1.0f), texcoord1, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(bottomVertex2.x, bottomVertex2.y, bottomVertex2.z, 1.0f), texcoord2, normal });
+			allVertexData.push_back(VertexData3D{ Vector4(bottomVertex3.x, bottomVertex3.y, bottomVertex3.z, 1.0f), texcoord3, normal });
+		}
+
+		// 今回のセグメントの終点を次回のために保存
+		prevTopVertex2 = topVertex3;
+		prevTopVertex3 = topVertex2;
+		prevBottomVertex2 = bottomVertex3;
+		prevBottomVertex3 = bottomVertex2;
+	}
+
+	// モデルを作成
+	std::string modelName = "Rail";
+	uint32_t modelId = 0;
+	NewMoonGame::GetModelMangager()->MakeRailModel(modelName, modelId, allVertexData);
+
+	// モデル追加
+	std::unique_ptr<Rail> rail = std::make_unique<Rail>();
+	rail->Init(modelName + std::to_string(modelId), railTextureName_);
+	rail_ = std::move(rail);
+}
+
+void RailEditor::SaveRailPoints() {
+
+	Json data;
+	for (const auto& point : railPoints_) {
+
+		data[railPointsLabel_].push_back(JsonAdapter::FromVector3(point));
+	}
+	JsonAdapter::Save(railPointsJsonPath_, data);
+}
+
+void RailEditor::LoadRailPoints() {
+
+	railPoints_.clear();
+
+	Json data = JsonAdapter::Load(railPointsJsonPath_);
+
+	if (data.contains(railPointsLabel_)) {
+
+		for (const auto& item : data[railPointsLabel_]) {
+
+			railPoints_.push_back(JsonAdapter::ToVector3(item));
+		}
+	}
+
+	for (size_t index = 0; index < railPoints_.size(); ++index) {
+
+		// 頂点表示用球の作成
+		WorldTransform worldTransform;
+		worldTransform.Init();
+		// ST設定
+		worldTransform.translation = railPoints_[index];
+		worldTransform.scale.SetInit(sphereScale_);
+
+		auto sphere = std::make_unique<Sphere>();
+		sphere->Init(sphereTexture_);
+
+		// 追加
+		spheres_.push_back(std::make_pair(std::move(sphere), worldTransform));
+	}
+
+	// レール作成
+	CreateRailModel();
+}

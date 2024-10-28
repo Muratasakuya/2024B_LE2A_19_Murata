@@ -11,6 +11,7 @@
 #include "Game/Managers/LightManager.h"
 #include "Game/3D/PrimitiveDrawer.h"
 #include "Game/3D/Base/BaseGameObject.h"
+#include "Game/Managers/CollisionManager.h"
 #include "Game/Editor/RailEditor.h"
 #include "Game/Editor/UIEditor.h"
 
@@ -64,7 +65,9 @@ public:
 	static void SetDeadZone(float deadZone);                      // デッドゾーンの設定
 	static bool PushMouseLeft();                                  // 左マウスの入力判定
 	static bool PushMouseRight();                                 // 右マウスの入力判定
+	static bool PushMouseCenter();                                // マウスホイールの入力判定
 	static Vector2 GetMousePos();                                 // マウスカーソル座標の取得
+	static float GetMouseWheel();                                 // マウスホイールの値の取得
 	static void InputInformation();                               // Input情報表示
 
 	///===================================================================
@@ -80,6 +83,13 @@ public:
 	static void SkeletonUpdate(const std::string& animationName);
 	static void ApplyAnimation(const std::string& animationName, float animationTime);
 	static void SkinClusterUpdate(const std::string& animationName);
+
+	///===================================================================
+	// Collision
+
+	static void AddCollider(Collider* collider);
+	static void RemoveCollider(Collider* collider);
+	static void ClearAllColliders();
 
 	///===================================================================
 	// Draw
@@ -127,6 +137,8 @@ private:
 	static std::unique_ptr<PrimitiveDrawer> lineDrawer3D_;
 
 	static std::vector<BaseGameObject*> gameObjects_;
+
+	static std::unique_ptr<CollisionManager> collisionManager_;
 
 	static RailEditor* railEditor_;
 	static std::unique_ptr<UIEditor> uiEditor_;

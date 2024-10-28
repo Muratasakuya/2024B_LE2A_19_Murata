@@ -3,42 +3,39 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Lib/Structure.h"
+#include "Game/3D/Base/BaseGameObject.h"
+#include "Game/3D/Base/Collider.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*							DebugCamera Class
+*						TestCollisionObject Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class DebugCamera {
+class TestCollisionObject
+	:public BaseGameObject, public Collider {
 public:
 	//===================================================================*/
-	//							public Functions
+	//							public Methods
 	//===================================================================*/
 
-	DebugCamera() = default;
-	~DebugCamera() = default;
+	TestCollisionObject() = default;
+	~TestCollisionObject() = default;
 
-	void Update();
+	void Init();
 
-private:
+	void Update(const Matrix4x4& viewPro);
+
+	void Draw();
+
+	//* collision *//
+
+	void OnCollisionEnter(Collider* collider) override;
+
+	void OnCollisionStay(Collider* collider) override;
+
+	void OnCollisionExit(Collider* collider) override;
+
+public:
 	//===================================================================*/
-	//							private Variables
+	//							public Methods
 	//===================================================================*/
-
-	Vector3 translation_;
-	Vector3 rotation_;
-
-	Matrix4x4 rotateMatrix_;
-	Matrix4x4 matrix_;
-
-	Matrix4x4 viewProjectionMatrix_;
-
-	bool enable_;
-
-private:
-	//===================================================================*/
-	//							private Function
-	//===================================================================*/
-
-	void Move();
 
 };

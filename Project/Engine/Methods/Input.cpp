@@ -83,6 +83,10 @@ Vector2 Input::GetMouseMoveValue() const {
 
 	return { static_cast<float>(mouseState_.lX),static_cast<float>(mouseState_.lY) };
 }
+float Input::GetMouseWheel() {
+
+	return wheelValue_;
+}
 // マウスの入力判定
 bool Input::PushMouseLeft() const {
 
@@ -91,6 +95,10 @@ bool Input::PushMouseLeft() const {
 bool Input::PushMouseRight() const {
 
 	return mouseButtons_[1];
+}
+bool Input::PushMouseCenter() const {
+
+	return mouseButtons_[2];
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -215,6 +223,7 @@ void Input::Update() {
 		// マウスボタンの状態を保存
 		mouseButtons_[0] = (mouseState_.rgbButtons[0] & 0x80) != 0;
 		mouseButtons_[1] = (mouseState_.rgbButtons[1] & 0x80) != 0;
+		mouseButtons_[2] = (mouseState_.rgbButtons[2] & 0x80) != 0;
 
 		POINT point;
 		GetCursorPos(&point);
@@ -223,6 +232,9 @@ void Input::Update() {
 		// マウスの移動量を保存
 		mousePos_.x = static_cast<float>(point.x);
 		mousePos_.y = static_cast<float>(point.y);
+
+		// ホイール値
+		wheelValue_ = static_cast<float>(mouseState_.lZ) / WHEEL_DELTA;
 	}
 }
 
@@ -237,29 +249,36 @@ void Input::ImGui() {
 		Vector2 mouseMoveValue = GetMouseMoveValue();
 		ImGui::Text("Position: { %4.1f, %4.1f }", mousePos_.x, mousePos_.y);
 		ImGui::Text("Movement: { %4.1f, %4.1f }", mouseMoveValue.x, mouseMoveValue.y);
-		ImGui::Text("Left Button:  %d", mouseButtons_[0]);
-		ImGui::Text("Right Button: %d", mouseButtons_[1]);
+		ImGui::Text("WheelDirection:   %4.1f", wheelValue_);
+		ImGui::Text("Left Button:   %d", mouseButtons_[0]);
+		ImGui::Text("Right Button:  %d", mouseButtons_[1]);
+		ImGui::Text("Center Button: %d", mouseButtons_[2]);
 	}
 
 	// ゲームパッドが接続されている場合にのみ表示
-	if (ImGui::CollapsingHeader("Gamepad Input") && XInputGetState(0, &gamepadState_) == ERROR_SUCCESS) {
-		
-		ImGui::Text("Button A: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::A)]);
-		ImGui::Text("Button B: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::B)]);
-		ImGui::Text("Button X: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::X)]);
-		ImGui::Text("Button Y: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::Y)]);
-		ImGui::Text("D-Pad Up: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_UP)]);
-		ImGui::Text("D-Pad Down: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_DOWN)]);
-		ImGui::Text("D-Pad Left: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_LEFT)]);
-		ImGui::Text("D-Pad Right: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_RIGHT)]);
-		ImGui::Text("Left Shoulder: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::LEFT_SHOULDER)]);
-		ImGui::Text("Right Shoulder: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::RIGHT_SHOULDER)]);
-		ImGui::Text("Start: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::START)]);
-		ImGui::Text("Back: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::BACK)]);
+	if (ImGui::CollapsingHeader("Gamepad Input")) {
+		if (XInputGetState(0, &gamepadState_) == ERROR_SUCCESS) {
 
-		ImGui::DragFloat("DeadZone", &deadZone_);
-		ImGui::Text("Left Stick: { %4.1f, %4.1f }", leftThumbX_, leftThumbY_);
-		ImGui::Text("Right Stick: { %4.1f, %4.1f }", rightThumbX_, rightThumbY_);
+			ImGui::Text("Button A: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::A)]);
+			ImGui::Text("Button B: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::B)]);
+			ImGui::Text("Button X: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::X)]);
+			ImGui::Text("Button Y: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::Y)]);
+			ImGui::Text("D-Pad Up: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_UP)]);
+			ImGui::Text("D-Pad Down: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_DOWN)]);
+			ImGui::Text("D-Pad Left: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_LEFT)]);
+			ImGui::Text("D-Pad Right: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::ARROW_RIGHT)]);
+			ImGui::Text("Left Shoulder: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::LEFT_SHOULDER)]);
+			ImGui::Text("Right Shoulder: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::RIGHT_SHOULDER)]);
+			ImGui::Text("Start: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::START)]);
+			ImGui::Text("Back: %d", gamepadButtons_[static_cast<size_t>(InputGamePadButtons::BACK)]);
+
+			ImGui::DragFloat("DeadZone", &deadZone_);
+			ImGui::Text("Left Stick: { %4.1f, %4.1f }", leftThumbX_, leftThumbY_);
+			ImGui::Text("Right Stick: { %4.1f, %4.1f }", rightThumbX_, rightThumbY_);
+		} else {
+
+			ImGui::Text("Gamepad is not connected");
+		}
 	}
 #endif
 }

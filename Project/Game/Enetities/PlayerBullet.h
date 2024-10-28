@@ -3,51 +3,44 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
-#include "Game/Editor/RailEditor.h"
-#include "Game/Enetities/Player.h"
-#include "Game/Objects/TestCollisionObject.h"
-
-// c++
-#include <memory>
+#include "Game/3D/Base/BaseGameObject.h"
+#include "Game/3D/Base/Collider.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								GameScene Class
+*								Player Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class GameScene :
-	public IScene {
+class PlayerBullet
+	: public BaseGameObject, public Collider {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	GameScene();
-	~GameScene();
+	PlayerBullet() = default;
+	~PlayerBullet() = default;
 
-	void Run() override;
+	void Init(const Vector3& pos, const Vector3& velocity, const Vector3& direction);
 
-	void Init() override;
-
-	void Update() override;
-
-	void Cleanup() override;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	std::unique_ptr<RailEditor> railEditor_;
-
-	std::unique_ptr<Player> player_;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	void Load();
+	void Update(const Matrix4x4& viewPro);
 
 	void Draw();
+
+	//* collision *//
+
+	void OnCollisionEnter(Collider* collider) override;
+
+	// Getter
+	bool IsAlive() const ;
+
+private:
+	//===================================================================*/
+	//							private Methods
+	//===================================================================*/
+
+	Vector3 velocity_; //* 速度
+
+	const uint32_t deathTime_ = 180; //* 生存時間
+	int32_t deathTimer_;             //* 生存管理
+	bool isAlive_;                   //* 生存フラグ
 
 };

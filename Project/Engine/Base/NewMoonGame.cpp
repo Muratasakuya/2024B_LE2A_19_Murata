@@ -17,6 +17,7 @@ std::unique_ptr<LightManager> NewMoonGame::lightManager_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer2D_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
 std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
+std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
 RailEditor* NewMoonGame::railEditor_ = nullptr;
 std::unique_ptr<UIEditor> NewMoonGame::uiEditor_ = nullptr;
 #pragma endregion
@@ -52,8 +53,10 @@ void NewMoonGame::Init() {
 	lineDrawer3D_ = std::make_unique<PrimitiveDrawer>();
 	lineDrawer3D_->Init(cameraManager_->GetCamera3D()->GetViewProBuffer());
 
-	uiEditor_ = std::make_unique<UIEditor>();
-	uiEditor_->Init();
+	collisionManager_ = std::make_unique<CollisionManager>();
+
+	/*uiEditor_ = std::make_unique<UIEditor>();
+	uiEditor_->Init();*/
 
 }
 
@@ -96,7 +99,7 @@ void NewMoonGame::ImGui() {
 
 			// UI Editor
 			if (ImGui::CollapsingHeader("UI Editor")) {
-				uiEditor_->ImGui();
+				//uiEditor_->ImGui();
 			}
 
 			ImGui::EndTabItem();
@@ -126,7 +129,9 @@ void NewMoonGame::Update() {
 	lineDrawer2D_->Update();
 	lineDrawer3D_->Update();
 
-	uiEditor_->Update();
+	collisionManager_->UpdateAllCollisions();
+
+	//uiEditor_->Update();
 }
 
 void NewMoonGame::Close() {
@@ -140,7 +145,7 @@ void NewMoonGame::Close() {
 	lightManager_.reset();
 	lineDrawer2D_.reset();
 	lineDrawer3D_.reset();
-	uiEditor_.reset();
+	//uiEditor_.reset();
 }
 
 void NewMoonGame::Reset() {
@@ -219,8 +224,16 @@ bool NewMoonGame::PushMouseRight() {
 	return input_->PushMouseRight();
 }
 
+bool NewMoonGame::PushMouseCenter() {
+	return input_->PushMouseCenter();
+}
+
 Vector2 NewMoonGame::GetMousePos() {
 	return input_->GetMousePos();
+}
+
+float NewMoonGame::GetMouseWheel() {
+	return input_->GetMouseWheel();
 }
 
 void NewMoonGame::InputInformation() {
@@ -258,6 +271,21 @@ void NewMoonGame::SkinClusterUpdate(const std::string& animationName) {
 }
 
 ///===================================================================
+// Collision
+
+void NewMoonGame::AddCollider(Collider* collider) {
+	collisionManager_->AddCollider(collider);
+}
+
+void NewMoonGame::RemoveCollider(Collider* collider) {
+	collisionManager_->RemoveCollider(collider);
+}
+
+void NewMoonGame::ClearAllColliders() {
+	collisionManager_->ClearAllColliders();
+}
+
+///===================================================================
 // Draw
 
 void NewMoonGame::DrawLine2D(const Vector2& pointA, const Vector2& pointB, const LineColor& color) {
@@ -273,7 +301,7 @@ void NewMoonGame::DrawGrid() {
 }
 
 void NewMoonGame::Renderer2D() {
-	uiEditor_->Draw();
+	//uiEditor_->Draw();
 }
 
 ///===================================================================

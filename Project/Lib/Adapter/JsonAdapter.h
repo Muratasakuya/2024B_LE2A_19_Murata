@@ -3,51 +3,44 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
-#include "Game/Editor/RailEditor.h"
-#include "Game/Enetities/Player.h"
-#include "Game/Objects/TestCollisionObject.h"
+#include "Lib/Math/Vector3.h"
+
+// json
+#include <Externals/nlohmann/json.hpp>
+// using
+using Json = nlohmann::json;
 
 // c++
-#include <memory>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <filesystem>
+#include <cassert>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								GameScene Class
+*									JsonAdapter Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class GameScene :
-	public IScene {
+class JsonAdapter {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	GameScene();
-	~GameScene();
+	JsonAdapter() = default;
+	~JsonAdapter() = default;
 
-	void Run() override;
+	static void Save(const std::string& saveDirectoryFilePath, const Json& jsonData);
 
-	void Init() override;
+	static Json Load(const std::string& loadDirectoryFilePath);
 
-	void Update() override;
-
-	void Cleanup() override;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	std::unique_ptr<RailEditor> railEditor_;
-
-	std::unique_ptr<Player> player_;
+	static Json FromVector3(const Vector3& v);
+	static Vector3 ToVector3(const Json& data);
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	void Load();
-
-	void Draw();
+	static const std::string& baseDirectoryFilePath_;
 
 };

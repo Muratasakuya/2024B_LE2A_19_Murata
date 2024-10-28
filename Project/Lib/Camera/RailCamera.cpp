@@ -33,7 +33,7 @@ void RailCamera::Update() {
 	if (isStart_) {
 
 		// 進ませる速度
-		const float speed = 0.0005f;
+		const float speed = 0.0002f;
 
 		// tを進める
 		eyeT_ = eyeT_ + speed;
@@ -64,7 +64,11 @@ void RailCamera::Update() {
 			transform_.rotation = rotate;
 		}
 
-		NewMoonGame::GameCamera()->GetCamera3D()->SetTranslate(transform_.translation);
+		const float yOffset = 0.5f;
+
+		Vector3 setTranslate = transform_.translation;
+		setTranslate.y = setTranslate.y + yOffset;
+		NewMoonGame::GameCamera()->GetCamera3D()->SetTranslate(setTranslate);
 		NewMoonGame::GameCamera()->GetCamera3D()->SetRotate(transform_.rotation);
 	}
 

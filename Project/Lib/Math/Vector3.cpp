@@ -187,3 +187,38 @@ Vector3 Vector3::Lerp(const Vector3& v1, const Vector3& v2, float t) {
 		v1.z + t * (v2.z - v1.z)
 	);
 }
+
+// 4x4行列の座標変換
+Vector3 Vector3::Transform(const Vector3& v, const Matrix4x4& matrix) {
+
+	Vector3 result;
+
+	result.x = v.x * matrix.m[0][0] + v.y * matrix.m[1][0] + v.z * matrix.m[2][0] +
+		matrix.m[3][0];
+	result.y = v.x * matrix.m[0][1] + v.y * matrix.m[1][1] + v.z * matrix.m[2][1] +
+		matrix.m[3][1];
+	result.z = v.x * matrix.m[0][2] + v.y * matrix.m[1][2] + v.z * matrix.m[2][2] +
+		matrix.m[3][2];
+	float w = v.x * matrix.m[0][3] + v.y * matrix.m[1][3] + v.z * matrix.m[2][3] +
+		matrix.m[3][3];
+
+	if (w != 0.0f) {
+		result.x /= w;
+		result.y /= w;
+		result.z /= w;
+	}
+
+	return result;
+}
+
+// ベクトル変換
+Vector3 Vector3::TransferNormal(const Vector3& v, const Matrix4x4& m) {
+
+	Vector3 matrix{};
+
+	matrix.x = v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0];
+	matrix.y = v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1];
+	matrix.z = v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2];
+
+	return matrix;
+}

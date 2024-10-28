@@ -115,7 +115,7 @@ void DXShaderCompiler::Init(DXCommon* dxCommon, const PipelineType& pipelineType
 		psBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/Object2D.PS.hlsl", L"ps_6_0",
 			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
 		assert(psBlob_[pipelineType] != nullptr);
-	} else if (pipelineType == pObject3D) {
+	} else if (pipelineType == pObject3D || pipelineType == RailNoneBackCulling) {
 
 		/*------------------------------------------------------------------------------------------------------------------------*/
 		//												 Object3D Shader

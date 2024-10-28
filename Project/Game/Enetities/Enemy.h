@@ -3,51 +3,40 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
-#include "Game/Editor/RailEditor.h"
-#include "Game/Enetities/Player.h"
-#include "Game/Objects/TestCollisionObject.h"
-
-// c++
-#include <memory>
+#include "Game/3D/Base/BaseGameObject.h"
+#include "Game/3D/Base/Collider.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								GameScene Class
+*								Enemy Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class GameScene :
-	public IScene {
+class Enemy
+	:public BaseGameObject, public Collider {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	GameScene();
-	~GameScene();
+	Enemy() = default;
+	~Enemy() = default;
 
-	void Run() override;
+	void Init();
 
-	void Init() override;
-
-	void Update() override;
-
-	void Cleanup() override;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	std::unique_ptr<RailEditor> railEditor_;
-
-	std::unique_ptr<Player> player_;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	void Load();
+	void Update(const Matrix4x4& viewPro);
 
 	void Draw();
+
+	//* collision *//
+
+	void OnCollisionEnter(Collider* collider) override;
+
+	// Getter
+	bool IsAlive() const;
+
+private:
+	//===================================================================*/
+	//							private Methods
+	//===================================================================*/
+
+	bool isAlive_;                   //* 生存フラグ
 
 };

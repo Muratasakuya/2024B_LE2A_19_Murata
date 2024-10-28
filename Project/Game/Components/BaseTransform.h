@@ -23,6 +23,9 @@ public:
 
 	virtual void SetCommand();
 
+	// Getter
+	virtual Vector3 GetWorldPos() const;
+
 public:
 	//===================================================================*/
 	//							public Methods

@@ -1,24 +1,37 @@
 #pragma once
 
-// json
-#include <Externals/nlohmann/json.hpp>
+//===================================================================*/
+//								include
+//===================================================================*/
+#include "Game/Enetities/Enemy.h"
+
+// c++
+#include <memory>
+#include <list>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*									JsonManager Class
+*							EnemyManager Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class JsonManager {
+class EnemyManager {
 public:
 	//===================================================================*/
-	//							public Functions
+	//							public Methods
 	//===================================================================*/
 
-	JsonManager() = default;
-	~JsonManager() = default;
+	EnemyManager() = default;
+	~EnemyManager() = default;
+
+	void Init();
+
+	void Update();
+
+	void Draw();
 
 private:
 	//===================================================================*/
-	//							private Variables
+	//							private Methods
 	//===================================================================*/
 
-};
+	std::list<std::unique_ptr<Enemy>> enemies_;
 
+};

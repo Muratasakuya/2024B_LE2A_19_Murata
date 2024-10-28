@@ -98,7 +98,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)/Externals/MagAudio;$(ProjectDir)/Externals/imgui;$(ProjectDir)/Externals/assimp/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/;$(ProjectDir)/Externals/MagAudio;$(ProjectDir)/Externals/imgui;$(ProjectDir)/Externals/assimp/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -117,6 +117,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Managers\EnemyManager.cpp" />
+    <ClCompile Include="Game\Enetities\Enemy.cpp" />
+    <ClCompile Include="Game\Managers\CollisionManager.cpp" />
+    <ClCompile Include="Game\3D\Base\Collider.cpp" />
     <ClCompile Include="Game\3D\Base\BaseGameObject.cpp" />
     <ClCompile Include="Game\3D\AnimationModel.cpp" />
     <ClCompile Include="Game\Components\AnimationTransform.cpp" />
@@ -131,7 +135,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Components\LightObject.cpp" />
     <ClCompile Include="Game\Components\IndexObject.cpp" />
     <ClCompile Include="Externals\MagAudio\MagAudio.cpp" />
-    <ClCompile Include="Game\Managers\JsonManager.cpp" />
+    <ClCompile Include="Lib\Adapter\JsonAdapter.cpp" />
     <ClCompile Include="Engine\Managers\DXConstBufferManager.cpp" />
     <ClCompile Include="Lib\Math\Math.cpp" />
     <ClCompile Include="Game\Components\MaterialObject.cpp" />
@@ -194,8 +198,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Enetities\Player.cpp" />
     <ClCompile Include="Game\Scenes\TitleScene.cpp" />
     <ClCompile Include="Game\Editor\UIEditor.cpp" />
+    <ClCompile Include="Game\Enetities\Rail.cpp" />
+    <ClCompile Include="Game\Objects\Skydome.cpp" />
+    <ClCompile Include="Game\Enetities\PlayerBullet.cpp" />
+    <ClCompile Include="Game\Objects\TestCollisionObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Managers\EnemyManager.h" />
+    <ClInclude Include="Game\Enetities\Enemy.h" />
+    <ClInclude Include="Game\Managers\CollisionManager.h" />
+    <ClInclude Include="Game\3D\Base\Collider.h" />
     <ClInclude Include="Game\3D\Base\BaseGameObject.h" />
     <ClInclude Include="Game\3D\AnimationModel.h" />
     <ClInclude Include="Game\Components\AnimationTransform.h" />
@@ -210,7 +222,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Components\CameraObject.h" />
     <ClInclude Include="Game\Components\IndexObject.h" />
     <ClInclude Include="Externals\MagAudio\MagAudio.h" />
-    <ClInclude Include="Game\Managers\JsonManager.h" />
+    <ClInclude Include="Lib\Adapter\JsonAdapter.h" />
     <ClInclude Include="Engine\Managers\DXConstBufferManager.h" />
     <ClInclude Include="Engine\MyDirectXClass\DXConstBuffer.h" />
     <ClInclude Include="Game\Components\LightObject.h" />
@@ -278,6 +290,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Enetities\Player.h" />
     <ClInclude Include="Game\Scenes\TitleScene.h" />
     <ClInclude Include="Game\Editor\UIEditor.h" />
+    <ClInclude Include="Game\Enetities\Rail.h" />
+    <ClInclude Include="Game\Objects\Skydome.h" />
+    <ClInclude Include="Game\Enetities\PlayerBullet.h" />
+    <ClInclude Include="Game\Objects\TestCollisionObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

@@ -3,42 +3,31 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Lib/Structure.h"
+#include "Game/3D/Base/BaseGameObject.h"
+
+// c++
+#include <string>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*							DebugCamera Class
+*								Rail Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class DebugCamera {
+class Rail :
+	public BaseGameObject {
 public:
 	//===================================================================*/
-	//							public Functions
+	//							public Function
 	//===================================================================*/
 
-	DebugCamera() = default;
-	~DebugCamera() = default;
+	Rail() = default;
+	~Rail() = default;
 
-	void Update();
+	void Init(const std::string& modelName, const std::string& textureName);
+	void Update(const Matrix4x4& viewPro);
+	void Draw();
 
-private:
+public:
 	//===================================================================*/
-	//							private Variables
+	//							private variable
 	//===================================================================*/
-
-	Vector3 translation_;
-	Vector3 rotation_;
-
-	Matrix4x4 rotateMatrix_;
-	Matrix4x4 matrix_;
-
-	Matrix4x4 viewProjectionMatrix_;
-
-	bool enable_;
-
-private:
-	//===================================================================*/
-	//							private Function
-	//===================================================================*/
-
-	void Move();
 
 };

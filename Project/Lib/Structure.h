@@ -25,7 +25,62 @@
 #include <optional>
 #include <utility>
 #include <span>
+#include <variant>
 #include <cassert>
+
+/*==========================================================*/
+/// Collision
+
+namespace CollisionShapes {
+
+	struct Sphere {
+
+		float radius;
+
+		static Sphere Default() {
+			Sphere sphere = {
+				.radius = 1.0f
+			};
+			return sphere;
+		};
+	};
+
+	struct AABB {
+
+		Vector3 min;
+		Vector3 max;
+
+		static AABB Default() {
+			AABB aabb = {
+				.min = {-1.0f,-1.0f,-1.0f},
+				.max = {1.0f,1.0f,1.0f}
+			};
+			return aabb;
+		};
+	};
+
+	struct OBB {
+
+		Vector3 size;
+
+		static OBB Default() {
+			OBB obb = {
+				.size = {1.0f,1.0f,1.0f}
+			};
+			return obb;
+		};
+	};
+
+	using Shapes = std::variant<Sphere, AABB, OBB>;
+
+};
+
+enum class ShapeType {
+
+	Type_Sphere,
+	Type_AABB,
+	Type_OBB
+};
 
 /*==========================================================*/
 /// Transform
@@ -236,15 +291,10 @@ struct Emitter {
 	float frequency;
 	float frequencyTime;
 };
-struct AABB {
-
-	Vector3 min;
-	Vector3 max;
-};
 struct AccelerationField {
 
 	Vector3 acceleration;
-	AABB area;
+	CollisionShapes::AABB area;
 };
 /*==========================================================*/
 /// カメラ座標
@@ -296,7 +346,7 @@ struct ModelData {
 	std::vector<MeshModelData> meshes;
 	std::map<std::string, JointWeightData> skinClusterData;
 	Node rootNode;
-	AABB aabb;
+	CollisionShapes::AABB  aabb;
 };
 /*==========================================================*/
 /// アニメーション

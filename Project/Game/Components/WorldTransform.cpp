@@ -25,3 +25,8 @@ void WorldTransform::Update(const Matrix4x4& viewPro) {
 	DXConstBuffer::TransferData(matrix);
 
 }
+
+Vector3 WorldTransform::GetWorldPos() const {
+
+	return BaseTransform::GetWorldPos();
+}

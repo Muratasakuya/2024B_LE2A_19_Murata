@@ -13,11 +13,15 @@ void BaseGameObject::Init(const std::string& modelName) {
 	model_->Init(modelName);
 
 	transform_.Init();
+	color_.SetInit(1.0f);
 
 	materials_.resize(model_->GetMeshNum());
 	for (auto& material : materials_) {
 
 		material.Init();
+		material.color = color_;
+		material.properties.enableLighting = true;
+		material.properties.enableHalfLambert = true;
 	}
 }
 
@@ -26,6 +30,7 @@ void BaseGameObject::Update(const Matrix4x4& viewPro) {
 	transform_.Update(viewPro);
 	for (auto& material : materials_) {
 
+		material.color = color_;
 		material.Update();
 	}
 }
@@ -60,7 +65,7 @@ void BaseGameObject::ImGui() {
 
 			materialLabel += "##" + std::to_string(reinterpret_cast<uintptr_t>(&materials_[i]));
 			if (ImGui::TreeNode(materialLabel.c_str())) {
-				ImGui::ColorEdit4("Color", &materials_[i].color.x);
+				ImGui::ColorEdit4("Color", &color_.x);
 				ImGui::TreePop();
 			}
 
@@ -84,6 +89,12 @@ void BaseGameObject::ImGui() {
 void BaseGameObject::SetName(const std::string& name) {
 	name_ = name;
 	NewMoonGame::SetToImGui(this);
+}
+
+void BaseGameObject::SetLightingEnable(bool enable) {
+	for (auto& material : materials_) {
+		material.properties.enableLighting = enable;
+	}
 }
 
 std::string BaseGameObject::GetName() const {
