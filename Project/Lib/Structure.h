@@ -276,6 +276,11 @@ struct ParticleForGPU {
 	Matrix4x4 WVP;
 	Vector4 color;
 };
+struct ParticleMaterialData {
+
+	std::string textureName;
+	uint32_t srvIndex;
+};
 struct ParticleData {
 
 	Transform3D transform;
@@ -286,10 +291,11 @@ struct ParticleData {
 };
 struct Emitter {
 
-	Transform3D transform;
-	uint32_t count;
-	float frequency;
-	float frequencyTime;
+	Transform3D transform; // SRT
+	Vector4 color;         // 色
+	uint32_t count;        // 個数
+	float frequency;       // ~秒置き、発生頻度
+	float frequencyTime;   // 発生頻度用の時刻
 };
 struct AccelerationField {
 

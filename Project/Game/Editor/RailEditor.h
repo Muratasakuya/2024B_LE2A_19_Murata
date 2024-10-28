@@ -6,7 +6,7 @@
 #include "Game/Components/WorldTransform.h"
 #include "Game/Components/MaterialObject.h"
 #include "Game/3D/Sphere.h"
-#include "Game/Enetities/Rail.h"
+#include "Game/Objects/Rail.h"
 #include "Lib/Structure.h"
 
 // c++

@@ -13,7 +13,7 @@ void PrimitiveVertexObject::Init(UINT vertexNum) {
 
 void PrimitiveVertexObject::Update() {
 
-	DXConstBuffer::TransferVertexData(pos);
+	DXConstBuffer::TransferVectorData(pos);
 }
 
 template class VertexObject<VertexData3D>;
@@ -30,7 +30,7 @@ void VertexObject<VertexData3D>::Init(UINT vertexNum) {
 template<>
 void VertexObject<VertexData3D>::Update() {
 
-	TransferVertexData(data);
+	TransferVectorData(data);
 }
 
 template<>
@@ -41,7 +41,7 @@ void VertexObject<VertexData2D>::Init(UINT vertexNum) {
 template<>
 void VertexObject<VertexData2D>::Update() {
 
-	TransferVertexData(data);
+	TransferVectorData(data);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////

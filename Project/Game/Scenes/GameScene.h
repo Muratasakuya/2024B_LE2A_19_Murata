@@ -4,9 +4,9 @@
 //								include
 //===================================================================*/
 #include "Game/Scenes/Methods/IScene.h"
-#include "Game/Editor/RailEditor.h"
-#include "Game/Enetities/Player.h"
-#include "Game/Objects/TestCollisionObject.h"
+
+//* object
+#include "Game/3D/Particle.h"
 
 // c++
 #include <memory>
@@ -37,9 +37,7 @@ private:
 	//							private Methods
 	//===================================================================*/
 
-	std::unique_ptr<RailEditor> railEditor_;
-
-	std::unique_ptr<Player> player_;
+	std::unique_ptr<Particle> particle_;
 
 private:
 	//===================================================================*/

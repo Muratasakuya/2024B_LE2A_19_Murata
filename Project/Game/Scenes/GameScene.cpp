@@ -11,8 +11,8 @@
 
 GameScene::GameScene() {}
 GameScene::~GameScene() {
-	int test = 1;
-	test = 0;
+	int deleteTest = 1;
+	deleteTest = 0;
 }
 
 void GameScene::Run() {
@@ -43,42 +43,28 @@ void GameScene::Run() {
 
 void GameScene::Load() {
 
-	//* player *//
+	NewMoonGame::LoadTexture("uvChecker");
 
-	NewMoonGame::LoadModel("./Resources/Obj", "cube.obj");
-	NewMoonGame::LoadModel("./Resources/Obj", "sphere.obj");
-	NewMoonGame::LoadTexture("white");
-	NewMoonGame::LoadTexture("bulletTargetReticle");
 }
 
 void GameScene::Init() {
 
 	Load();
 
-	railEditor_ = std::make_unique<RailEditor>();
-	railEditor_->Init();
-
-	NewMoonGame::GameCamera()->SetUpRailCamera(railEditor_.get(), { 0.0f,0.0f,3.0f });
-
-	player_ = std::make_unique<Player>();
-	player_->Init();
+	particle_ = std::make_unique<Particle>();
+	particle_->Init();
 
 }
 
 void GameScene::Update() {
 
-	railEditor_->Update();
-
-	player_->SetForward(NewMoonGame::GameCamera()->GetRailCamera()->GetFoward());
-	player_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
+	particle_->Update();
 
 }
 
 void GameScene::Draw() {
 
-	railEditor_->Draw();
-
-	player_->Draw();
+	particle_->Draw(BlendMode::kBlendModeAdd);
 
 }
 
