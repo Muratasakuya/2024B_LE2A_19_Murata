@@ -143,6 +143,7 @@ void SrvManager::Init() {
 void SrvManager::ImGui() {
 
 	ImGui::Text("Srv ViewUseIndex: %d / %d", useIndex_, kMaxSRVCount_);
+  
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
