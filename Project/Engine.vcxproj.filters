@@ -48,9 +48,7 @@
     <ClCompile Include="Lib\Camera\Camera2D.cpp" />
     <ClCompile Include="Game\3D\Model.cpp" />
     <ClCompile Include="Engine\Managers\ModelManager.cpp" />
-    <ClCompile Include="Game\Managers\ParticleManager.cpp" />
     <ClCompile Include="Game\Components\MatrixObject.cpp" />
-    <ClCompile Include="Game\3D\ParticleEmitter.cpp" />
     <ClCompile Include="Engine\Managers\RtvManager.cpp" />
     <ClCompile Include="Lib\Math\Quaternion.cpp" />
     <ClCompile Include="Game\3D\PrimitiveDrawer.cpp" />
@@ -91,7 +89,6 @@
     <ClCompile Include="Game\3D\Triangle.cpp" />
     <ClCompile Include="Game\Components\VertexObject.cpp" />
     <ClCompile Include="Game\3D\Sphere.cpp" />
-    <ClCompile Include="Game\3D\Particle.cpp" />
     <ClCompile Include="Game\Managers\CameraManager.cpp" />
     <ClCompile Include="Game\Managers\LightManager.cpp" />
     <ClCompile Include="Game\Editor\RailEditor.cpp" />
@@ -100,21 +97,22 @@
     <ClCompile Include="Game\3D\Base\BaseModel.cpp" />
     <ClCompile Include="Game\Components\WaveBuffer.cpp" />
     <ClCompile Include="Lib\Camera\RailCamera.cpp" />
-    <ClCompile Include="Game\Enetities\Player.cpp" />
     <ClCompile Include="Game\Scenes\TitleScene.cpp" />
     <ClCompile Include="Game\Components\BaseTransform.cpp" />
     <ClCompile Include="Game\Components\AnimationTransform.cpp" />
     <ClCompile Include="Game\3D\AnimationModel.cpp" />
     <ClCompile Include="Game\3D\Base\BaseGameObject.cpp" />
     <ClCompile Include="Game\Editor\UIEditor.cpp" />
-    <ClCompile Include="Game\Enetities\Rail.cpp" />
     <ClCompile Include="Game\Objects\Skydome.cpp" />
-    <ClCompile Include="Game\Enetities\PlayerBullet.cpp" />
     <ClCompile Include="Game\3D\Base\Collider.cpp" />
     <ClCompile Include="Game\Managers\CollisionManager.cpp" />
     <ClCompile Include="Game\Objects\TestCollisionObject.cpp" />
-    <ClCompile Include="Game\Enetities\Enemy.cpp" />
     <ClCompile Include="Game\Managers\EnemyManager.cpp" />
+    <ClCompile Include="Game\3D\Particle.cpp" />
+    <ClCompile Include="Game\Methods\ParticleSystem.cpp" />
+    <ClCompile Include="Game\Components\ParticleBuffer.cpp" />
+    <ClCompile Include="Lib\Adapter\Random.cpp" />
+    <ClCompile Include="Game\Objects\Rail.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -138,9 +136,7 @@
     <ClInclude Include="Lib\Math\Matrix3x3.h" />
     <ClInclude Include="Game\3D\Model.h" />
     <ClInclude Include="Engine\Managers\ModelManager.h" />
-    <ClInclude Include="Game\Managers\ParticleManager.h" />
     <ClInclude Include="Game\Components\MatrixObject.h" />
-    <ClInclude Include="Game\3D\ParticleEmitter.h" />
     <ClInclude Include="Engine\Managers\RtvManager.h" />
     <ClInclude Include="Lib\Math\Quaternion.h" />
     <ClInclude Include="Game\3D\PrimitiveDrawer.h" />
@@ -181,7 +177,6 @@
     <ClInclude Include="Game\3D\Triangle.h" />
     <ClInclude Include="Game\Components\VertexObject.h" />
     <ClInclude Include="Game\3D\Sphere.h" />
-    <ClInclude Include="Game\3D\Particle.h" />
     <ClInclude Include="Engine\Managers\TextureManager.h" />
     <ClInclude Include="Game\Managers\CameraManager.h" />
     <ClInclude Include="Game\Managers\LightManager.h" />
@@ -192,21 +187,22 @@
     <ClInclude Include="Game\3D\Base\BaseModel.h" />
     <ClInclude Include="Game\Components\WaveBuffer.h" />
     <ClInclude Include="Lib\Camera\RailCamera.h" />
-    <ClInclude Include="Game\Enetities\Player.h" />
     <ClInclude Include="Game\Scenes\TitleScene.h" />
     <ClInclude Include="Game\Components\BaseTransform.h" />
     <ClInclude Include="Game\Components\AnimationTransform.h" />
     <ClInclude Include="Game\3D\AnimationModel.h" />
     <ClInclude Include="Game\3D\Base\BaseGameObject.h" />
     <ClInclude Include="Game\Editor\UIEditor.h" />
-    <ClInclude Include="Game\Enetities\Rail.h" />
     <ClInclude Include="Game\Objects\Skydome.h" />
-    <ClInclude Include="Game\Enetities\PlayerBullet.h" />
     <ClInclude Include="Game\3D\Base\Collider.h" />
     <ClInclude Include="Game\Managers\CollisionManager.h" />
     <ClInclude Include="Game\Objects\TestCollisionObject.h" />
-    <ClInclude Include="Game\Enetities\Enemy.h" />
     <ClInclude Include="Game\Managers\EnemyManager.h" />
+    <ClInclude Include="Game\3D\Particle.h" />
+    <ClInclude Include="Game\Methods\ParticleSystem.h" />
+    <ClInclude Include="Game\Components\ParticleBuffer.h" />
+    <ClInclude Include="Lib\Adapter\Random.h" />
+    <ClInclude Include="Game\Objects\Rail.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

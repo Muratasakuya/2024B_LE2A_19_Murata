@@ -3,31 +3,33 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/3D/Base/BaseGameObject.h"
-
-// c++
-#include <string>
+#include "Engine/MyDirectXClass/DXConstBuffer.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Rail Class
+*							ParticleBuffer Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class Rail :
-	public BaseGameObject {
+class ParticleBuffer :
+	public DXConstBuffer<ParticleForGPU> {
 public:
 	//===================================================================*/
-	//							public Function
+	//							public Functions
 	//===================================================================*/
 
-	Rail() = default;
-	~Rail() = default;
+	ParticleBuffer() = default;
+	~ParticleBuffer() = default;
 
-	void Init(const std::string& modelName, const std::string& textureName);
-	void Update(const Matrix4x4& viewPro);
-	void Draw();
+	// Main
+	void Init(UINT instanceCount);
+	void Update();
+
+	// Getter
+	UINT GetRootParameterIndex() const;
 
 public:
 	//===================================================================*/
-	//							private variable
+	//							public Variable
 	//===================================================================*/
+
+	std::vector<ParticleForGPU> properties;
 
 };

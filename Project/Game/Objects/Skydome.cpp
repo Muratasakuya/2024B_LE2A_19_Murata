@@ -8,10 +8,7 @@
 
 void Skydome::Init() {
 
-	const std::string modelName = "skydome.obj";
-	NewMoonGame::LoadModel("./Resources/Obj/", modelName);
-
-	BaseGameObject::Init(modelName);
+	BaseGameObject::Init("skydome.obj");
 	
 	SetName("skydome");
 }

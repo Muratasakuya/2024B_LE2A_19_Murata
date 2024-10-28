@@ -35,9 +35,10 @@ protected:
 	void CreateConstBuffer(ID3D12Device* device);
 	void CreateVertexBuffer(ID3D12Device* device, UINT vertexCount);
 	void CreateUavVertexBuffer(ID3D12Device* device, UINT vertexCount);
+	void CreateStructuredBuffer(ID3D12Device* device, UINT instanceCount);
 	void CreateIndexBuffer(ID3D12Device* device, UINT indexCount);
 	void TransferData(const T& data);
-	void TransferVertexData(const std::vector<T>& data);
+	void TransferVectorData(const std::vector<T>& data);
 
 private:
 	//===================================================================*/
@@ -151,6 +152,39 @@ void DXConstBuffer<T>::CreateUavVertexBuffer(ID3D12Device* device, UINT vertexCo
 }
 
 template<typename T>
+void DXConstBuffer<T>::CreateStructuredBuffer(ID3D12Device* device, UINT instanceCount) {
+
+	HRESULT hr;
+
+	// 定数バッファーのリソース作成
+	D3D12_HEAP_PROPERTIES heapProps{};
+	heapProps.Type = D3D12_HEAP_TYPE_UPLOAD;
+
+	D3D12_RESOURCE_DESC resourceDesc{};
+	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resourceDesc.Width = sizeof(T) * instanceCount;
+	resourceDesc.Height = 1;
+	resourceDesc.DepthOrArraySize = 1;
+	resourceDesc.MipLevels = 1;
+	resourceDesc.SampleDesc.Count = 1;
+	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	hr = device->CreateCommittedResource(
+		&heapProps,
+		D3D12_HEAP_FLAG_NONE,
+		&resourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&resource_)
+	);
+	assert(SUCCEEDED(hr));
+
+	// マッピング
+	hr = resource_->Map(0, nullptr, reinterpret_cast<void**>(&mappedData_));
+	assert(SUCCEEDED(hr));
+}
+
+template<typename T>
 void DXConstBuffer<T>::CreateIndexBuffer(ID3D12Device* device, UINT indexCount) {
 
 	HRESULT hr;
@@ -183,7 +217,7 @@ void DXConstBuffer<T>::TransferData(const T& data) {
 }
 
 template<typename T>
-void DXConstBuffer<T>::TransferVertexData(const std::vector<T>& data) {
+void DXConstBuffer<T>::TransferVectorData(const std::vector<T>& data) {
 
 	if (mappedData_) {
 

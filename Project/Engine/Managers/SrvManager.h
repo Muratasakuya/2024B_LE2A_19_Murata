@@ -36,6 +36,8 @@ public:
 
 	void Init();
 
+	void ImGui();
+
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandle(uint32_t index);
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle(uint32_t index);
 

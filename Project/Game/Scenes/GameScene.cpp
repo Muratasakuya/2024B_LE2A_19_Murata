@@ -11,8 +11,8 @@
 
 GameScene::GameScene() {}
 GameScene::~GameScene() {
-	int test = 1;
-	test = 0;
+	int deleteTest = 1;
+	deleteTest = 0;
 }
 
 void GameScene::Run() {
@@ -43,20 +43,28 @@ void GameScene::Run() {
 
 void GameScene::Load() {
 
+	NewMoonGame::LoadTexture("uvChecker");
+
 }
 
 void GameScene::Init() {
 
 	Load();
 
+	particle_ = std::make_unique<Particle>();
+	particle_->Init();
+
 }
 
 void GameScene::Update() {
 
+	particle_->Update();
 
 }
 
 void GameScene::Draw() {
+
+	particle_->Draw(BlendMode::kBlendModeAdd);
 
 }
 

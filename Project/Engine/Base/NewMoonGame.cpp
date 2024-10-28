@@ -2,6 +2,7 @@
 
 #include "NewMoon.h"
 #include "Engine/Managers/ImGuiManager.h"
+#include "Engine/Managers/SrvManager.h"
 
 ///===============================================================================
 /// staticメンバ変数初期化
@@ -67,6 +68,7 @@ void NewMoonGame::ImGui() {
 	// Performance情報は常に表示する
 	ImGui::Text("Frame Rate: %.1f fps", ImGui::GetIO().Framerate); // フレームレート情報
 	ImGui::Text("Delta Time: %.3f s", deltaTime_);                 // ΔTime
+	NewMoon::GetSrvManagerPtr()->ImGui();
 
 	if (ImGui::BeginTabBar("Tabs")) {
 

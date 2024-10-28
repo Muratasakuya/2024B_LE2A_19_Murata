@@ -11,5 +11,5 @@ void IndexObject::Init(UINT indexNum) {
 void IndexObject::Update() {
 
 	// 定数バッファにデータを転送
-	TransferVertexData(data);
+	TransferVectorData(data);
 }

@@ -1,42 +1,34 @@
+
 #pragma once
 
 //===================================================================*/
 //								include
 //===================================================================*/
 #include "Game/3D/Base/BaseGameObject.h"
-#include "Game/3D/Base/Collider.h"
+
+// c++
+#include <string>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Enemy Class
+*								Rail Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class Enemy
-	:public BaseGameObject, public Collider {
+class Rail :
+	public BaseGameObject {
 public:
 	//===================================================================*/
-	//							public Methods
+	//							public Function
 	//===================================================================*/
 
-	Enemy() = default;
-	~Enemy() = default;
+	Rail() = default;
+	~Rail() = default;
 
-	void Init();
-
+	void Init(const std::string& modelName, const std::string& textureName);
 	void Update(const Matrix4x4& viewPro);
-
 	void Draw();
 
-	//* collision *//
-
-	void OnCollisionEnter(Collider* collider) override;
-
-	// Getter
-	bool IsAlive() const;
-
-private:
+public:
 	//===================================================================*/
-	//							private Methods
+	//							private variable
 	//===================================================================*/
-
-	bool isAlive_;                   //* 生存フラグ
 
 };
