@@ -29,9 +29,9 @@ void PlayerBullet::Init(const Vector3& pos, const Vector3& velocity, const Vecto
 	Collider::SetCollisionShapeSphere({ .radius = {1.0f * kInitScale + 0.1f} });
 
 	Collider::type_ = ColliderType::Type_PlayerBullet;
-	Collider::targetType_ = ColliderType::Type_Test;
+	Collider::targetType_ = ColliderType::Type_Enemy;
 
-	Collider::centerPos_ = transform_.GetWorldPos();
+	Collider::centerPos_ = transform_.translation;
 
 }
 
@@ -44,7 +44,7 @@ void PlayerBullet::Update(const Matrix4x4& viewPro) {
 
 		// playerClass -> remove_if(delete)
 		isAlive_ = false;
-		 NewMoonGame::RemoveCollider(this);
+		NewMoonGame::RemoveCollider(this);
 	}
 
 	Collider::centerPos_ = transform_.translation;
@@ -59,11 +59,14 @@ void PlayerBullet::Draw() {
 
 void PlayerBullet::OnCollisionEnter(Collider* collider) {
 
-	if (collider->GetType() == ColliderType::Type_Test) {
+	if (collider->GetType() == ColliderType::Type_Enemy) {
+
+		isAlive_ = false;
+		NewMoonGame::RemoveCollider(this);
 	}
 }
 
-bool PlayerBullet::IsAlive() {
+bool PlayerBullet::IsAlive() const {
 
 	return isAlive_;
 }

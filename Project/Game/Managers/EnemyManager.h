@@ -3,51 +3,35 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
-#include "Game/Editor/RailEditor.h"
-#include "Game/Enetities/Player.h"
-#include "Game/Objects/TestCollisionObject.h"
+#include "Game/Enetities/Enemy.h"
 
 // c++
 #include <memory>
+#include <list>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								GameScene Class
+*							EnemyManager Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class GameScene :
-	public IScene {
+class EnemyManager {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	GameScene();
-	~GameScene();
+	EnemyManager() = default;
+	~EnemyManager() = default;
 
-	void Run() override;
+	void Init();
 
-	void Init() override;
-
-	void Update() override;
-
-	void Cleanup() override;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	std::unique_ptr<RailEditor> railEditor_;
-
-	std::unique_ptr<Player> player_;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	void Load();
+	void Update();
 
 	void Draw();
+
+private:
+	//===================================================================*/
+	//							private Methods
+	//===================================================================*/
+
+	std::list<std::unique_ptr<Enemy>> enemies_;
 
 };

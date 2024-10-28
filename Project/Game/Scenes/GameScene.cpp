@@ -63,21 +63,14 @@ void GameScene::Init() {
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
-	collisionObject_ = std::make_unique<TestCollisionObject>();
-	collisionObject_->Init();
-
 }
 
 void GameScene::Update() {
-
-	//NewMoonGame::DrawGrid();
 
 	railEditor_->Update();
 
 	player_->SetForward(NewMoonGame::GameCamera()->GetRailCamera()->GetFoward());
 	player_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
-
-	collisionObject_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 
 }
 
@@ -86,8 +79,6 @@ void GameScene::Draw() {
 	railEditor_->Draw();
 
 	player_->Draw();
-
-	collisionObject_->Draw();
 
 }
 

@@ -30,7 +30,7 @@ public:
 	void OnCollisionEnter(Collider* collider) override;
 
 	// Getter
-	bool IsAlive();
+	bool IsAlive() const ;
 
 private:
 	//===================================================================*/
