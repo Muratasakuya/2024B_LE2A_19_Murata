@@ -11,6 +11,7 @@
 #include "Game/Managers/LightManager.h"
 #include "Game/3D/PrimitiveDrawer.h"
 #include "Game/3D/Base/BaseGameObject.h"
+#include "Game/Managers/CollisionManager.h"
 #include "Game/Editor/RailEditor.h"
 #include "Game/Editor/UIEditor.h"
 
@@ -84,6 +85,13 @@ public:
 	static void SkinClusterUpdate(const std::string& animationName);
 
 	///===================================================================
+	// Collision
+
+	static void AddCollider(Collider* collider);
+	static void RemoveCollider(Collider* collider);
+	static void ClearAllColliders();
+
+	///===================================================================
 	// Draw
 
 	static void DrawLine2D(const Vector2& pointA, const Vector2& pointB, const LineColor& color);
@@ -129,6 +137,8 @@ private:
 	static std::unique_ptr<PrimitiveDrawer> lineDrawer3D_;
 
 	static std::vector<BaseGameObject*> gameObjects_;
+
+	static std::unique_ptr<CollisionManager> collisionManager_;
 
 	static RailEditor* railEditor_;
 	static std::unique_ptr<UIEditor> uiEditor_;

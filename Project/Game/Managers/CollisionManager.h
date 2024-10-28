@@ -9,6 +9,7 @@
 #include <list>
 #include <utility>
 #include <unordered_set>
+#include <algorithm>
 
 /*////////////////////////////////////////////////////////////////////////////////
 *							CollisionManager Class
@@ -23,6 +24,8 @@ public:
 	~CollisionManager() = default;
 
 	void AddCollider(Collider* collider);
+	void RemoveCollider(Collider* collider);
+	void ClearAllColliders();
 
 	void UpdateAllCollisions();
 
@@ -42,14 +45,25 @@ private:
 	std::list<Collider*> colliders_;
 	std::unordered_set<std::pair<Collider*, Collider*>, pair_hash> preCollisions_;
 
-private:
 	//===================================================================*/
 	//						  collision Methods
 	//===================================================================*/
 
 	bool IsColliding(Collider* colliderA, Collider* colliderB);
 
-	// やること
-	// タイプに応じて関数を分けて衝突判定を取る。
+	bool SphereToSphere(const CollisionShapes::Sphere& sphereA, const CollisionShapes::Sphere& sphereB,
+		const Vector3& centerA, const Vector3& centerB);
+
+	bool SphereToAABB(const CollisionShapes::Sphere& sphere, const CollisionShapes::AABB& aabb,
+		const Vector3& sphereCenter, const Vector3& aabbCenter);
+
+	bool SphereToOBB(const CollisionShapes::Sphere& sphere, const CollisionShapes::OBB& obb,
+		const Vector3& sphereCenter, const Vector3& obbCenter);
+
+	bool AABBToAABB(const CollisionShapes::AABB& aabbA, const CollisionShapes::AABB& aabbB);
+
+	bool AABBToOBB(const CollisionShapes::AABB& aabb, const CollisionShapes::OBB& obb);
+
+	bool OBBToOBB(const CollisionShapes::OBB& obbA, const CollisionShapes::OBB& obbB);
 
 };

@@ -17,6 +17,7 @@ std::unique_ptr<LightManager> NewMoonGame::lightManager_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer2D_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
 std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
+std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
 RailEditor* NewMoonGame::railEditor_ = nullptr;
 std::unique_ptr<UIEditor> NewMoonGame::uiEditor_ = nullptr;
 #pragma endregion
@@ -51,6 +52,8 @@ void NewMoonGame::Init() {
 
 	lineDrawer3D_ = std::make_unique<PrimitiveDrawer>();
 	lineDrawer3D_->Init(cameraManager_->GetCamera3D()->GetViewProBuffer());
+
+	collisionManager_ = std::make_unique<CollisionManager>();
 
 	/*uiEditor_ = std::make_unique<UIEditor>();
 	uiEditor_->Init();*/
@@ -125,6 +128,8 @@ void NewMoonGame::Update() {
 	lightManager_->Update();
 	lineDrawer2D_->Update();
 	lineDrawer3D_->Update();
+
+	collisionManager_->UpdateAllCollisions();
 
 	//uiEditor_->Update();
 }
@@ -263,6 +268,21 @@ void NewMoonGame::ApplyAnimation(const std::string& animationName, float animati
 
 void NewMoonGame::SkinClusterUpdate(const std::string& animationName) {
 	modelManager_->SkinClusterUpdate(animationName);
+}
+
+///===================================================================
+// Collision
+
+void NewMoonGame::AddCollider(Collider* collider) {
+	collisionManager_->AddCollider(collider);
+}
+
+void NewMoonGame::RemoveCollider(Collider* collider) {
+	collisionManager_->RemoveCollider(collider);
+}
+
+void NewMoonGame::ClearAllColliders() {
+	collisionManager_->ClearAllColliders();
 }
 
 ///===================================================================

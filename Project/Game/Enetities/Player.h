@@ -4,6 +4,7 @@
 //								include
 //===================================================================*/
 #include "Game/3D/Base/BaseGameObject.h"
+#include "Game/3D/Base/Collider.h"
 
 //* bullet
 #include "Game/Enetities/PlayerBullet.h"

@@ -9,11 +9,12 @@
 #include <optional>
 
 //===================================================================*/
-//							ColliderTypeId
+//							  ColliderType
 //===================================================================*/
 enum class ColliderType {
 
 	Type_None,
+	Type_Test,
 	Type_PlayerBullet,
 	Type_Enemy,
 };
@@ -30,11 +31,11 @@ public:
 	Collider() = default;
 	virtual ~Collider() = default;
 
-	virtual void OnCollisionEnter(Collider* other) {};
+	virtual void OnCollisionEnter([[maybe_unused]] Collider* other) {};
 
-	virtual void OnCollisionStay(Collider* other) {};
+	virtual void OnCollisionStay([[maybe_unused]] Collider* other) {};
 
-	virtual void OnCollisionExit(Collider* other) {};
+	virtual void OnCollisionExit([[maybe_unused]] Collider* other) {};
 
 	// Setter
 	void SetCollisionShapeSphere(const CollisionShapes::Sphere& sphere = CollisionShapes::Sphere::Default());
@@ -44,7 +45,10 @@ public:
 	void SetCollisionShapeOBB(const CollisionShapes::OBB& obb = CollisionShapes::OBB::Default());
 
 	// Getter
+	Vector3 GetCenterPos() const { return centerPos_; }
+
 	ColliderType GetType() const { return type_; }
+	ColliderType GetTargetType() const { return targetType_; }
 
 	CollisionShapes::Shapes GetCollisionShape() const { return shape_.value(); }
 
@@ -55,11 +59,11 @@ protected:
 	//							protected Methods
 	//===================================================================*/
 
-	ColliderType type_;      //* 自身のタイプ
-	ColliderType targetType; //* 衝突相手のタイプ
+	Vector3 centerPos_; //* 衝突判定用中心座標
 
-	//* 何も設定されていない状態でCollisionManagerにセットされていた場合、
-	//* -> Sphere(Default)で衝突判定を取る
+	ColliderType type_;       //* 自身のタイプ
+	ColliderType targetType_; //* 衝突相手のタイプ
+
 	std::optional<CollisionShapes::Shapes> shape_ = std::nullopt; //* 衝突判定を行う形状
 	std::optional<ShapeType> shapeType_ = std::nullopt;           //* 衝突判定を行う形状のタイプ
 

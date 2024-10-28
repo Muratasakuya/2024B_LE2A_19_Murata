@@ -112,6 +112,7 @@
     <ClCompile Include="Game\Enetities\PlayerBullet.cpp" />
     <ClCompile Include="Game\3D\Base\Collider.cpp" />
     <ClCompile Include="Game\Managers\CollisionManager.cpp" />
+    <ClCompile Include="Game\Objects\TestCollisionObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Game\Enetities\PlayerBullet.h" />
     <ClInclude Include="Game\3D\Base\Collider.h" />
     <ClInclude Include="Game\Managers\CollisionManager.h" />
+    <ClInclude Include="Game\Objects\TestCollisionObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

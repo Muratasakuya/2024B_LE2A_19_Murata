@@ -6,6 +6,7 @@
 #include "Game/Scenes/Methods/IScene.h"
 #include "Game/Editor/RailEditor.h"
 #include "Game/Enetities/Player.h"
+#include "Game/Objects/TestCollisionObject.h"
 
 // c++
 #include <memory>
@@ -39,6 +40,8 @@ private:
 	std::unique_ptr<RailEditor> railEditor_;
 
 	std::unique_ptr<Player> player_;
+
+	std::unique_ptr<TestCollisionObject> collisionObject_;
 
 private:
 	//===================================================================*/
