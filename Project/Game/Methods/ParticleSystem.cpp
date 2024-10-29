@@ -9,50 +9,39 @@
 *							ParticleSystem classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
 
-void ParticleSystem::CreateVertexData() {
+void ParticleSystem::CreateVertexData(const std::string& name) {
 
-	// 左下
-	vertexDataArr_[0] =
-	{ .pos = {1.0f,-1.0f,0.0f,1.0f},.texcoord = {0.0f,1.0f},.normal = {0.0f,0.0f,1.0f} };
-	// 左上
-	vertexDataArr_[1] =
-	{ .pos = {1.0f,1.0f,0.0f,1.0f},.texcoord = {0.0f,0.0f},.normal = {0.0f,0.0f,1.0f} };
-	// 右下
-	vertexDataArr_[2] =
-	{ .pos = {-1.0f,-1.0f,0.0f,1.0f},.texcoord = {1.0f,1.0f},.normal = {0.0f,0.0f,1.0f} };
-	// 右上
-	vertexDataArr_[3] =
-	{ .pos = {-1.0f,1.0f,0.0f,1.0f},.texcoord = {1.0f,0.0f},.normal = {0.0f,0.0f,1.0f} };
+	size_t meshNum = particleGroups_[name].model.data.meshes.size();
 
-	// ConstBuffer初期化
-	vertex_.Init(static_cast<UINT>(kParticleModelVertexNum));
-	index_.Init(static_cast<UINT>(kParticleModelIndexNum));
+	particleGroups_[name].model.vertices.resize(meshNum);
+	particleGroups_[name].model.indices.resize(meshNum);
 
-	vertex_.data.resize(kParticleModelVertexNum);
-	std::copy(vertexDataArr_.begin(), vertexDataArr_.end(), vertex_.data.begin());
+	for (uint32_t index = 0; index < meshNum; ++index) {
 
-	// Indexの設定
-	index_.data.resize(kParticleModelIndexNum);
-	index_.data[0] = 0;
-	index_.data[1] = 1;
-	index_.data[2] = 2;
-	index_.data[3] = 1;
-	index_.data[4] = 3;
-	index_.data[5] = 2;
+		particleGroups_[name].model.vertices[index].Init(static_cast<UINT>(particleGroups_[name].model.data.meshes[index].vertices.size()));
+		particleGroups_[name].model.indices[index].Init(static_cast<UINT>(particleGroups_[name].model.data.meshes[index].indices.size()));
 
-	// ConstBuffer転送
-	vertex_.Update();
-	index_.Update();
-}
+		particleGroups_[name].model.vertices[index].data.resize(particleGroups_[name].model.data.meshes[index].vertices.size());
+		std::copy(
+			particleGroups_[name].model.data.meshes[index].vertices.begin(),
+			particleGroups_[name].model.data.meshes[index].vertices.end(),
+			particleGroups_[name].model.vertices[index].data.begin());
 
-void ParticleSystem::Init() {
+		particleGroups_[name].model.indices[index].data.resize(particleGroups_[name].model.data.meshes[index].indices.size());
+		std::copy(
+			particleGroups_[name].model.data.meshes[index].indices.begin(),
+			particleGroups_[name].model.data.meshes[index].indices.end(),
+			particleGroups_[name].model.indices[index].data.begin());
 
-	CreateVertexData();
+		// 転送
+		particleGroups_[name].model.vertices[index].Update();
+		particleGroups_[name].model.indices[index].Update();
+	}
+
 }
 
 void ParticleSystem::Update() {
 
-	// ビルボード行列の計算
 	Matrix4x4 backToFrontMatrix = Matrix4x4::MakeYawMatrix(std::numbers::pi_v<float>);
 	Matrix4x4 billboardMatrix =
 		Matrix4x4::Multiply(backToFrontMatrix, NewMoonGame::GameCamera()->GetCamera3D()->GetCameraMatrix());
@@ -80,8 +69,13 @@ void ParticleSystem::Update() {
 					it->velocity.z* NewMoonGame::GetDeltaTime()
 			};
 
-			it->transform.scale =
-				Vector3(1.0f - (it->currentTime / it->lifeTime), 1.0f - (it->currentTime / it->lifeTime), 1.0f - (it->currentTime / it->lifeTime));
+			if (group.type_ == ParticleType::Dispersion) {
+
+				it->transform.scale.SetInit(1.0f - (it->currentTime / it->lifeTime));
+			} else if (group.type_ == ParticleType::Chase) {
+
+				it->transform.scale.SetInit(std::clamp(it->currentTime / it->lifeTime, 0.0f, 0.15f));
+			}
 
 			// deltaTime++
 			it->currentTime += NewMoonGame::GetDeltaTime();
@@ -94,7 +88,6 @@ void ParticleSystem::Update() {
 			// wvp
 			Matrix4x4 wvpMatrix = worldMatrix * NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix();
 
-			// どんどん薄くしていくなら
 			float alpha = 1.0f - (it->currentTime / it->lifeTime);
 
 			int index = static_cast<uint32_t>(std::distance(particles.begin(), it));
@@ -115,21 +108,83 @@ void ParticleSystem::Update() {
 
 }
 
-void ParticleSystem::Draw(const std::string& name, const std::string& textureName, BlendMode blendMode) {
+void ParticleSystem::Draw(const std::string& name, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
 
-	NewMoon::SetGraphicsPipeline(commandList, pParticle, blendMode);
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	commandList->IASetVertexBuffers(0, 1, &vertex_.GetVertexBuffer());
-	commandList->IASetIndexBuffer(&index_.GetIndexBuffer());
-	particleGroups_[name].particleBuffer.SetCommand(commandList, particleGroups_[name].particleBuffer.GetRootParameterIndex());
-	NewMoon::SetGraphicsRootDescriptorTable(commandList, 1, textureName);
-	commandList->SetGraphicsRootDescriptorTable(2, NewMoon::GetSrvManagerPtr()->GetGPUHandle(particleGroups_[name].instancingSrvIndex));
-	commandList->DrawIndexedInstanced(static_cast<UINT>(index_.data.size()), particleGroups_[name].numInstance, 0, 0, 0);
+	for (uint32_t index = 0; index < particleGroups_[name].model.data.meshes.size(); ++index) {
+
+		NewMoon::SetGraphicsPipeline(commandList, pParticle, blendMode);
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		commandList->IASetVertexBuffers(0, 1, &particleGroups_[name].model.vertices[index].GetVertexBuffer());
+		commandList->IASetIndexBuffer(&particleGroups_[name].model.indices[index].GetIndexBuffer());
+		particleGroups_[name].particleBuffer.SetCommand(commandList, particleGroups_[name].particleBuffer.GetRootParameterIndex());
+		NewMoon::SetGraphicsRootDescriptorTable(commandList, 1, particleGroups_[name].model.data.meshes[index].material.textureName.value());
+		commandList->SetGraphicsRootDescriptorTable(2, NewMoon::GetSrvManagerPtr()->GetGPUHandle(particleGroups_[name].instancingSrvIndex));
+		commandList->DrawIndexedInstanced(static_cast<UINT>(particleGroups_[name].model.indices[index].data.size()), particleGroups_[name].numInstance, 0, 0, 0);
+	}
 }
 
-void ParticleSystem::Emit(const std::string name, const Vector3& pos, uint32_t count) {
+void ParticleSystem::CreateDispersionParticle(
+	const std::string& modelName,
+	const std::string& name, const Vector3& centerPos, uint32_t emitCount,
+	std::optional<float> speed, std::optional<float> lifeTime, const std::optional<Vector4>& color) {
+
+	assert(particleGroups_.find(name) == particleGroups_.end() && "Particle group with this name already exists");
+
+	ParticleGroup newGroup;
+	for (uint32_t index = 0; index < emitCount; ++index) {
+
+		ParticleData particle{};
+
+		// 固定
+		particle.transform.scale.SetInit(1.0f);
+		particle.transform.rotate.SetInit(0.0f);
+		particle.currentTime = 0.0f;
+
+		particle.transform.translate = centerPos;
+
+		if (!speed) {
+
+			particle.velocity =
+				Vector3(Random::Generate(-1.0f, 1.0f), Random::Generate(-1.0f, 1.0f), Random::Generate(-1.0f, 1.0f));
+		} else {
+
+			particle.velocity =
+				Vector3(Random::Generate(
+					-speed.value(), speed.value()), Random::Generate(-speed.value(),
+						speed.value()), Random::Generate(-speed.value(), speed.value())
+				);
+		}
+
+		particle.color =
+			color.value_or(Vector4(Random::Generate(0.0f, 1.0f), Random::Generate(0.0f, 1.0f), Random::Generate(0.0f, 1.0f), 1.0f));
+
+		particle.lifeTime = lifeTime.value_or(Random::Generate(1.0f, 3.0f));
+
+		newGroup.particles.push_back(particle);
+	}
+
+	particleGroups_[name].type_ = ParticleType::Dispersion;
+
+	//!! alreadyLoadModel !!//
+	particleGroups_[name].model.data = NewMoonGame::GetModelMangager()->GetModelData(modelName);
+	CreateVertexData(name);
+
+	//* CreateStructureBuffer *//
+	particleGroups_[name].srvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
+	particleGroups_[name].numInstance = instanceMaxCount_;
+	particleGroups_[name].particleBuffer.Init(particleGroups_[name].numInstance);
+	particleGroups_[name].instancingSrvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
+	NewMoon::GetSrvManagerPtr()->CreateSRVForStructureBuffer(
+		particleGroups_[name].instancingSrvIndex, particleGroups_[name].particleBuffer.GetResource(),
+		particleGroups_[name].numInstance, sizeof(ParticleForGPU));
+
+}
+
+void ParticleSystem::EmitDispersionParticle(
+	const std::string& name, const Vector3& centerPos, uint32_t emitCount,
+	std::optional<float> speed, std::optional<float> lifeTime, const std::optional<Vector4>& color) {
 
 	// 既存のパーティクルグループを検索
 	auto it = particleGroups_.find(name);
@@ -137,67 +192,152 @@ void ParticleSystem::Emit(const std::string name, const Vector3& pos, uint32_t c
 
 		ParticleGroup& group = it->second;
 
-		for (uint32_t i = 0; i < count; i++) {
+		group.type_ = ParticleType::Dispersion;
 
-			ParticleData particle;
+		for (uint32_t index = 0; index < emitCount; ++index) {
 
-			particle.transform.translate = pos;
+			ParticleData particle{};
 
+			// 固定
 			particle.transform.scale.SetInit(1.0f);
+			particle.transform.rotate.SetInit(0.0f);
+			particle.currentTime = 0.0f;
 
-			particle.transform.rotate = { 1.0f, 1.0f, 1.0f };
+			particle.transform.translate = centerPos;
 
-			particle.velocity =
-			{ Random::Generate(-1.5f,1.5f), Random::Generate(-1.5f,1.5f), Random::Generate(-1.5f,1.5f) };
+			if (!speed) {
+
+				particle.velocity =
+					Vector3(Random::Generate(-1.0f, 1.0f), Random::Generate(-1.0f, 1.0f), Random::Generate(-1.0f, 1.0f));
+			} else {
+
+				particle.velocity =
+					Vector3(Random::Generate(
+						-speed.value(), speed.value()), Random::Generate(-speed.value(),
+							speed.value()), Random::Generate(-speed.value(), speed.value())
+					);
+			}
 
 			particle.color =
-			{ Random::Generate(0.0f,1.0f), Random::Generate(0.0f,1.0f), Random::Generate(0.0f,1.0f),1.0f };
+				color.value_or(Vector4(Random::Generate(0.0f, 1.0f), Random::Generate(0.0f, 1.0f), Random::Generate(0.0f, 1.0f), 1.0f));
 
-			particle.lifeTime = Random::Generate(0.5f, 2.0f);
-			particle.currentTime = 0.0f;
+			particle.lifeTime = lifeTime.value_or(Random::Generate(1.0f, 3.0f));
 
 			group.particles.push_back(particle);
 		}
 	}
 }
 
-void ParticleSystem::CreateParticleGroup(const Vector3& pos, const std::string name, const std::string& textureName, uint32_t count) {
+void ParticleSystem::CreateChaseParticle(
+	const std::string& modelName, const std::string& name,
+	const Vector3& currentPos, const Vector3& prePos, uint32_t emitCount,
+	std::optional<float> speed, std::optional<float> lifeTime, const std::optional<Vector4>& color) {
 
 	assert(particleGroups_.find(name) == particleGroups_.end() && "Particle group with this name already exists");
 
 	ParticleGroup newGroup;
-	for (uint32_t i = 0; i < count; i++) {
+	for (uint32_t index = 0; index < emitCount; ++index) {
 
-		ParticleData particle;
+		ParticleData particle{};
 
-		particle.transform.translate = pos;
+		// 固定
+		particle.transform.scale.Init();
+		particle.transform.rotate.SetInit(0.0f);
+		particle.currentTime = 0.0f;
+		particle.easedT_ = std::nullopt;
 
-		particle.transform.scale.SetInit(1.0f);
+		particle.transform.translate = currentPos;
 
-		particle.transform.rotate = { 1.0f, 1.0f, 1.0f };
+		Vector3 direction = Vector3::Normalize(currentPos - prePos);
 
-		particle.velocity =
-		{ Random::Generate(-1.5f,1.5f), Random::Generate(-1.5f,1.5f), Random::Generate(-1.5f,1.5f) };
+		Vector3 randomOffset{};
+		randomOffset.SetInit(Random::Generate(-0.4f, 0.4f));
+		randomOffset.z = 0.0f;
+		Vector3 spreadDirection = Vector3::Normalize(direction + randomOffset);
+
+		if (!speed) {
+
+			particle.velocity = Random::Generate(0.4f, 0.8f) * spreadDirection;
+		} else {
+
+			particle.velocity = speed.value() * spreadDirection;
+		}
 
 		particle.color =
-		{ Random::Generate(0.0f,1.0f), Random::Generate(0.0f,1.0f), Random::Generate(0.0f,1.0f),1.0f };
+			color.value_or(Vector4(Random::Generate(0.0f, 1.0f), Random::Generate(0.0f, 1.0f), Random::Generate(0.0f, 1.0f), 1.0f));
 
-		particle.lifeTime = Random::Generate(0.5f, 2.0f);
-		particle.currentTime = 0.0f;
+		particle.lifeTime = lifeTime.value_or(Random::Generate(1.0f, 2.0f));
 
 		newGroup.particles.push_back(particle);
 	}
-	particleGroups_[name] = newGroup;
 
-	//!! alreadyLoadTexture !!//
-	particleGroups_[name].material.textureName = textureName;
+	particleGroups_[name].type_ = ParticleType::Chase;
+	particleGroups_[name].easingType_ = EasingType::EaseOutQuart;
+
+	//!! alreadyLoadModel !!//
+	particleGroups_[name].model.data = NewMoonGame::GetModelMangager()->GetModelData(modelName);
+	CreateVertexData(name);
 
 	//* CreateStructureBuffer *//
-	particleGroups_[name].material.srvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
+	particleGroups_[name].srvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
 	particleGroups_[name].numInstance = instanceMaxCount_;
 	particleGroups_[name].particleBuffer.Init(particleGroups_[name].numInstance);
 	particleGroups_[name].instancingSrvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
 	NewMoon::GetSrvManagerPtr()->CreateSRVForStructureBuffer(
 		particleGroups_[name].instancingSrvIndex, particleGroups_[name].particleBuffer.GetResource(),
 		particleGroups_[name].numInstance, sizeof(ParticleForGPU));
+}
+
+void ParticleSystem::EmitChaseParticle(
+	const std::string& name, const Vector3& currentPos, const Vector3& prePos, uint32_t emitCount,
+	std::optional<float> speed, std::optional<float> lifeTime, const std::optional<Vector4>& color) {
+
+	// 既存のパーティクルグループを検索
+	auto it = particleGroups_.find(name);
+	if (it != particleGroups_.end()) {
+
+		ParticleGroup& group = it->second;
+
+		group.type_ = ParticleType::Chase;
+		group.easingType_ = EasingType::EaseOutQuart;
+
+		for (uint32_t index = 0; index < emitCount; ++index) {
+
+			ParticleData particle{};
+
+			// 固定
+			particle.transform.scale.Init();
+			particle.transform.rotate.SetInit(0.0f);
+			particle.currentTime = 0.0f;
+			particle.easedT_ = std::nullopt;
+
+			particle.transform.translate = currentPos;
+
+			Vector3 direction = Vector3::Normalize(currentPos - prePos);
+
+			Vector3 randomOffset{};
+			randomOffset.SetInit(Random::Generate(-0.4f, 0.4f));
+			randomOffset.z = 0.0f;
+			Vector3 spreadDirection = Vector3::Normalize(direction + randomOffset);
+
+			if (!speed) {
+
+				particle.velocity = Random::Generate(0.4f, 0.8f) * spreadDirection;
+			} else {
+
+				particle.velocity = speed.value() * spreadDirection;
+			}
+
+			particle.color =
+				color.value_or(Vector4(Random::Generate(0.0f, 1.0f), Random::Generate(0.0f, 1.0f), Random::Generate(0.0f, 1.0f), 1.0f));
+
+			particle.lifeTime = lifeTime.value_or(Random::Generate(1.0f, 2.0f));
+
+			if (currentPos == prePos) {
+				particle.lifeTime = 0.0f;
+			}
+
+			group.particles.push_back(particle);
+		}
+	}
 }

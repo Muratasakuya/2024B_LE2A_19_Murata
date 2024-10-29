@@ -276,22 +276,19 @@ struct ParticleForGPU {
 	Matrix4x4 WVP;
 	Vector4 color;
 };
-struct ParticleMaterialData {
-
-	std::string textureName;
-	uint32_t srvIndex;
-};
 struct ParticleData {
 
 	Transform3D transform;
 	Vector3 velocity;
 	Vector4 color;
 	float lifeTime;
+	std::optional<float> easedT_;
 	float currentTime;
 };
 struct Emitter {
 
 	Transform3D transform; // SRT
+	Vector3 prePos_;       // 前座標
 	Vector4 color;         // 色
 	uint32_t count;        // 個数
 	float frequency;       // ~秒置き、発生頻度

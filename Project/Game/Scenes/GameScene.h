@@ -37,7 +37,7 @@ private:
 	//							private Methods
 	//===================================================================*/
 
-	std::unique_ptr<Particle> particle_;
+	const std::string& baseModelDirectory_ = "./Resources/Obj";
 
 private:
 	//===================================================================*/

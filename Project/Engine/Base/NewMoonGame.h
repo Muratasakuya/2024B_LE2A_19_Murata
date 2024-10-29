@@ -12,7 +12,6 @@
 #include "Game/3D/PrimitiveDrawer.h"
 #include "Game/3D/Base/BaseGameObject.h"
 #include "Game/Managers/CollisionManager.h"
-#include "Game/Editor/RailEditor.h"
 #include "Game/Editor/UIEditor.h"
 
 // c++
@@ -67,6 +66,7 @@ public:
 	static bool PushMouseRight();                                 // 右マウスの入力判定
 	static bool PushMouseCenter();                                // マウスホイールの入力判定
 	static Vector2 GetMousePos();                                 // マウスカーソル座標の取得
+	static Vector2 GetMousePrePos();                              // マウスカーソル前座標の取得
 	static float GetMouseWheel();                                 // マウスホイールの値の取得
 	static void InputInformation();                               // Input情報表示
 
@@ -105,8 +105,6 @@ public:
 
 	static void SetToImGui(BaseGameObject* gameObject);
 
-	static void SetToEditor(RailEditor* railEditor);
-
 	///===================================================================
 	// Getter
 
@@ -140,7 +138,6 @@ private:
 
 	static std::unique_ptr<CollisionManager> collisionManager_;
 
-	static RailEditor* railEditor_;
 	static std::unique_ptr<UIEditor> uiEditor_;
 
 	static void ImGui();

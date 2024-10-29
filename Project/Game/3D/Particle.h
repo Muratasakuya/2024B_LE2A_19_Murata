@@ -39,6 +39,6 @@ private:
 
 	Emitter emitter_;
 
-	std::unique_ptr<ParticleSystem> system_;
+	std::unique_ptr<ParticleSystem> particleSystem_;
 
 };
