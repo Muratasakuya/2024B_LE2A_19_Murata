@@ -115,7 +115,7 @@ void WinApp::CreateMainWindow(uint32_t width, uint32_t height) {
 	// ウィンドウの生成
 	hwnd_ = CreateWindow(
 		L"WindowClass",             // 利用するクラス名
-		L"TD2_2",                   // タイトルバーの文字
+		L"Engine",                  // タイトルバーの文字
 		windowStyle_,               // よく見るウィンドウスタイル
 		CW_USEDEFAULT,              // 表示X座標(Windowsに任せる)
 		CW_USEDEFAULT,              // 表示Y座標(Windowsに任せる)
