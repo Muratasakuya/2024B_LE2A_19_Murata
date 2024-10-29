@@ -21,3 +21,13 @@ void BaseTransform::SetCommand() {
 
 	DXConstBuffer::SetCommand(commandList, rootParameterIndex_);
 }
+
+Vector3 BaseTransform::GetWorldPos() const {
+
+	Vector3 worldPos{};
+	worldPos.x = matrix.World.m[3][0];
+	worldPos.y = matrix.World.m[3][1];
+	worldPos.z = matrix.World.m[3][2];
+
+	return worldPos;
+}

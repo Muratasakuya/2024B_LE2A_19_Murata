@@ -4,8 +4,9 @@
 //								include
 //===================================================================*/
 #include "Game/Scenes/Methods/IScene.h"
-#include "Game/Editor/RailEditor.h"
-#include "Game/Enetities/Player.h"
+
+//* object
+#include "Game/3D/Particle.h"
 
 // c++
 #include <memory>
@@ -36,16 +37,15 @@ private:
 	//							private Methods
 	//===================================================================*/
 
-	std::unique_ptr<RailEditor> railEditor_;
-
-	std::unique_ptr<Player> player_;
+	const std::string& baseModelDirectory_ = "./Resources/Obj";
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	void BackDraw();  // 背景
-	void FrontDraw(); // 前景
+	void Load();
+
+	void Draw();
 
 };

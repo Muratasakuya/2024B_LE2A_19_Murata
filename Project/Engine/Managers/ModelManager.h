@@ -33,14 +33,6 @@ class SrvManager;
 *							ModelManager Class
 ////////////////////////////////////////////////////////////////////////////////*/
 class ModelManager {
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	// 四角形の頂点数
-	static const uint32_t kQuadVertexNum = 4;
-
 public:
 	//===================================================================*/
 	//							public Functions
@@ -54,8 +46,8 @@ public:
 	void LoadModel(const std::string& directoryPath, const std::string& modelName);
 	void LoadAniamation(const std::string& directoryPath, const std::string& animationName, const std::string& modelName);
 
-	void MakeQuadModel(const std::string& modelName, uint32_t id,
-		const std::array<VertexData3D, kQuadVertexNum> vertexData);
+	void MakeRailModel(const std::string& modelName, uint32_t id,
+		const std::vector<VertexData3D>& vertexData);
 
 	void SkeletonUpdate(const std::string& animationName);
 	void ApplyAnimation(const std::string& animationName, float animationTime);

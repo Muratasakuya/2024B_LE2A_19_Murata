@@ -51,6 +51,9 @@ public:
 
 	virtual void Init(const std::string& modelName);
 
+	// Setter
+	void SetPipelineType(const PipelineType& pipelineType);
+
 protected:
 	//===================================================================*/
 	//							protected Methods
@@ -59,6 +62,7 @@ protected:
 	size_t meshNum_;
 	ModelData modelData_;
 	PipelineType pipelineType_;
+	std::optional<PipelineType> setPipelineType_;
 
 	InputAssembler inputAssembler_;
 

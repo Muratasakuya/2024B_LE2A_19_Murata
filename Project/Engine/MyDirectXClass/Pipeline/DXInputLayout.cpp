@@ -34,7 +34,7 @@ void DXInputLayout::Create(PipelineType pipelineType) {
 		inputLayoutDesc_[pipelineType] = {};
 		inputLayoutDesc_[pipelineType].pInputElementDescs = inputElementDescs;
 		inputLayoutDesc_[pipelineType].NumElements = _countof(inputElementDescs);
-	} else if (pipelineType == pObject3D || pipelineType == Object3DUnTex || pipelineType == WaveBort) {
+	} else if (pipelineType == pObject3D || pipelineType == Object3DUnTex || pipelineType == WaveBort || pipelineType == RailNoneBackCulling) {
 
 		static D3D12_INPUT_ELEMENT_DESC inputElementDescs[3]{};
 

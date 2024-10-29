@@ -11,8 +11,8 @@
 
 GameScene::GameScene() {}
 GameScene::~GameScene() {
-	int test = 1;
-	test = 0;
+	int deleteTest = 1;
+	deleteTest = 0;
 }
 
 void GameScene::Run() {
@@ -25,9 +25,9 @@ void GameScene::Run() {
 
 		Update();
 
-		BackDraw();
-		NewMoon::ClearDepthBuffer();
-		FrontDraw();
+		Draw();
+
+		NewMoonGame::Renderer2D();
 
 		NewMoonGame::Reset();
 		NewMoon::EndFrame();
@@ -41,7 +41,13 @@ void GameScene::Run() {
 
 }
 
+void GameScene::Load() {
+
+}
+
 void GameScene::Init() {
+
+	Load();
 
 }
 
@@ -49,13 +55,8 @@ void GameScene::Update() {
 
 }
 
-void GameScene::BackDraw() {
+void GameScene::Draw() {
 
-	NewMoonGame::DrawGrid();
-
-}
-
-void GameScene::FrontDraw() {
 }
 
 void GameScene::Cleanup() {

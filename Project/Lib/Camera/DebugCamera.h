@@ -17,10 +17,28 @@ public:
 	DebugCamera() = default;
 	~DebugCamera() = default;
 
+	void Update();
 
 private:
 	//===================================================================*/
 	//							private Variables
 	//===================================================================*/
+
+	Vector3 translation_;
+	Vector3 rotation_;
+
+	Matrix4x4 rotateMatrix_;
+	Matrix4x4 matrix_;
+
+	Matrix4x4 viewProjectionMatrix_;
+
+	bool enable_;
+
+private:
+	//===================================================================*/
+	//							private Function
+	//===================================================================*/
+
+	void Move();
 
 };

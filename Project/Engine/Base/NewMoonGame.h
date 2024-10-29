@@ -11,7 +11,8 @@
 #include "Game/Managers/LightManager.h"
 #include "Game/3D/PrimitiveDrawer.h"
 #include "Game/3D/Base/BaseGameObject.h"
-#include "Game/Editor/RailEditor.h"
+#include "Game/Managers/CollisionManager.h"
+#include "Game/Editor/UIEditor.h"
 
 // c++
 #include <memory>
@@ -63,7 +64,10 @@ public:
 	static void SetDeadZone(float deadZone);                      // デッドゾーンの設定
 	static bool PushMouseLeft();                                  // 左マウスの入力判定
 	static bool PushMouseRight();                                 // 右マウスの入力判定
+	static bool PushMouseCenter();                                // マウスホイールの入力判定
 	static Vector2 GetMousePos();                                 // マウスカーソル座標の取得
+	static Vector2 GetMousePrePos();                              // マウスカーソル前座標の取得
+	static float GetMouseWheel();                                 // マウスホイールの値の取得
 	static void InputInformation();                               // Input情報表示
 
 	///===================================================================
@@ -81,17 +85,25 @@ public:
 	static void SkinClusterUpdate(const std::string& animationName);
 
 	///===================================================================
+	// Collision
+
+	static void AddCollider(Collider* collider);
+	static void RemoveCollider(Collider* collider);
+	static void ClearAllColliders();
+
+	///===================================================================
 	// Draw
 
-	static void DrawLine(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
+	static void DrawLine2D(const Vector2& pointA, const Vector2& pointB, const LineColor& color);
+	static void DrawLine3D(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
 	static void DrawGrid();
+
+	static void Renderer2D();
 
 	///===================================================================
 	// Setter
 
 	static void SetToImGui(BaseGameObject* gameObject);
-
-	static void SetToEditor(RailEditor* railEditor);
 
 	///===================================================================
 	// Getter
@@ -119,11 +131,14 @@ private:
 	static std::unique_ptr<CameraManager> cameraManager_;
 	static std::unique_ptr<LightManager> lightManager_;
 
-	static std::unique_ptr<PrimitiveDrawer> primitiveDrawer_;
+	static std::unique_ptr<PrimitiveDrawer> lineDrawer2D_;
+	static std::unique_ptr<PrimitiveDrawer> lineDrawer3D_;
 
 	static std::vector<BaseGameObject*> gameObjects_;
 
-	static RailEditor* railEditor_;
+	static std::unique_ptr<CollisionManager> collisionManager_;
+
+	static std::unique_ptr<UIEditor> uiEditor_;
 
 	static void ImGui();
 

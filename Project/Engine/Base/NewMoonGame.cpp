@@ -2,6 +2,7 @@
 
 #include "NewMoon.h"
 #include "Engine/Managers/ImGuiManager.h"
+#include "Engine/Managers/SrvManager.h"
 
 ///===============================================================================
 /// staticメンバ変数初期化
@@ -14,9 +15,11 @@ std::unique_ptr<Audio> NewMoonGame::audio_ = nullptr;
 std::unique_ptr<Input> NewMoonGame::input_ = nullptr;
 std::unique_ptr<CameraManager> NewMoonGame::cameraManager_ = nullptr;
 std::unique_ptr<LightManager> NewMoonGame::lightManager_ = nullptr;
-std::unique_ptr<PrimitiveDrawer> NewMoonGame::primitiveDrawer_ = nullptr;
+std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer2D_ = nullptr;
+std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
 std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
-RailEditor* NewMoonGame::railEditor_ = nullptr;
+std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
+std::unique_ptr<UIEditor> NewMoonGame::uiEditor_ = nullptr;
 #pragma endregion
 ///===============================================================================
 
@@ -44,8 +47,17 @@ void NewMoonGame::Init() {
 	lightManager_ = std::make_unique<LightManager>();
 	lightManager_->Init();
 
-	primitiveDrawer_ = std::make_unique<PrimitiveDrawer>();
-	primitiveDrawer_->Init(cameraManager_->GetCamera3D()->GetViewProBuffer());
+	lineDrawer2D_ = std::make_unique<PrimitiveDrawer>();
+	lineDrawer2D_->Init(cameraManager_->GetCamera2D()->GetViewProBuffer());
+
+	lineDrawer3D_ = std::make_unique<PrimitiveDrawer>();
+	lineDrawer3D_->Init(cameraManager_->GetCamera3D()->GetViewProBuffer());
+
+	collisionManager_ = std::make_unique<CollisionManager>();
+
+	uiEditor_ = std::make_unique<UIEditor>();
+	uiEditor_->Init();
+
 }
 
 void NewMoonGame::ImGui() {
@@ -55,6 +67,7 @@ void NewMoonGame::ImGui() {
 	// Performance情報は常に表示する
 	ImGui::Text("Frame Rate: %.1f fps", ImGui::GetIO().Framerate); // フレームレート情報
 	ImGui::Text("Delta Time: %.3f s", deltaTime_);                 // ΔTime
+	NewMoon::GetSrvManagerPtr()->ImGui();
 
 	if (ImGui::BeginTabBar("Tabs")) {
 
@@ -78,9 +91,9 @@ void NewMoonGame::ImGui() {
 		// Editors
 		if (ImGui::BeginTabItem("Editor")) {
 
-			// Rail Editor
-			if (ImGui::CollapsingHeader("Rail Editor")) {
-				railEditor_->ImGui();
+			// UI Editor
+			if (ImGui::CollapsingHeader("UI Editor")) {
+				uiEditor_->ImGui();
 			}
 
 			ImGui::EndTabItem();
@@ -107,7 +120,12 @@ void NewMoonGame::Update() {
 
 	cameraManager_->Update();
 	lightManager_->Update();
-	primitiveDrawer_->Update();
+	lineDrawer2D_->Update();
+	lineDrawer3D_->Update();
+
+	collisionManager_->UpdateAllCollisions();
+
+	uiEditor_->Update();
 }
 
 void NewMoonGame::Close() {
@@ -119,12 +137,15 @@ void NewMoonGame::Close() {
 	input_.reset();
 	cameraManager_.reset();
 	lightManager_.reset();
-	primitiveDrawer_.reset();
+	lineDrawer2D_.reset();
+	lineDrawer3D_.reset();
+	uiEditor_.reset();
 }
 
 void NewMoonGame::Reset() {
 
-	primitiveDrawer_->Reset();
+	lineDrawer2D_->Reset();
+	lineDrawer3D_->Reset();
 }
 
 ///===================================================================
@@ -197,8 +218,21 @@ bool NewMoonGame::PushMouseRight() {
 	return input_->PushMouseRight();
 }
 
+bool NewMoonGame::PushMouseCenter() {
+	return input_->PushMouseCenter();
+}
+
 Vector2 NewMoonGame::GetMousePos() {
 	return input_->GetMousePos();
+}
+
+Vector2 NewMoonGame::GetMousePrePos() {
+
+	return input_->GetMousePrePos();
+}
+
+float NewMoonGame::GetMouseWheel() {
+	return input_->GetMouseWheel();
 }
 
 void NewMoonGame::InputInformation() {
@@ -236,14 +270,37 @@ void NewMoonGame::SkinClusterUpdate(const std::string& animationName) {
 }
 
 ///===================================================================
+// Collision
+
+void NewMoonGame::AddCollider(Collider* collider) {
+	collisionManager_->AddCollider(collider);
+}
+
+void NewMoonGame::RemoveCollider(Collider* collider) {
+	collisionManager_->RemoveCollider(collider);
+}
+
+void NewMoonGame::ClearAllColliders() {
+	collisionManager_->ClearAllColliders();
+}
+
+///===================================================================
 // Draw
 
-void NewMoonGame::DrawLine(const Vector3& pointA, const Vector3& pointB, const LineColor& color) {
-	primitiveDrawer_->DrawLine(pointA, pointB, color);
+void NewMoonGame::DrawLine2D(const Vector2& pointA, const Vector2& pointB, const LineColor& color) {
+	lineDrawer2D_->DrawLine2D(pointA, pointB, color);
+}
+
+void NewMoonGame::DrawLine3D(const Vector3& pointA, const Vector3& pointB, const LineColor& color) {
+	lineDrawer3D_->DrawLine3D(pointA, pointB, color);
 }
 
 void NewMoonGame::DrawGrid() {
-	primitiveDrawer_->DrawGrid();
+	lineDrawer3D_->DrawGrid();
+}
+
+void NewMoonGame::Renderer2D() {
+	uiEditor_->Draw();
 }
 
 ///===================================================================
@@ -251,10 +308,6 @@ void NewMoonGame::DrawGrid() {
 
 void NewMoonGame::SetToImGui(BaseGameObject* gameObject) {
 	gameObjects_.push_back(gameObject);
-}
-
-void NewMoonGame::SetToEditor(RailEditor* railEditor) {
-	railEditor_ = railEditor;
 }
 
 ///===================================================================

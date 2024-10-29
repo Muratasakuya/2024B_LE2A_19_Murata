@@ -33,6 +33,7 @@ public:
 
 	// Setter
 	void SetName(const std::string& name);
+	void SetLightingEnable(bool enable);
 
 	// Getter
 	std::string GetName() const;
@@ -45,6 +46,7 @@ protected:
 	std::unique_ptr<Model> model_;
 
 	WorldTransform transform_;
+	Vector4 color_;
 
 private:
 	//===================================================================*/

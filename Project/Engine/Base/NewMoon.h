@@ -5,6 +5,7 @@
 //===================================================================*/
 #include "Engine/Managers/PipelineManager.h"
 #include "Game/Components/MaterialObject.h"
+#include "Game/Editor/UIEditor.h"
 #include "Lib/Structure.h"
 
 // c++
