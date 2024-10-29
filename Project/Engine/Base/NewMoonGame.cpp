@@ -56,8 +56,8 @@ void NewMoonGame::Init() {
 
 	collisionManager_ = std::make_unique<CollisionManager>();
 
-	/*uiEditor_ = std::make_unique<UIEditor>();
-	uiEditor_->Init();*/
+	uiEditor_ = std::make_unique<UIEditor>();
+	uiEditor_->Init();
 
 }
 
@@ -101,7 +101,7 @@ void NewMoonGame::ImGui() {
 
 			// UI Editor
 			if (ImGui::CollapsingHeader("UI Editor")) {
-				//uiEditor_->ImGui();
+				uiEditor_->ImGui();
 			}
 
 			ImGui::EndTabItem();
@@ -133,7 +133,7 @@ void NewMoonGame::Update() {
 
 	collisionManager_->UpdateAllCollisions();
 
-	//uiEditor_->Update();
+	uiEditor_->Update();
 }
 
 void NewMoonGame::Close() {
@@ -147,7 +147,7 @@ void NewMoonGame::Close() {
 	lightManager_.reset();
 	lineDrawer2D_.reset();
 	lineDrawer3D_.reset();
-	//uiEditor_.reset();
+	uiEditor_.reset();
 }
 
 void NewMoonGame::Reset() {
@@ -234,6 +234,11 @@ Vector2 NewMoonGame::GetMousePos() {
 	return input_->GetMousePos();
 }
 
+Vector2 NewMoonGame::GetMousePrePos() {
+
+	return input_->GetMousePrePos();
+}
+
 float NewMoonGame::GetMouseWheel() {
 	return input_->GetMouseWheel();
 }
@@ -303,7 +308,7 @@ void NewMoonGame::DrawGrid() {
 }
 
 void NewMoonGame::Renderer2D() {
-	//uiEditor_->Draw();
+	uiEditor_->Draw();
 }
 
 ///===================================================================

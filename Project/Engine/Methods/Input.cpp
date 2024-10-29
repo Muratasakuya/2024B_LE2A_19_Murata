@@ -78,6 +78,10 @@ Vector2 Input::GetMousePos() const {
 
 	return mousePos_;
 }
+Vector2 Input::GetMousePrePos() const {
+
+	return mousePrePos_;
+}
 // マウス移動量の
 Vector2 Input::GetMouseMoveValue() const {
 
@@ -148,6 +152,8 @@ void Input::Init() {
 *								Inputの更新処理
 ////////////////////////////////////////////////////////////////////////////////*/
 void Input::Update() {
+
+	mousePrePos_ = mousePos_;
 
 	HRESULT hr;
 

@@ -43,7 +43,9 @@ void GameScene::Run() {
 
 void GameScene::Load() {
 
-	NewMoonGame::LoadTexture("uvChecker");
+	const std::string& baseModelDirectory = "./Resources/Obj";
+
+	NewMoonGame::LoadModel(baseModelDirectory, "teapot.obj");
 
 }
 

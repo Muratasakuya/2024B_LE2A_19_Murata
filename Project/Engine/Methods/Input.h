@@ -89,6 +89,7 @@ public:
 	Vector2 GetLeftStickVal() const;
 	Vector2 GetRightStickVal() const;
 	Vector2 GetMousePos() const;
+	Vector2 GetMousePrePos() const;
 	Vector2 GetMouseMoveValue() const;
 	float GetMouseWheel();
 
@@ -138,7 +139,8 @@ private:
 	ComPtr<IDirectInputDevice8> mouse_;  // マウスデバイス
 
 	std::array<bool, 3> mouseButtons_;   // マウスボタンの状態
-	Vector2 mousePos_;                   // マウスの移動量
+	Vector2 mousePos_;                   // マウスの座標
+	Vector2 mousePrePos_;                // マウスの前座標
 	float wheelValue_;                   // ホイール移動量
 
 private:

@@ -113,6 +113,7 @@
     <ClCompile Include="Game\Components\ParticleBuffer.cpp" />
     <ClCompile Include="Lib\Adapter\Random.cpp" />
     <ClCompile Include="Game\Objects\Rail.cpp" />
+    <ClCompile Include="Lib\Adapter\Easing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Game\Components\ParticleBuffer.h" />
     <ClInclude Include="Lib\Adapter\Random.h" />
     <ClInclude Include="Game\Objects\Rail.h" />
+    <ClInclude Include="Lib\Adapter\Easing.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />
