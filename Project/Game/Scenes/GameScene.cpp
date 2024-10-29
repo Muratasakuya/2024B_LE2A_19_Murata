@@ -43,30 +43,19 @@ void GameScene::Run() {
 
 void GameScene::Load() {
 
-	const std::string& baseModelDirectory = "./Resources/Obj";
-
-	NewMoonGame::LoadModel(baseModelDirectory, "teapot.obj");
-
 }
 
 void GameScene::Init() {
 
 	Load();
 
-	particle_ = std::make_unique<Particle>();
-	particle_->Init();
-
 }
 
 void GameScene::Update() {
 
-	particle_->Update();
-
 }
 
 void GameScene::Draw() {
-
-	particle_->Draw(BlendMode::kBlendModeAdd);
 
 }
 
