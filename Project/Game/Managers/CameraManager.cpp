@@ -1,11 +1,8 @@
 #include "CameraManager.h"
 
-#include "Engine/Managers/ImGuiManager.h"
-
 /*////////////////////////////////////////////////////////////////////////////////
-*						CameraManager classMethods
+*									 Main
 ////////////////////////////////////////////////////////////////////////////////*/
-
 void CameraManager::Init() {
 
 	// 2D
@@ -21,14 +18,28 @@ void CameraManager::Update() {
 	camera2D_->Update();
 	camera3D_->Update();
 
+	if (railCamera_) {
+
+		railCamera_->Update();
+	}
 }
 
 void CameraManager::ImGui() {
 
-	if (ImGui::CollapsingHeader("3D MainCamera")) {
-		camera3D_->ImGui();
+	camera3D_->ImGui();
+	if (railCamera_) {
+		railCamera_->ImGui();
 	}
-	ImGui::Separator();
+}
+
+void CameraManager::SetUpRailCamera(RailEditor* railEditor, const Vector3& initPos) {
+
+	if (railCamera_) {
+		return;
+	}
+
+	railCamera_ = std::make_unique<RailCamera>();
+	railCamera_->Init(railEditor, initPos);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -39,4 +50,8 @@ Camera2D* CameraManager::GetCamera2D() const {
 }
 Camera3D* CameraManager::GetCamera3D() const {
 	return camera3D_.get();
+}
+RailCamera* CameraManager::GetRailCamera() const {
+
+	return railCamera_.get();
 }

@@ -4,6 +4,9 @@
 //								include
 //===================================================================*/
 #include "Game/Scenes/Methods/IScene.h"
+#include "Game/Editor/RailEditor.h"
+#include "Game/Entities/Player.h"
+#include "Game/Objects/TestCollisionObject.h"
 
 //* object
 #include "Game/3D/Particle.h"
@@ -38,6 +41,10 @@ private:
 	//===================================================================*/
 
 	const std::string& baseModelDirectory_ = "./Resources/Obj";
+
+	std::unique_ptr<RailEditor> railEditor_;
+
+	std::unique_ptr<Player> player_;
 
 private:
 	//===================================================================*/
