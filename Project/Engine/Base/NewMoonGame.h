@@ -12,7 +12,6 @@
 #include "Game/3D/PrimitiveDrawer.h"
 #include "Game/3D/Base/BaseGameObject.h"
 #include "Game/Managers/CollisionManager.h"
-#include "Game/Editor/RailEditor.h"
 #include "Game/Editor/UIEditor.h"
 
 // c++
@@ -106,8 +105,6 @@ public:
 
 	static void SetToImGui(BaseGameObject* gameObject);
 
-	static void SetToEditor(RailEditor* railEditor);
-
 	///===================================================================
 	// Getter
 
@@ -141,7 +138,6 @@ private:
 
 	static std::unique_ptr<CollisionManager> collisionManager_;
 
-	static RailEditor* railEditor_;
 	static std::unique_ptr<UIEditor> uiEditor_;
 
 	static void ImGui();

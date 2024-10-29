@@ -19,7 +19,6 @@ std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer2D_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
 std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
 std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
-RailEditor* NewMoonGame::railEditor_ = nullptr;
 std::unique_ptr<UIEditor> NewMoonGame::uiEditor_ = nullptr;
 #pragma endregion
 ///===============================================================================
@@ -91,13 +90,6 @@ void NewMoonGame::ImGui() {
 		}
 		// Editors
 		if (ImGui::BeginTabItem("Editor")) {
-
-			// Rail Editor
-			if (railEditor_) {
-				if (ImGui::CollapsingHeader("Rail Editor")) {
-					railEditor_->ImGui();
-				}
-			}
 
 			// UI Editor
 			if (ImGui::CollapsingHeader("UI Editor")) {
@@ -316,10 +308,6 @@ void NewMoonGame::Renderer2D() {
 
 void NewMoonGame::SetToImGui(BaseGameObject* gameObject) {
 	gameObjects_.push_back(gameObject);
-}
-
-void NewMoonGame::SetToEditor(RailEditor* railEditor) {
-	railEditor_ = railEditor;
 }
 
 ///===================================================================
