@@ -77,9 +77,16 @@ void Camera3D::ViewProSetCommand(ID3D12GraphicsCommandList* commandList) {
 ////////////////////////////////////////////////////////////////////////////////*/
 void Camera3D::SetViewMatrix(const Matrix4x4& viewMatrix) { data_.viewMatrix = viewMatrix; }
 void Camera3D::SetProjectionMatrix(const Matrix4x4& projectionMatrix) { data_.projectionMatrix = projectionMatrix; }
-void Camera3D::SetViewProjectionMatrix(const Matrix4x4& viewProMatrix) { data_.viewProjectionMatrix = viewProMatrix; }
 void Camera3D::SetTranslate(const Vector3& translate) { data_.transform.translation = translate; }
 void Camera3D::SetRotate(const Vector3& rotate) { data_.transform.rotation = rotate; }
+
+void Camera3D::SetCamera(const Matrix4x4& viewProMatrix, const Vector3& pos) {
+
+	data_.viewProjectionMatrix = viewProMatrix;
+
+	cameraBuffer_.Update(pos);
+	viewProBuffer_.Update(data_.viewProjectionMatrix);
+}
 
 /*///////////////////////////////////////////////////////////////////////////////
 *									Getter

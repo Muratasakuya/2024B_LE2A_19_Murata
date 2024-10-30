@@ -30,6 +30,7 @@ void DebugCamera::Update(const Vector3& pos, const Vector3& rotate) {
 
 	Move();
 
+	rotateMatrix_ = Matrix4x4::MakeRotateMatrix(rotation_);
 	matrix_ = Matrix4x4::MakeIdentity4x4();
 	Vector3 offset = { 0.0f, 2.0f, -25.0f };
 	Vector3 translate{};
@@ -38,8 +39,12 @@ void DebugCamera::Update(const Vector3& pos, const Vector3& rotate) {
 	matrix_ = Matrix4x4::MakeIdentity4x4();
 
 	Matrix4x4 translateMatrix = Matrix4x4::MakeTranslateMatrix(translation_);
-	matrix_ = Matrix4x4::Multiply(rotateMatrix_, translateMatrix);
+	Matrix4x4 scaleMatrix = Matrix4x4::MakeScaleMatrix({ 1.0f,1.0f,1.0f });
+	matrix_ = Matrix4x4::Multiply(scaleMatrix, rotateMatrix_);
+	matrix_ = Matrix4x4::Multiply(matrix_, translateMatrix);
 	Matrix4x4  viewMatrix = Matrix4x4::Inverse(matrix_);
+
+	viewProjectionMatrix_ = viewMatrix * NewMoonGame::GameCamera()->GetCamera3D()->GetProjectionMatrix();
 
 }
 
@@ -86,10 +91,8 @@ void DebugCamera::Move() {
 
 	if (NewMoonGame::GetMouseWheel() != 0) {
 
-		translation_ += forward; 
+		translation_ += forward;
 	}
-
-	rotateMatrix_ = Matrix4x4::MakeRotateMatrix(rotation_);
 
 }
 
@@ -107,4 +110,8 @@ Vector3 DebugCamera::GetRotate() const {
 
 bool DebugCamera::Enable() const {
 	return enable_;
+}
+
+Matrix4x4 DebugCamera::GetViewProjectionMatrix() const {
+	return viewProjectionMatrix_;
 }

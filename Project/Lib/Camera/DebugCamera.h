@@ -28,6 +28,7 @@ public:
 	Vector3 GetTranslate() const;
 	Vector3 GetRotate() const;
 	bool Enable() const;
+	Matrix4x4 GetViewProjectionMatrix() const;
 
 private:
 	//===================================================================*/
@@ -40,8 +41,9 @@ private:
 	Vector3 translation_; //* 移動座標
 	Vector3 rotation_;    //* 回転
 
-	Matrix4x4 rotateMatrix_; //* 回転行列
-	Matrix4x4 matrix_;       //* World行列
+	Matrix4x4 rotateMatrix_;         //* 回転行列
+	Matrix4x4 matrix_;               //* World行列
+	Matrix4x4 viewProjectionMatrix_; //* 渡す用の行列
 
 	bool enable_; //* ON:OFF 切り替え
 
