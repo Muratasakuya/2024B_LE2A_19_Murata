@@ -33,7 +33,7 @@ void RailCamera::Update() {
 	if (isStart_) {
 
 		// 進ませる速度
-		const float speed = 0.0002f;
+		const float speed = 0.0003f;
 
 		// tを進める
 		eyeT_ = eyeT_ + speed;
@@ -85,6 +85,7 @@ void RailCamera::Update() {
 void RailCamera::ImGui() {
 #ifdef _DEBUG
 	ImGui::Text("RailCamera");
+	ImGui::Text("time: %f", eyeT_);
 	ImGui::DragFloat3("Translate##Rail", &transform_.translation.x, 0.01f);
 	ImGui::DragFloat3("Rotation##Rail", &transform_.rotation.x, 0.01f);
 	if (!isStart_) {

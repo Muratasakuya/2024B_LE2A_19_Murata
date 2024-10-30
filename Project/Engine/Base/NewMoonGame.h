@@ -69,6 +69,7 @@ public:
 	static Vector2 GetMousePos();                                 // マウスカーソル座標の取得
 	static Vector2 GetMousePrePos();                              // マウスカーソル前座標の取得
 	static float GetMouseWheel();                                 // マウスホイールの値の取得
+	static Vector2 GetMouseMoveValue();                           // マウス移動量
 	static void InputInformation();                               // Input情報表示
 
 	///===================================================================

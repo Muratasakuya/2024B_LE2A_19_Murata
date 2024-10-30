@@ -20,13 +20,6 @@ void RailEditor::Init() {
 	sphereMaterial_.Init();
 	sphereMaterial_.color = { 1.0f,0.0f,0.0f,1.0f };
 
-	// Defaultのレール
-	defaultRailPoints_.resize(8); // 適当な数
-	for (size_t index = 0; index < defaultRailPoints_.size(); ++index) {
-
-		defaultRailPoints_[index] = Vector3(0.0f, 0.0f + index * 0.4f, 0.0f + index * 4.0f);
-	}
-
 	NewMoonGame::SetToEditor(this);
 
 	LoadRailPoints();
@@ -83,27 +76,7 @@ void RailEditor::ImGui() {
 			ImGui::Text("preRailPoint : %4.1f, %4.1f, %4.1f", railPoints_.back().x, railPoints_.back().y, railPoints_.back().z);
 		}
 		ImGui::DragFloat3("RailPoints", &spherePos_.x, 0.05f);
-		if (ImGui::Button("SetDefaultPoints")) {
-
-			railPoints_ = defaultRailPoints_;
-
-			for (size_t index = 0; index < railPoints_.size(); ++index) {
-
-				// 頂点表示用球の作成
-				WorldTransform worldTransform;
-				worldTransform.Init();
-				// ST設定
-				worldTransform.translation = railPoints_[index];
-				worldTransform.scale.SetInit(sphereScale_);
-
-				auto sphere = std::make_unique<Sphere>();
-				sphere->Init(sphereTexture_);
-
-				// 追加
-				spheres_.push_back(std::make_pair(std::move(sphere), worldTransform));
-			}
-		}
-		ImGui::SameLine();
+		ImGui::InputInt("Index to Remove", &removeIndex_);
 		if (ImGui::Button("Create Point")) {
 			// レール座標に追加
 			railPoints_.push_back(spherePos_);
@@ -124,12 +97,39 @@ void RailEditor::ImGui() {
 			// 入力座標リセット
 			spherePos_.Init();
 		}
-		if (!rail_) {
-			if (3 < spheres_.size()) {
-				if (ImGui::Button("Create RailModel")) {
+		ImGui::SameLine();
+		if (ImGui::Button("Create PrePoint")) {
 
-					CreateRailModel();
-				}
+			spherePos_ = railPoints_.back();
+
+			// レール座標に追加
+			railPoints_.push_back(spherePos_);
+
+			// 頂点表示用球の作成
+			WorldTransform worldTransform;
+			worldTransform.Init();
+			// ST設定
+			worldTransform.translation = spherePos_;
+			worldTransform.scale.SetInit(sphereScale_);
+
+			auto sphere = std::make_unique<Sphere>();
+			sphere->Init(sphereTexture_);
+
+			// 追加
+			spheres_.push_back(std::make_pair(std::move(sphere), worldTransform));
+
+			// 入力座標リセット
+			spherePos_.Init();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Remove Point")) {
+
+			railPoints_.erase(railPoints_.begin() + removeIndex_);
+		}
+		if (3 < spheres_.size()) {
+			if (ImGui::Button("Create RailModel")) {
+
+				CreateRailModel();
 			}
 		}
 		if (rail_) {
@@ -137,6 +137,7 @@ void RailEditor::ImGui() {
 
 				rail_.reset();
 				railPoints_.clear();
+				spheres_.clear();
 			}
 		}
 		ImGui::SameLine();
@@ -270,6 +271,12 @@ const std::vector<Vector3>& RailEditor::GetControlPoints() const { return railPo
 *							RailModelの自作
 ////////////////////////////////////////////////////////////////////////////////*/
 void RailEditor::CreateRailModel() {
+
+	if (rail_) {
+
+		rail_.reset();
+		rail_ = nullptr;
+	}
 
 	// 頂点データを保持
 	std::vector<VertexData3D> allVertexData;

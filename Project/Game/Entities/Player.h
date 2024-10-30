@@ -48,8 +48,8 @@ private:
 
 	std::list<std::unique_ptr<PlayerBullet>> bullets_; //* 弾
 
-	std::unique_ptr<Sprite> bulletReticle_;            // 弾の照準
-	WorldTransform bulletReticleTransform_;            // 3D照準座標
+	std::unique_ptr<Sprite> bulletReticle_;            //* 弾の照準
+	WorldTransform bulletReticleTransform_;            //* 3D照準座標
 
 	//===================================================================*/
 	///* functions

@@ -13,6 +13,7 @@ void CollisionManager::RemoveCollider(Collider* collider) {
 
 	auto itA = std::find(colliders_.begin(), colliders_.end(), collider);
 	if (itA != colliders_.end()) {
+		*itA = nullptr;
 		colliders_.erase(itA);
 	}
 

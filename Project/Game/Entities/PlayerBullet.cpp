@@ -44,7 +44,6 @@ void PlayerBullet::Update(const Matrix4x4& viewPro) {
 
 		// playerClass -> remove_if(delete)
 		isAlive_ = false;
-		NewMoonGame::RemoveCollider(this);
 	}
 
 	Collider::centerPos_ = transform_.translation;
@@ -62,7 +61,6 @@ void PlayerBullet::OnCollisionEnter(Collider* collider) {
 	if (collider->GetType() == ColliderType::Type_Enemy) {
 
 		isAlive_ = false;
-		NewMoonGame::RemoveCollider(this);
 	}
 }
 

@@ -66,11 +66,13 @@ public:
 	// Setter
 	void SetViewMatrix(const Matrix4x4& viewMatrix);
 	void SetProjectionMatrix(const Matrix4x4& projectionMatrix);
+	void SetViewProjectionMatrix(const Matrix4x4& viewProMatrix);
 	void SetTranslate(const Vector3& translate);
 	void SetRotate(const Vector3& rotate);
 
 	// Getter
 	Vector3 GetWorldPos() const;
+	Vector3 GetRotate() const;
 	Matrix4x4 GetCameraMatrix() const;
 	Matrix4x4 GetViewMatrix() const;
 	Matrix4x4 GetProjectionMatrix() const;

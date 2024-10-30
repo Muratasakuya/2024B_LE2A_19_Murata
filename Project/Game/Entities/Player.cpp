@@ -44,7 +44,6 @@ void Player::Draw() {
 
 		bullet->Draw();
 	}
-	BaseGameObject::Draw();
 	bulletReticle_->Draw();
 }
 
@@ -69,7 +68,13 @@ void Player::Shoot() {
 void Player::UpdateBullet(const Matrix4x4& viewPro) {
 
 	bullets_.remove_if([](const std::unique_ptr<PlayerBullet>& bullet) {
-		return !bullet->IsAlive();
+		if (!bullet->IsAlive()) {
+
+			NewMoonGame::RemoveCollider(bullet.get());
+			return true;
+		} else {
+			return false;
+		}
 		});
 
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) {
@@ -99,7 +104,7 @@ void Player::UpdateBulletReticle(const Matrix4x4& viewPro) {
 	mouseDirection = Vector3::Normalize(mouseDirection);
 
 	// カメラから照準オブジェクトの距離
-	const float kDistanceTestObject = 16.0f;
+	const float kDistanceTestObject = 32.0f;
 	bulletReticleTransform_.translation = posNear + mouseDirection * kDistanceTestObject;
 
 	bulletReticle_->Update();

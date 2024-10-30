@@ -19,7 +19,7 @@ public:
 	Enemy() = default;
 	~Enemy() = default;
 
-	void Init();
+	void Init(const Vector3& pos);
 
 	void Update(const Matrix4x4& viewPro);
 

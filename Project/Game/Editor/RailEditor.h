@@ -55,7 +55,7 @@ private:
 
 	float railSize_;                         // 大きさ
 	std::vector<Vector3> railPoints_;        // 制御座標
-	std::vector<Vector3> defaultRailPoints_; // デバッグ用
+	int removeIndex_ = 0;                    // 削除用Index
 	std::unique_ptr<Rail> rail_;             // モデル
 
 	//* catmull-Rom *//

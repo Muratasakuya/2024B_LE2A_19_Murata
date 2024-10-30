@@ -11,8 +11,8 @@ void Camera3D::Init() {
 
 	// Affine
 	data_.transform.scale.SetInit(1.0f);
-	data_.transform.rotation = { 0.26f,0.0f,0.0f };
-	data_.transform.translation = { 0.0f,4.9f,-15.0f };
+	data_.transform.rotation = { 0.0f,0.0f,0.0f };
+	data_.transform.translation = { 0.0f,1.65f,-21.0f };
 
 	data_.matrix =
 		Matrix4x4::MakeAffineMatrix(data_.transform.scale, data_.transform.rotation, data_.transform.translation);
@@ -77,6 +77,7 @@ void Camera3D::ViewProSetCommand(ID3D12GraphicsCommandList* commandList) {
 ////////////////////////////////////////////////////////////////////////////////*/
 void Camera3D::SetViewMatrix(const Matrix4x4& viewMatrix) { data_.viewMatrix = viewMatrix; }
 void Camera3D::SetProjectionMatrix(const Matrix4x4& projectionMatrix) { data_.projectionMatrix = projectionMatrix; }
+void Camera3D::SetViewProjectionMatrix(const Matrix4x4& viewProMatrix) { data_.viewProjectionMatrix = viewProMatrix; }
 void Camera3D::SetTranslate(const Vector3& translate) { data_.transform.translation = translate; }
 void Camera3D::SetRotate(const Vector3& rotate) { data_.transform.rotation = rotate; }
 
@@ -84,6 +85,7 @@ void Camera3D::SetRotate(const Vector3& rotate) { data_.transform.rotation = rot
 *									Getter
 ////////////////////////////////////////////////////////////////////////////////*/
 Vector3 Camera3D::GetWorldPos() const { return data_.transform.translation; }
+Vector3 Camera3D::GetRotate() const { return data_.transform.rotation; }
 Matrix4x4 Camera3D::GetCameraMatrix() const { return data_.matrix; }
 Matrix4x4 Camera3D::GetViewMatrix() const { return data_.viewMatrix; }
 Matrix4x4 Camera3D::GetProjectionMatrix() const { return data_.projectionMatrix; }

@@ -43,10 +43,10 @@ void GameScene::Run() {
 
 void GameScene::Load() {
 
-	//* player *//
+	NewMoonGame::LoadModel(baseModelDirectory_, "cube.obj");
+	NewMoonGame::LoadModel(baseModelDirectory_, "sphere.obj");
+	NewMoonGame::LoadModel(baseModelDirectory_, "skydome.obj");
 
-	NewMoonGame::LoadModel("./Resources/Obj", "cube.obj");
-	NewMoonGame::LoadModel("./Resources/Obj", "sphere.obj");
 	NewMoonGame::LoadTexture("white");
 	NewMoonGame::LoadTexture("bulletTargetReticle");
 
@@ -64,14 +64,24 @@ void GameScene::Init() {
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
+	enemyManager_ = std::make_unique<EnemyManager>();
+	enemyManager_->Init(railEditor_.get());
+
+	skydome_ = std::make_unique<Skydome>();
+	skydome_->Init();
+
 }
 
 void GameScene::Update() {
+
+	skydome_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 
 	railEditor_->Update();
 
 	player_->SetForward(NewMoonGame::GameCamera()->GetRailCamera()->GetFoward());
 	player_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
+
+	enemyManager_->Update();
 
 }
 
@@ -79,7 +89,15 @@ void GameScene::Draw() {
 
 	railEditor_->Draw();
 
+	skydome_->Draw();
+
+	if (!NewMoonGame::GameCamera()->GetRailCamera()->IsStart()) {
+		return;
+	}
+
 	player_->Draw();
+
+	enemyManager_->Draw();
 
 }
 

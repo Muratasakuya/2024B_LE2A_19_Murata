@@ -6,9 +6,12 @@
 *								Enemy classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
 
-void Enemy::Init() {
+void Enemy::Init(const Vector3& pos) {
 
 	BaseGameObject::Init("sphere.obj");
+
+	//* 座標 *//
+	transform_.translation = pos;
 
 	//* スケール *//
 	const float kInitScale = 0.25f;
@@ -20,6 +23,8 @@ void Enemy::Init() {
 	Collider::targetType_ = ColliderType::Type_PlayerBullet;
 
 	Collider::centerPos_ = transform_.translation;
+
+	isAlive_ = true;
 
 }
 
@@ -39,11 +44,10 @@ void Enemy::Draw() {
 
 void Enemy::OnCollisionEnter(Collider* collider) {
 
-	if (collider->GetType() == ColliderType::Type_Enemy) {
+	if (collider->GetType() == ColliderType::Type_PlayerBullet) {
 
 		// enemyManagerClass -> remove_if(delete)
 		isAlive_ = false;
-		NewMoonGame::RemoveCollider(this);
 	}
 }
 

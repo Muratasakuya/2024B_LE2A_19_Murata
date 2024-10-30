@@ -242,6 +242,10 @@ float NewMoonGame::GetMouseWheel() {
 	return input_->GetMouseWheel();
 }
 
+Vector2 NewMoonGame::GetMouseMoveValue() {
+	return input_->GetMouseMoveValue();
+}
+
 void NewMoonGame::InputInformation() {
 	input_->ImGui();
 }

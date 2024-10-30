@@ -4,12 +4,14 @@
 //								include
 //===================================================================*/
 #include "Game/Scenes/Methods/IScene.h"
+
+//* gameObjects
 #include "Game/Editor/RailEditor.h"
 #include "Game/Entities/Player.h"
 #include "Game/Objects/TestCollisionObject.h"
-
-//* object
+#include "Game/Managers/EnemyManager.h"
 #include "Game/3D/Particle.h"
+#include "Game/Objects/Skydome.h"
 
 // c++
 #include <memory>
@@ -45,6 +47,10 @@ private:
 	std::unique_ptr<RailEditor> railEditor_;
 
 	std::unique_ptr<Player> player_;
+
+	std::unique_ptr<EnemyManager> enemyManager_;
+
+	std::unique_ptr<Skydome> skydome_;
 
 private:
 	//===================================================================*/
