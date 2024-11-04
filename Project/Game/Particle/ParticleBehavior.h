@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-//** Types *//
+//** Types **//
 enum class ParticleBehaviorType {
 
 	kDispersion, // 分散
