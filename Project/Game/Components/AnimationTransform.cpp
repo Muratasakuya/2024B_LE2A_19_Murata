@@ -71,7 +71,7 @@ void AnimationTransform::Update(const Matrix4x4& viewPro) {
 			NewMoonGame::SkinClusterUpdate(skeleton_.value().name);
 		}
 
-		Matrix4x4 worldMatrix = Matrix4x4::MakeAffineMatrix(scale, rotation, translation);
+		Matrix4x4 worldMatrix = Matrix4x4::MakeAxisAffineMatrix(scale, rotation, translation);
 		Matrix4x4 wvpMatrix = worldMatrix * viewPro;
 		Matrix4x4 worldInverseTranspose = Matrix4x4::Transpose(Matrix4x4::Inverse(worldMatrix));
 

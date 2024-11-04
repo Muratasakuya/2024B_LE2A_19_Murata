@@ -29,7 +29,7 @@ private:
 		Matrix4x4 viewProjectionMatrix;
 		Matrix4x4 projectionInverseMatrix;
 
-		WorldTransform transform;
+		Transform3D transform;
 
 		CameraData& operator=(const CameraData& other) {
 			if (this != &other) {
@@ -38,8 +38,8 @@ private:
 				this->projectionMatrix = other.projectionMatrix;
 				this->viewProjectionMatrix = other.viewProjectionMatrix;
 				this->projectionInverseMatrix = other.projectionInverseMatrix;
-				this->transform.translation = other.transform.translation;
-				this->transform.rotation = other.transform.rotation;
+				this->transform.translate = other.transform.translate;
+				this->transform.rotate = other.transform.rotate;
 			}
 			return *this;
 		}

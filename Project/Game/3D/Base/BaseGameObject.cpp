@@ -77,12 +77,14 @@ void BaseGameObject::ImGui() {
 	if (ImGui::TreeNode("Transform")) {
 
 		ImGui::DragFloat3(("Translate##" + std::to_string(reinterpret_cast<uintptr_t>(this))).c_str(), &transform_.translation.x, 0.01f);
-		ImGui::DragFloat3(("Rotate##" + std::to_string(reinterpret_cast<uintptr_t>(this))).c_str(), &transform_.rotation.x, 0.01f);
 		ImGui::DragFloat3(("Scale##" + std::to_string(reinterpret_cast<uintptr_t>(this))).c_str(), &transform_.scale.x, 0.01f);
 		ImGui::TreePop();
 	}
 
 	ImGui::Separator();
+	DerivedImGui();
+	ImGui::Separator();
+
 #endif // _DEBUG
 }
 
@@ -99,4 +101,9 @@ void BaseGameObject::SetLightingEnable(bool enable) {
 
 std::string BaseGameObject::GetName() const {
 	return name_;
+}
+
+Vector3 BaseGameObject::GetWorldPos() const {
+
+	return transform_.GetWorldPos();
 }

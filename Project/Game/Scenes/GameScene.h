@@ -10,7 +10,6 @@
 #include "Game/Entities/Player.h"
 #include "Game/Objects/TestCollisionObject.h"
 #include "Game/Managers/EnemyManager.h"
-#include "Game/3D/Particle.h"
 #include "Game/Objects/Skydome.h"
 
 // c++

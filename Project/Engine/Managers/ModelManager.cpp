@@ -197,11 +197,6 @@ ModelData ModelManager::LoadObjFile(const std::string& directoryPath, const std:
 	// メッシュがないのには対応しない
 	assert(scene->HasMeshes());
 
-	// AABBの初期化
-	CollisionShapes::AABB aabb;
-	aabb.min = Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
-	aabb.max = Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-
 	// メッシュ解析
 	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
 
@@ -227,14 +222,6 @@ ModelData ModelManager::LoadObjFile(const std::string& directoryPath, const std:
 			meshModelData.vertices[vertexIndex].pos = { -pos.x,pos.y,pos.z,1.0f };
 			meshModelData.vertices[vertexIndex].normal = { normal.x,normal.y,normal.z };
 			meshModelData.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
-
-			aabb.min.x = std::min(aabb.min.x, -pos.x);
-			aabb.min.y = std::min(aabb.min.y, pos.y);
-			aabb.min.z = std::min(aabb.min.z, pos.z);
-
-			aabb.max.x = std::max(aabb.max.x, -pos.x);
-			aabb.max.y = std::max(aabb.max.y, pos.y);
-			aabb.max.z = std::max(aabb.max.z, pos.z);
 		}
 
 		// index解析
@@ -289,8 +276,6 @@ ModelData ModelManager::LoadObjFile(const std::string& directoryPath, const std:
 
 		modelData.meshes.push_back(meshModelData);
 	}
-
-	modelData.aabb = aabb;
 
 	// 階層構造の作成
 	modelData.rootNode = ReadNode(scene->mRootNode);

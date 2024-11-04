@@ -3,42 +3,30 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Lib/Structure.h"
-
-//* system
-#include "Game/Methods/ParticleSystem.h"
-
-// c++
-#include <memory>
+#include <Game/Particle/BaseParticle.h>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Particle Class
+*							TestParticle Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class Particle {
+class TestParticle
+	:public BaseParticle {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	Particle() = default;
-	~Particle() = default;
+	TestParticle() = default;
+	~TestParticle() = default;
 
-	void Init();
+	void Init() override;
+	
+	void Update() override;
 
-	void Update();
-
-	void Draw(BlendMode blendMode = BlendMode::kBlendModeNormal);
+	void DerivedImGui() override;
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
-
-	//===================================================================*/
-	///* variables
-
-	Emitter emitter_;
-
-	std::unique_ptr<ParticleSystem> particleSystem_;
 
 };

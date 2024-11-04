@@ -5,6 +5,7 @@
 #include "Game/Components/VertexObject.h"
 #include "Game/Components/IndexObject.h"
 #include "Game/Components/ParticleBuffer.h"
+#include "Game/Particle/ParticleBehavior.h"
 #include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
 #include "Lib/Structure.h"
 #include "Lib/Adapter/Easing.h"
@@ -47,12 +48,11 @@ private:
 
 		ParticleModel model;
 		std::list<ParticleData> particles;
+		std::unique_ptr<ParticleBehavior> behavior;
 		uint32_t srvIndex;
 		uint32_t numInstance;
 		uint32_t instancingSrvIndex;
 		ParticleBuffer particleBuffer;
-		ParticleType type_;
-		EasingType easingType_;
 	};
 
 public:
@@ -67,33 +67,17 @@ public:
 
 	void Draw(const std::string& name, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
-	//** CreateParticleMethods **//
+	void CreateParticle(
+		const std::string& modelName, const std::string& name,
+		ParticleBehaviorType behaiviorType, const ParticleParameter& parameter);
+	void PresetCreateParticle(
+		const std::string& modelName, const std::string& name,
+		ParticleBehaviorType behaiviorType, const ParticleParameter& parameter);
 
-	//* Dispersion
-	void CreateDispersionParticle(
-		const std::string& modelName,
-		const std::string& name, const Vector3& centerPos,uint32_t emitCount,
-		std::optional<float> speed = std::nullopt,
-		std::optional<float> lifeTime = std::nullopt,
-		const std::optional<Vector4>& color = std::nullopt);
-	void EmitDispersionParticle(
-		const std::string& name, const Vector3& centerPos, uint32_t emitCount,
-		std::optional<float> speed = std::nullopt,
-		std::optional<float> lifeTime = std::nullopt,
-		const std::optional<Vector4>& color = std::nullopt);
-
-	//* Chase
-	void CreateChaseParticle(const std::string& modelName,
-		const std::string& name, const Vector3& currentPos, const Vector3& prePos, uint32_t emitCount,
-		std::optional<float> speed = std::nullopt,
-		std::optional<float> lifeTime = std::nullopt,
-		const std::optional<Vector4>& color = std::nullopt);
-	void EmitChaseParticle(
-		const std::string& name, const Vector3& currentPos, const Vector3& prePos, uint32_t emitCount,
-		std::optional<float> speed = std::nullopt,
-		std::optional<float> lifeTime = std::nullopt,
-		const std::optional<Vector4>& color = std::nullopt);
-
+	void EmitParticle(
+		const std::string& name, ParticleBehaviorType behaiviorType, const ParticleParameter& parameter);
+	void PresetEmitParticle(
+		const std::string& name, ParticleBehaviorType behaiviorType, const ParticleParameter& parameter);
 
 private:
 	//===================================================================*/
@@ -111,5 +95,6 @@ private:
 	///* function
 
 	void CreateVertexData(const std::string& name);
+	Matrix4x4 CalBillboardMatrix() const;
 
 };

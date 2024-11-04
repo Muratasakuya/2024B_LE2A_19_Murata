@@ -40,13 +40,22 @@ void CameraManager::Update() {
 
 void CameraManager::ImGui() {
 
-	camera3D_->ImGui();
+	if (ImGui::CollapsingHeader("3D Camera")) {
+		camera3D_->ImGui();
+	}
+
 	if (railCamera_) {
 		ImGui::Separator();
-		railCamera_->ImGui();
+		if (ImGui::CollapsingHeader("Rail Camera")) {
+			railCamera_->ImGui();
+		}
 	}
+
 	ImGui::Separator();
-	debugCamera_->ImGui();
+	if (ImGui::CollapsingHeader("Debug Camera")) {
+		debugCamera_->ImGui();
+	}
+
 }
 
 void CameraManager::SetUpRailCamera(RailEditor* railEditor, const Vector3& initPos) {

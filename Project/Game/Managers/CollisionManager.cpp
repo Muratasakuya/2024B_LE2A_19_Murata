@@ -13,7 +13,6 @@ void CollisionManager::RemoveCollider(Collider* collider) {
 
 	auto itA = std::find(colliders_.begin(), colliders_.end(), collider);
 	if (itA != colliders_.end()) {
-		*itA = nullptr;
 		colliders_.erase(itA);
 	}
 
@@ -105,18 +104,9 @@ bool CollisionManager::IsColliding(Collider* colliderA, Collider* colliderB) {
 		if constexpr (std::is_same_v<ShapeTypeA, CollisionShapes::Sphere> && std::is_same_v<ShapeTypeB, CollisionShapes::Sphere>) {
 
 			return SphereToSphere(shapeA, shapeB, centerA, centerB);
-		} else if constexpr (std::is_same_v<ShapeTypeA, CollisionShapes::Sphere> && std::is_same_v<ShapeTypeB, CollisionShapes::AABB>) {
-
-			return SphereToAABB(shapeA, shapeB, centerA, centerB);
 		} else if constexpr (std::is_same_v<ShapeTypeA, CollisionShapes::Sphere> && std::is_same_v<ShapeTypeB, CollisionShapes::OBB>) {
 
-			return SphereToOBB(shapeA, shapeB, centerA, centerB);
-		} else if constexpr (std::is_same_v<ShapeTypeA, CollisionShapes::AABB> && std::is_same_v<ShapeTypeB, CollisionShapes::AABB>) {
-
-			return AABBToAABB(shapeA, shapeB);
-		} else if constexpr (std::is_same_v<ShapeTypeA, CollisionShapes::AABB> && std::is_same_v<ShapeTypeB, CollisionShapes::OBB>) {
-
-			return AABBToOBB(shapeA, shapeB);
+			return SphereToOBB(shapeA, shapeB, centerA);
 		} else if constexpr (std::is_same_v<ShapeTypeA, CollisionShapes::OBB> && std::is_same_v<ShapeTypeB, CollisionShapes::OBB>) {
 
 			return OBBToOBB(shapeA, shapeB);
@@ -139,51 +129,42 @@ bool CollisionManager::SphereToSphere(
 	return false;
 }
 
-bool CollisionManager::SphereToAABB(
-	const CollisionShapes::Sphere& sphere, const CollisionShapes::AABB& aabb,
-	const Vector3& sphereCenter, const Vector3& aabbCenter) {
-
-	// 上手くいっていない
-	sphere;
-	aabb;
-	sphereCenter;
-	aabbCenter;
-
-	return false;
-}
-
 bool CollisionManager::SphereToOBB(
 	const CollisionShapes::Sphere& sphere, const CollisionShapes::OBB& obb,
-	const Vector3& sphereCenter, const Vector3& obbCenter) {
+	const Vector3& sphereCenter) {
 
-	// 上手くいっていない
-	sphere;
-	obb;
-	sphereCenter;
-	obbCenter;
+	Matrix4x4 rotateX = Matrix4x4::MakePitchMatrix(obb.rotate.x);
+	Matrix4x4 rotateY = Matrix4x4::MakeYawMatrix(obb.rotate.y);
+	Matrix4x4 rotateZ = Matrix4x4::MakeRollMatrix(obb.rotate.z);
 
-	return false;
-}
+	Matrix4x4 rotateMatrix = rotateX * rotateY * rotateZ;
 
-bool CollisionManager::AABBToAABB(const CollisionShapes::AABB& aabbA, const CollisionShapes::AABB& aabbB) {
+	Vector3 orientations[3];
+	orientations[0] = Vector3::Transform({ 1.0f,0.0f,0.0f }, rotateMatrix);
+	orientations[1] = Vector3::Transform({ 0.0f,1.0f,0.0f }, rotateMatrix);
+	orientations[2] = Vector3::Transform({ 0.0f,0.0f,1.0f }, rotateMatrix);
 
-	if ((aabbA.min.x <= aabbB.max.x && aabbA.max.x >= aabbB.min.x) &&
-		(aabbA.min.y <= aabbB.max.y && aabbA.max.y >= aabbB.min.y) &&
-		(aabbA.min.z <= aabbB.max.z && aabbA.max.z >= aabbB.min.z)) {
+	Vector3 localSphereCenter = sphereCenter - obb.center;
+	Vector3 closestPoint = obb.center;
 
-		return true;
+	for (int i = 0; i < 3; ++i) {
+
+		float distance = Vector3::Dot(localSphereCenter, orientations[i]);
+		float halfSize = (i == 0) ? obb.size.x : (i == 1) ? obb.size.y : obb.size.z;
+
+		if (distance > halfSize) {
+			distance = halfSize;
+		} else if (distance < -halfSize) {
+			distance = -halfSize;
+		}
+
+		closestPoint += distance * orientations[i];
 	}
 
-	return false;
-}
+	Vector3 diff = closestPoint - sphereCenter;
+	float distanceSquared = Vector3::Dot(diff, diff);
 
-bool CollisionManager::AABBToOBB(const CollisionShapes::AABB& aabb, const CollisionShapes::OBB& obb) {
-
-	// 上手くいっていない
-	aabb;
-	obb;
-
-	return false;
+	return distanceSquared <= (sphere.radius * sphere.radius);
 }
 
 bool CollisionManager::OBBToOBB(const CollisionShapes::OBB& obbA, const CollisionShapes::OBB& obbB) {

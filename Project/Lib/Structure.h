@@ -45,40 +45,29 @@ namespace CollisionShapes {
 		};
 	};
 
-	struct AABB {
-
-		Vector3 min;
-		Vector3 max;
-
-		static AABB Default() {
-			AABB aabb = {
-				.min = {-1.0f,-1.0f,-1.0f},
-				.max = {1.0f,1.0f,1.0f}
-			};
-			return aabb;
-		};
-	};
-
 	struct OBB {
 
 		Vector3 size;
+		Vector3 center;
+		Quaternion rotate;
 
 		static OBB Default() {
 			OBB obb = {
-				.size = {1.0f,1.0f,1.0f}
+				.size = {1.0f,1.0f,1.0f},
+				.center = {0.0f,0.0f,0.0f},
+				.rotate = {0.0f,0.0f,0.0f}
 			};
 			return obb;
 		};
 	};
 
-	using Shapes = std::variant<Sphere, AABB, OBB>;
+	using Shapes = std::variant<Sphere, OBB>;
 
 };
 
 enum class ShapeType {
 
 	Type_Sphere,
-	Type_AABB,
 	Type_OBB
 };
 
@@ -279,25 +268,35 @@ struct ParticleForGPU {
 struct ParticleData {
 
 	Transform3D transform;
+	Vector3 prePos;
 	Vector3 velocity;
 	Vector4 color;
 	float lifeTime;
-	std::optional<float> easedT_;
 	float currentTime;
-};
-struct Emitter {
+	std::optional<float> easedT_;
 
-	Transform3D transform; // SRT
-	Vector3 prePos_;       // 前座標
-	Vector4 color;         // 色
-	uint32_t count;        // 個数
-	float frequency;       // ~秒置き、発生頻度
-	float frequencyTime;   // 発生頻度用の時刻
+	Matrix4x4 worldMatrix;
+	Matrix4x4 wvpMatrix;
+
+};
+struct ParticleParameter {
+
+	Vector3 translate;
+	Vector3 prePos;
+	Vector3 scale;
+	std::optional<float> speed;
+	std::optional<float> lifeTime;
+	std::optional<Vector4> color;
+
+	//* emitter *//
+
+	uint32_t count;      // 個数
+	float frequency;     // ~秒置き、発生頻度
+	float frequencyTime; // 発生頻度用の時刻
 };
 struct AccelerationField {
 
 	Vector3 acceleration;
-	CollisionShapes::AABB area;
 };
 /*==========================================================*/
 /// カメラ座標
@@ -349,7 +348,6 @@ struct ModelData {
 	std::vector<MeshModelData> meshes;
 	std::map<std::string, JointWeightData> skinClusterData;
 	Node rootNode;
-	CollisionShapes::AABB  aabb;
 };
 /*==========================================================*/
 /// アニメーション

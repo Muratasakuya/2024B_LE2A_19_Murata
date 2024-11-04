@@ -3,60 +3,50 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/3D/Model.h"
-#include "Game/3D/AnimationModel.h"
+#include "Lib/Structure.h"
+
+//* system
+#include "Game/Particle/ParticleSystem.h"
 
 // c++
-#include <vector>
 #include <memory>
-#include <string>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*						BaseGameObject Class
+*							BaseParticle Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class BaseGameObject {
+class BaseParticle {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	BaseGameObject() = default;
-	virtual ~BaseGameObject() = default;
+	BaseParticle() = default;
+	virtual ~BaseParticle() = default;
 
-	virtual void Init(const std::string& modelName);
+	virtual void Init() = 0;
+	virtual void Update() = 0;
 
-	virtual void Update(const Matrix4x4& viewPro);
+	virtual void Create(const std::string& modelName, ParticleBehaviorType behaviorType);
+	virtual void PresetCreate(const std::string& modelName, ParticleBehaviorType behaviorType);
 
-	virtual void Draw(BlendMode blendMode = kBlendModeNormal);
+	virtual void Draw(BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 	virtual void ImGui();
 	virtual void DerivedImGui() {};
-
-	// Setter
-	void SetName(const std::string& name);
-	void SetLightingEnable(bool enable);
-
-	// Getter
-	std::string GetName() const;
-	Vector3 GetWorldPos() const;
 
 protected:
 	//===================================================================*/
 	//							protected Methods
 	//===================================================================*/
 
-	std::unique_ptr<Model> model_;
-
-	WorldTransform transform_;
-	Vector4 color_;
-
-private:
 	//===================================================================*/
-	//							  private Methods
-	//===================================================================*/
+	///* variables
 
-	std::vector<MaterialObject3D> materials_;
+	std::string name_;
+	ParticleBehaviorType behaviorType_;
 
-	std::string name_ = "object";
+	ParticleParameter parameter_;
+
+	std::unique_ptr<ParticleSystem> particleSystem_;
 
 };

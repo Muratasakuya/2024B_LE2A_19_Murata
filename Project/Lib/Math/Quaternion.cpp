@@ -34,6 +34,39 @@ Quaternion Quaternion::operator*(float scalar) const {
 /*-------------------------------------------------------------*/
 /// 関数
 
+void Quaternion::Init() {
+
+	this->x = 0.0f;
+	this->y = 0.0f;
+	this->z = 0.0f;
+	this->w = 1.0f;
+}
+
+Quaternion Quaternion::EulerToQuaternion(const Vector3& euler) {
+
+	// オイラー角（ピッチ、ヨー、ロール）をラジアンに変換
+	float pitch = euler.x * 0.5f;
+	float yaw = euler.y * 0.5f;
+	float roll = euler.z * 0.5f;
+
+	// 各角度に対するサインとコサインを計算
+	float sinPitch = std::sin(pitch);
+	float cosPitch = std::cos(pitch);
+	float sinYaw = std::sin(yaw);
+	float cosYaw = std::cos(yaw);
+	float sinRoll = std::sin(roll);
+	float cosRoll = std::cos(roll);
+
+	// クォータニオンの各成分を計算
+	Quaternion q;
+	q.w = cosYaw * cosPitch * cosRoll + sinYaw * sinPitch * sinRoll;
+	q.x = cosYaw * sinPitch * cosRoll + sinYaw * cosPitch * sinRoll;
+	q.y = sinYaw * cosPitch * cosRoll - cosYaw * sinPitch * sinRoll;
+	q.z = cosYaw * cosPitch * sinRoll - sinYaw * sinPitch * cosRoll;
+
+	return q;
+}
+
 // 積
 Quaternion Quaternion::Multiply(const Quaternion& lhs, const Quaternion& rhs) {
 

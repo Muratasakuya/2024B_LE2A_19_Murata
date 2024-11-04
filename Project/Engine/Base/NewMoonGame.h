@@ -143,7 +143,9 @@ private:
 	static std::unique_ptr<CollisionManager> collisionManager_;
 
 	static RailEditor* railEditor_;
+	static bool showRailEditorWindow_;
 	static std::unique_ptr<UIEditor> uiEditor_;
+	static bool showUIEditorWindow_;
 
 	static void ImGui();
 

@@ -50,7 +50,6 @@ void DebugCamera::Update(const Vector3& pos, const Vector3& rotate) {
 
 void DebugCamera::ImGui() {
 #ifdef _DEBUG
-	ImGui::Text("DebugCamera");
 	ImGui::Checkbox("Enable", &enable_);
 	ImGui::DragFloat3("Translate##Debug", &translation_.x, 0.01f);
 	ImGui::DragFloat3("Rotation##Debug", &rotation_.x, 0.01f);
@@ -66,8 +65,8 @@ void DebugCamera::Move() {
 	const float rotateSpeed = 0.01f;
 	const float panSpeed = 0.05f;
 
-	// 左クリック
-	if (NewMoonGame::PushMouseLeft()) {
+	// 右クリック
+	if (NewMoonGame::PushMouseRight()) {
 
 		rotation_.x += deltaY * rotateSpeed;
 		rotation_.y += deltaX * rotateSpeed;

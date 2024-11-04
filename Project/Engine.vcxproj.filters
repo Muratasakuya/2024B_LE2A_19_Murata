@@ -106,8 +106,8 @@
     <ClCompile Include="Game\Managers\CollisionManager.cpp" />
     <ClCompile Include="Game\Objects\TestCollisionObject.cpp" />
     <ClCompile Include="Game\Managers\EnemyManager.cpp" />
-    <ClCompile Include="Game\3D\Particle.cpp" />
-    <ClCompile Include="Game\Methods\ParticleSystem.cpp" />
+    <ClCompile Include="Game\Particle\BaseParticle.cpp" />
+    <ClCompile Include="Game\Particle\ParticleSystem.cpp" />
     <ClCompile Include="Game\Components\ParticleBuffer.cpp" />
     <ClCompile Include="Lib\Adapter\Random.cpp" />
     <ClCompile Include="Lib\Adapter\Easing.cpp" />
@@ -117,6 +117,8 @@
     <ClCompile Include="Game\Editor\RailEditor.cpp" />
     <ClCompile Include="Game\Objects\Rail.cpp" />
     <ClCompile Include="Lib\Camera\RailCamera.cpp" />
+    <ClCompile Include="Game\Particle\ParticleBehavior.cpp" />
+    <ClCompile Include="Game\Objects\TestParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -200,8 +202,8 @@
     <ClInclude Include="Game\Managers\CollisionManager.h" />
     <ClInclude Include="Game\Objects\TestCollisionObject.h" />
     <ClInclude Include="Game\Managers\EnemyManager.h" />
-    <ClInclude Include="Game\3D\Particle.h" />
-    <ClInclude Include="Game\Methods\ParticleSystem.h" />
+    <ClInclude Include="Game\Particle\BaseParticle.h" />
+    <ClInclude Include="Game\Particle\ParticleSystem.h" />
     <ClInclude Include="Game\Components\ParticleBuffer.h" />
     <ClInclude Include="Lib\Adapter\Random.h" />
     <ClInclude Include="Lib\Adapter\Easing.h" />
@@ -211,6 +213,8 @@
     <ClInclude Include="Game\Editor\RailEditor.h" />
     <ClInclude Include="Game\Objects\Rail.h" />
     <ClInclude Include="Lib\Camera\RailCamera.h" />
+    <ClInclude Include="Game\Particle\ParticleBehavior.h" />
+    <ClInclude Include="Game\Objects\TestParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

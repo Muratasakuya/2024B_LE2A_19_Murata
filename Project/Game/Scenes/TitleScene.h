@@ -5,6 +5,9 @@
 //===================================================================*/
 #include "Game/Scenes/Methods/IScene.h"
 
+//* object
+#include "Game/Objects/TestParticle.h"
+
 /*////////////////////////////////////////////////////////////////////////////////
 *								TitleScene Class
 ////////////////////////////////////////////////////////////////////////////////*/
@@ -31,14 +34,17 @@ private:
 	//							private Methods
 	//===================================================================*/
 
+	const std::string& baseModelDirectory_ = "./Resources/Obj";
 
+	std::unique_ptr<TestParticle> particle_;
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	void BackDraw();  // 背景
-	void FrontDraw(); // 前景
+	void Load();
+
+	void Draw();
 
 };

@@ -20,7 +20,9 @@ std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
 std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
 std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
 RailEditor* NewMoonGame::railEditor_ = nullptr;
+bool NewMoonGame::showRailEditorWindow_ = false;
 std::unique_ptr<UIEditor> NewMoonGame::uiEditor_ = nullptr;
+bool NewMoonGame::showUIEditorWindow_ = false;
 #pragma endregion
 ///===============================================================================
 
@@ -56,8 +58,8 @@ void NewMoonGame::Init() {
 
 	collisionManager_ = std::make_unique<CollisionManager>();
 
-	/*uiEditor_ = std::make_unique<UIEditor>();
-	uiEditor_->Init();*/
+	uiEditor_ = std::make_unique<UIEditor>();
+	uiEditor_->Init();
 
 }
 
@@ -80,34 +82,63 @@ void NewMoonGame::ImGui() {
 			input_->ImGui();
 			ImGui::EndTabItem();
 		}
-		if (ImGui::BeginTabItem("GameObject")) {
-			for (auto& gameObject : gameObjects_) {
-				if (ImGui::CollapsingHeader(gameObject->GetName().c_str())) {
 
-					gameObject->ImGui();
+		if (!gameObjects_.empty()) {
+			if (ImGui::BeginTabItem("GameObject")) {
+				for (auto& gameObject : gameObjects_) {
+					if (ImGui::CollapsingHeader(gameObject->GetName().c_str())) {
+
+						gameObject->ImGui();
+					}
 				}
+				ImGui::EndTabItem();
 			}
-			ImGui::EndTabItem();
 		}
-		// Editors
-		if (ImGui::BeginTabItem("Editor")) {
 
-			// Rail Editor
-			if (railEditor_) {
-				if (ImGui::CollapsingHeader("Rail Editor")) {
-					railEditor_->ImGui();
+		// 今はUI表示した時点で消す
+		if (!showUIEditorWindow_) {
+			// Editors
+			if (ImGui::BeginTabItem("Editor")) {
+
+				if (railEditor_) {
+					// Rail Editor
+					if (ImGui::CollapsingHeader("Rail")) {
+						if (ImGui::Button("Start##Rail")) {
+
+							showRailEditorWindow_ = true;
+						}
+					}
 				}
-			}
 
-			// UI Editor
-			if (ImGui::CollapsingHeader("UI Editor")) {
-				//uiEditor_->ImGui();
-			}
+				// UI Editor
+				if (ImGui::CollapsingHeader("UI")) {
+					if (ImGui::Button("Start##UI")) {
 
-			ImGui::EndTabItem();
+						showUIEditorWindow_ = true;
+					}
+				}
+
+				ImGui::EndTabItem();
+			}
 		}
 
 		ImGui::EndTabBar();
+	}
+
+	if (showRailEditorWindow_) {
+		ImGui::Begin("Rail Editor", &showRailEditorWindow_);
+
+		railEditor_->ImGui();
+
+		ImGui::End();
+	}
+
+	if (showUIEditorWindow_) {
+		ImGui::Begin("UI Editor", &showUIEditorWindow_);
+
+		uiEditor_->ImGui();
+
+		ImGui::End();
 	}
 
 	ImGui::End();
@@ -133,7 +164,7 @@ void NewMoonGame::Update() {
 
 	collisionManager_->UpdateAllCollisions();
 
-	//uiEditor_->Update();
+	uiEditor_->Update();
 }
 
 void NewMoonGame::Close() {
@@ -147,7 +178,7 @@ void NewMoonGame::Close() {
 	lightManager_.reset();
 	lineDrawer2D_.reset();
 	lineDrawer3D_.reset();
-	//uiEditor_.reset();
+	uiEditor_.reset();
 }
 
 void NewMoonGame::Reset() {
@@ -311,7 +342,7 @@ void NewMoonGame::DrawGrid() {
 }
 
 void NewMoonGame::Renderer2D() {
-	//uiEditor_->Draw();
+	uiEditor_->Draw();
 }
 
 ///===================================================================

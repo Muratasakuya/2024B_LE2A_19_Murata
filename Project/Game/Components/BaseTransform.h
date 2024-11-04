@@ -32,8 +32,11 @@ public:
 	//===================================================================*/
 
 	Vector3 scale;
-	Vector3 rotation;
 	Vector3 translation;
+	Quaternion rotation;
+
+	//* Euler、ほぼ使う予定はない *//
+	Vector3 eulerRotate_;
 
 	TransformationMatrix matrix;
 

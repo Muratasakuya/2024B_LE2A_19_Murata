@@ -75,6 +75,8 @@ public:
 
 	// クロス
 	static Vector3 Cross(const Vector3& v0, const Vector3& v1);
+	// 内積
+	static float Dot(const Vector3& v1, const Vector3& v2);
 
 	// 任意の時刻の値を取得
 	static Vector3  CalculateValue(const std::vector<Keyframe<Vector3>>& keyframes, float time);
