@@ -9,7 +9,7 @@
 *							TestParticle Class
 ////////////////////////////////////////////////////////////////////////////////*/
 class TestParticle
-	:public BaseParticle {
+	:public BaseParticle<kDispersion> {
 public:
 	//===================================================================*/
 	//							public Methods

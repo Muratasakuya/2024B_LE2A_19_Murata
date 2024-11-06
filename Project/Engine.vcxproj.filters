@@ -119,6 +119,9 @@
     <ClCompile Include="Lib\Camera\RailCamera.cpp" />
     <ClCompile Include="Game\Particle\ParticleBehavior.cpp" />
     <ClCompile Include="Game\Objects\TestParticle.cpp" />
+    <ClCompile Include="Game\Particle\ParticleParameter.cpp" />
+    <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
+    <ClCompile Include="Game\Particle\IBaseParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -215,6 +218,10 @@
     <ClInclude Include="Lib\Camera\RailCamera.h" />
     <ClInclude Include="Game\Particle\ParticleBehavior.h" />
     <ClInclude Include="Game\Objects\TestParticle.h" />
+    <ClInclude Include="Game\Particle\ParticleParameter.h" />
+    <ClInclude Include="Game\Particle\ParticleVisitor.h" />
+    <ClInclude Include="Game\Particle\ParticleTraits.h" />
+    <ClInclude Include="Game\Particle\IBaseParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

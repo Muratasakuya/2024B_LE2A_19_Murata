@@ -18,6 +18,7 @@ std::unique_ptr<LightManager> NewMoonGame::lightManager_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer2D_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
 std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
+std::vector<IBaseParticle*> NewMoonGame::particles_ = {};
 std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
 RailEditor* NewMoonGame::railEditor_ = nullptr;
 bool NewMoonGame::showRailEditorWindow_ = false;
@@ -89,6 +90,17 @@ void NewMoonGame::ImGui() {
 					if (ImGui::CollapsingHeader(gameObject->GetName().c_str())) {
 
 						gameObject->ImGui();
+					}
+				}
+				ImGui::EndTabItem();
+			}
+		}
+		if (!particles_.empty()) {
+			if (ImGui::BeginTabItem("Particle")) {
+				for (auto& particle : particles_) {
+					if (ImGui::CollapsingHeader(particle->GetName().c_str())) {
+
+						particle->ImGui();
 					}
 				}
 				ImGui::EndTabItem();
@@ -350,6 +362,10 @@ void NewMoonGame::Renderer2D() {
 
 void NewMoonGame::SetToImGui(BaseGameObject* gameObject) {
 	gameObjects_.push_back(gameObject);
+}
+
+void NewMoonGame::SetToImGui(IBaseParticle* particle) {
+	particles_.push_back(particle);
 }
 
 void NewMoonGame::SetToEditor(RailEditor* railEditor) {

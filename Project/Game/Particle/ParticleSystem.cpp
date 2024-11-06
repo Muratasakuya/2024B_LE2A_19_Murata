@@ -64,6 +64,7 @@ void ParticleSystem::Update() {
 
 			// 寿命が切れたら削除
 			if (it->lifeTime <= it->currentTime) {
+
 				it = particles.erase(it);
 				continue;
 			}
@@ -106,48 +107,13 @@ void ParticleSystem::Draw(const std::string& name, BlendMode blendMode) {
 
 void ParticleSystem::CreateParticle(
 	const std::string& modelName, const std::string& name,
-	ParticleBehaviorType behaiviorType, const ParticleParameter& parameter) {
+	ParticleType particleType, ParticleParameter& parameter) {
 
 	assert(particleGroups_.find(name) == particleGroups_.end() && "Particle group with this name already exists");
 
-	particleGroups_[name].behavior = ParticleBehaviorFactory::CreateBehavior(behaiviorType);
+	particleGroups_[name].behavior = ParticleBehaviorFactory::CreateBehavior(particleType);
 
-	for (uint32_t index = 0; index < parameter.count; ++index) {
-
-		ParticleData particle{};
-
-		particleGroups_[name].behavior->Create(particle, parameter);
-		particleGroups_[name].particles.push_back(particle);
-	}
-
-	//!! alreadyLoadModel !!//
-	particleGroups_[name].model.data = NewMoonGame::GetModelMangager()->GetModelData(modelName);
-	CreateVertexData(name);
-
-	//* CreateStructureBuffer *//
-	particleGroups_[name].srvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
-	particleGroups_[name].numInstance = instanceMaxCount_;
-	particleGroups_[name].particleBuffer.Init(particleGroups_[name].numInstance);
-	particleGroups_[name].instancingSrvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
-	NewMoon::GetSrvManagerPtr()->CreateSRVForStructureBuffer(
-		particleGroups_[name].instancingSrvIndex, particleGroups_[name].particleBuffer.GetResource(),
-		particleGroups_[name].numInstance, sizeof(ParticleForGPU));
-
-}
-
-void ParticleSystem::PresetCreateParticle(
-	const std::string& modelName, const std::string& name,
-	ParticleBehaviorType behaiviorType, const ParticleParameter& parameter) {
-
-	assert(particleGroups_.find(name) == particleGroups_.end() && "Particle group with this name already exists");
-
-	particleGroups_[name].behavior = ParticleBehaviorFactory::CreateBehavior(behaiviorType);
-
-	std::vector<ParticleData> particles{};
-
-	particleGroups_[name].behavior->PresetCreate(particles, parameter);
-	particleGroups_[name].particles.resize(particles.size());
-	std::copy(particles.begin(), particles.end(), particleGroups_[name].particles.begin());
+	particleGroups_[name].behavior->Create(particleGroups_[name].particles, parameter);
 
 	//!! alreadyLoadModel !!//
 	particleGroups_[name].model.data = NewMoonGame::GetModelMangager()->GetModelData(modelName);
@@ -164,35 +130,8 @@ void ParticleSystem::PresetCreateParticle(
 }
 
 void ParticleSystem::EmitParticle(
-	const std::string& name, ParticleBehaviorType behaiviorType, const ParticleParameter& parameter) {
+	const std::string& name, ParticleType behaiviorType, ParticleParameter& parameter) {
 
-	// 既存のパーティクルグループを検索
-	auto it = particleGroups_.find(name);
-	if (it != particleGroups_.end()) {
-
-		ParticleGroup& group = it->second;
-
-		for (uint32_t index = 0; index < parameter.count; ++index) {
-
-			ParticleData particle{};
-
-			if (group.behavior->GetType() == behaiviorType) {
-
-				group.behavior->Create(particle, parameter);
-			} else {
-
-				assert(false && "behavior type of the existing particle group does not match");
-			}
-
-			group.particles.push_back(particle);
-		}
-	}
-}
-
-void ParticleSystem::PresetEmitParticle(
-	const std::string& name, ParticleBehaviorType behaiviorType, const ParticleParameter& parameter) {
-
-	// 既存のパーティクルグループを検索
 	auto it = particleGroups_.find(name);
 	if (it != particleGroups_.end()) {
 
@@ -200,11 +139,7 @@ void ParticleSystem::PresetEmitParticle(
 
 		if (group.behavior->GetType() == behaiviorType) {
 
-			std::vector<ParticleData> particles{};
-
-			particleGroups_[name].behavior->PresetCreate(particles, parameter);
-			particleGroups_[name].particles.resize(particles.size());
-			std::copy(particles.begin(), particles.end(), particleGroups_[name].particles.begin());
+			particleGroups_[name].behavior->Create(particleGroups_[name].particles, parameter);
 		} else {
 
 			assert(false && "behavior type of the existing particle group does not match");

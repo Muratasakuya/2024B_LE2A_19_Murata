@@ -11,6 +11,7 @@
 #include "Game/Managers/LightManager.h"
 #include "Game/3D/PrimitiveDrawer.h"
 #include "Game/3D/Base/BaseGameObject.h"
+#include "Game/Particle/IBaseParticle.h"
 #include "Game/Managers/CollisionManager.h"
 #include "Game/Editor/RailEditor.h"
 #include "Game/Editor/UIEditor.h"
@@ -106,6 +107,7 @@ public:
 	// Setter
 
 	static void SetToImGui(BaseGameObject* gameObject);
+	static void SetToImGui(IBaseParticle* particle);
 	
 	static void SetToEditor(RailEditor* railEditor);
 
@@ -139,6 +141,7 @@ private:
 	static std::unique_ptr<PrimitiveDrawer> lineDrawer3D_;
 
 	static std::vector<BaseGameObject*> gameObjects_;
+	static std::vector<IBaseParticle*> particles_;
 
 	static std::unique_ptr<CollisionManager> collisionManager_;
 

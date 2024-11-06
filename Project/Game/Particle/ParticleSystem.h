@@ -6,6 +6,7 @@
 #include "Game/Components/IndexObject.h"
 #include "Game/Components/ParticleBuffer.h"
 #include "Game/Particle/ParticleBehavior.h"
+#include "Game/Particle/ParticleParameter.h"
 #include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
 #include "Lib/Structure.h"
 #include "Lib/Adapter/Easing.h"
@@ -22,16 +23,7 @@ private:
 	//===================================================================*/
 	//								private
 	//===================================================================*/
-
-	//===================================================================*/
-	///* enum class
-
-	enum class ParticleType {
-
-		Dispersion,
-		Chase
-	};
-
+	
 	//===================================================================*/
 	///* structs
 
@@ -69,15 +61,10 @@ public:
 
 	void CreateParticle(
 		const std::string& modelName, const std::string& name,
-		ParticleBehaviorType behaiviorType, const ParticleParameter& parameter);
-	void PresetCreateParticle(
-		const std::string& modelName, const std::string& name,
-		ParticleBehaviorType behaiviorType, const ParticleParameter& parameter);
+		ParticleType particleType, ParticleParameter& parameter);
 
 	void EmitParticle(
-		const std::string& name, ParticleBehaviorType behaiviorType, const ParticleParameter& parameter);
-	void PresetEmitParticle(
-		const std::string& name, ParticleBehaviorType behaiviorType, const ParticleParameter& parameter);
+		const std::string& name, ParticleType particleType, ParticleParameter& parameter);
 
 private:
 	//===================================================================*/

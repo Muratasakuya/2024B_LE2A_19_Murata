@@ -107,3 +107,31 @@ float EaseInOutCirc(float t) {
 	return t < 0.5f ? (1.0f - std::sqrtf(1.0f - std::powf(2.0f * t, 2.0f))) / 2.0f
 		: (std::sqrtf(1.0f - std::powf(-2.0f * t + 2.0f, 2.0f)) + 1.0f) / 2.0f;
 }
+
+float EasedValue(EasingType easingType, float t) {
+
+	switch (easingType) {
+	case EasingType::EaseInSine: return EaseInSine(t);
+	case EasingType::EaseOutSine: return EaseOutSine(t);
+	case EasingType::EaseInOutSine: return EaseInOutSine(t);
+	case EasingType::EaseInQuad: return EaseInQuad(t);
+	case EasingType::EaseOutQuad: return EaseOutQuad(t);
+	case EasingType::EaseInOutQuad: return EaseInOutQuad(t);
+	case EasingType::EaseInCubic: return EaseInCubic(t);
+	case EasingType::EaseOutCubic: return EaseOutCubic(t);
+	case EasingType::EaseInOutCubic: return EaseInOutCubic(t);
+	case EasingType::EaseInQuart: return EaseInQuart(t);
+	case EasingType::EaseOutQuart: return EaseOutQuart(t);
+	case EasingType::EaseInOutQuart: return EaseInOutQuart(t);
+	case EasingType::EaseInQuint: return EaseInQuint(t);
+	case EasingType::EaseOutQuint: return EaseOutQuint(t);
+	case EasingType::EaseInOutQuint: return EaseInOutQuint(t);
+	case EasingType::EaseInExpo: return EaseInExpo(t);
+	case EasingType::EaseOutExpo: return EaseOutExpo(t);
+	case EasingType::EaseInOutExpo: return EaseInOutExpo(t);
+	case EasingType::EaseInCirc: return EaseInCirc(t);
+	case EasingType::EaseOutCirc: return EaseOutCirc(t);
+	case EasingType::EaseInOutCirc: return EaseInOutCirc(t);
+	default: return t;
+	}
+}

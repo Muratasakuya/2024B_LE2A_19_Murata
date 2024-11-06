@@ -9,31 +9,34 @@
 
 void TestParticle::Init() {
 
+	//* mustSetting *//
+
+	BaseParticle::SetName();
 	parameter_.scale.SetInit(0.25f);
 
-	parameter_.count = 96;
-	parameter_.lifeTime = 4.5f;
-	parameter_.frequency = parameter_.lifeTime.value() + 1.0f;
+	//* mainSetting *//
 
-	BaseParticle::PresetCreate("cube.obj", ParticleBehaviorType::kDispersion);
+	parameter_.isUniform = false;
+
+	parameter_.count = 96;
+	parameter_.frequency = 0.1f;
+
+	//* subSetting *//
+
+	parameter_.sphereScale = 1.0f;
+
+	BaseParticle::Create("cube.obj");
 
 }
 
 void TestParticle::Update() {
-
-	// deltaTime++
-	parameter_.frequencyTime += NewMoonGame::GetDeltaTime();
-
-	if (parameter_.frequency <= parameter_.frequencyTime) {
-
-		particleSystem_->PresetEmitParticle(
-			name_, behaviorType_, parameter_);
-		parameter_.frequencyTime -= parameter_.frequency;
-	}
 
 	particleSystem_->Update();
 
 }
 
 void TestParticle::DerivedImGui() {
+
+	ImGui::DragFloat("sphereScale", &parameter_.sphereScale, 0.01f);
+
 }

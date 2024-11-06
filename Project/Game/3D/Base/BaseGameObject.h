@@ -33,7 +33,7 @@ public:
 	virtual void DerivedImGui() {};
 
 	// Setter
-	void SetName(const std::string& name);
+	void SetName(const std::string& name = "object");
 	void SetLightingEnable(bool enable);
 
 	// Getter
@@ -57,6 +57,6 @@ private:
 
 	std::vector<MaterialObject3D> materials_;
 
-	std::string name_ = "object";
+	std::string name_;
 
 };

@@ -10,6 +10,7 @@
 #include "Lib/Math/Matrix3x3.h"
 #include "Lib/Math/Matrix4x4.h"
 #include "Lib/Math/Quaternion.h"
+#include "Lib/Adapter/Easing.h"
 
 // directX
 #include <d3d12.h>
@@ -273,26 +274,11 @@ struct ParticleData {
 	Vector4 color;
 	float lifeTime;
 	float currentTime;
-	std::optional<float> easedT_;
+	std::optional<float> easedLifeRatio;
+	std::optional<EasingType> easingType;
 
 	Matrix4x4 worldMatrix;
 	Matrix4x4 wvpMatrix;
-
-};
-struct ParticleParameter {
-
-	Vector3 translate;
-	Vector3 prePos;
-	Vector3 scale;
-	std::optional<float> speed;
-	std::optional<float> lifeTime;
-	std::optional<Vector4> color;
-
-	//* emitter *//
-
-	uint32_t count;      // 個数
-	float frequency;     // ~秒置き、発生頻度
-	float frequencyTime; // 発生頻度用の時刻
 };
 struct AccelerationField {
 

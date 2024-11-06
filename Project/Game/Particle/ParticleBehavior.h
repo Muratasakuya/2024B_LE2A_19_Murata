@@ -4,16 +4,19 @@
 //								include
 //===================================================================*/
 #include "Lib/Structure.h"
+#include "ParticleParameter.h"
 
 // c++
 #include <memory>
 #include <vector>
+#include <list>
 
 //** Types **//
-enum class ParticleBehaviorType {
+enum ParticleType {
 
 	kDispersion, // 分散
 	kChase,      // 追跡
+	kConverge,   // 収束
 };
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -28,23 +31,25 @@ public:
 	ParticleBehavior() = default;
 	virtual ~ParticleBehavior() = default;
 
-	virtual void Create(ParticleData& particle, const ParticleParameter& parameter) = 0;
-	virtual void PresetCreate(std::vector<ParticleData>& particles, const ParticleParameter& parameter) = 0;
+	virtual void Create(std::list<ParticleData>& particles, ParticleParameter& parameter) = 0;
 
 	virtual void Update(ParticleData& particle, const Matrix4x4& billboardMatrix) = 0;
 
 	// Getter
-	virtual ParticleBehaviorType GetType() const { return type_; }
+	virtual ParticleType GetType() const { return type_; }
 
 protected:
 	//===================================================================*/
 	//							protected Methods
 	//===================================================================*/
 
-	ParticleBehaviorType type_;
+	ParticleType type_;
 
 };
 
+//================================================================================
+// DispersionBehavior
+//================================================================================
 class DispersionBehavior
 	: public ParticleBehavior {
 public:
@@ -52,16 +57,18 @@ public:
 	//							public Methods
 	//===================================================================*/
 
-	DispersionBehavior() { type_ = ParticleBehaviorType::kDispersion; };
+	DispersionBehavior() { type_ = ParticleType::kDispersion; };
 	~DispersionBehavior() = default;
 
-	void Create(ParticleData& particle, const ParticleParameter& parameter) override;
-	void PresetCreate(std::vector<ParticleData>& particles, const ParticleParameter& parameter) override;
+	void Create(std::list<ParticleData>& particles, ParticleParameter& parameter) override;
 
 	void Update(ParticleData& particle, const Matrix4x4& billboardMatrix) override;
 
 };
 
+//================================================================================
+// ChaseBehavior
+//================================================================================
 class ChaseBehavior
 	: public ParticleBehavior {
 public:
@@ -69,11 +76,29 @@ public:
 	//							public Methods
 	//===================================================================*/
 
-	ChaseBehavior() { type_ = ParticleBehaviorType::kChase; };
+	ChaseBehavior() { type_ = ParticleType::kChase; };
 	~ChaseBehavior() = default;
 
-	void Create(ParticleData& particle, const ParticleParameter& parameter) override;
-	void PresetCreate(std::vector<ParticleData>& particles, const ParticleParameter& parameter) override;
+	void Create(std::list<ParticleData>& particles, ParticleParameter& parameter) override;
+
+	void Update(ParticleData& particle, const Matrix4x4& billboardMatrix) override;
+
+};
+
+//================================================================================
+// ConvergeBehavior
+//================================================================================
+class ConvergeBehavior
+	: public ParticleBehavior {
+public:
+	//===================================================================*/
+	//							public Methods
+	//===================================================================*/
+
+	ConvergeBehavior() { type_ = ParticleType::kConverge; };
+	~ConvergeBehavior() = default;
+
+	void Create(std::list<ParticleData>& particles, ParticleParameter& parameter) override;
 
 	void Update(ParticleData& particle, const Matrix4x4& billboardMatrix) override;
 
@@ -91,6 +116,6 @@ public:
 	ParticleBehaviorFactory() = default;
 	~ParticleBehaviorFactory() = default;
 
-	static std::unique_ptr<ParticleBehavior> CreateBehavior(ParticleBehaviorType behaviorType);
+	static std::unique_ptr<ParticleBehavior> CreateBehavior(ParticleType behaviorType);
 
 };

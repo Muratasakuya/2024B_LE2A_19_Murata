@@ -104,6 +104,5 @@ std::string BaseGameObject::GetName() const {
 }
 
 Vector3 BaseGameObject::GetWorldPos() const {
-
 	return transform_.GetWorldPos();
 }
