@@ -10,9 +10,9 @@ void Skydome::Init() {
 
 	BaseGameObject::Init("skydome.obj");
 
-	transform_.scale.SetInit(12.0f);
+	transform_.scale.SetInit(16.0f);
 
-	color_ = Vector4(0.5569f, 0.6627f, 0.7059f, 1.0f);
+	color_ = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	BaseGameObject::SetLightingEnable(false);
 	

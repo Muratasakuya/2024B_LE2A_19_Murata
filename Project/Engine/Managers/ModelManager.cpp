@@ -436,6 +436,28 @@ void ModelManager::MakeRailModel(const std::string& modelName, uint32_t id,
 		indices.push_back(baseIndex + 6);
 		indices.push_back(baseIndex + 2);
 		indices.push_back(baseIndex + 1);
+
+		// 前面
+		if (i == 0) {
+			indices.push_back(baseIndex + 0);
+			indices.push_back(baseIndex + 1);
+			indices.push_back(baseIndex + 5);
+
+			indices.push_back(baseIndex + 5);
+			indices.push_back(baseIndex + 4);
+			indices.push_back(baseIndex + 0);
+		}
+
+		// 背面
+		if (i == numSegments - 1) {
+			indices.push_back(baseIndex + 3);
+			indices.push_back(baseIndex + 2);
+			indices.push_back(baseIndex + 6);
+
+			indices.push_back(baseIndex + 6);
+			indices.push_back(baseIndex + 7);
+			indices.push_back(baseIndex + 3);
+		}
 	}
 
 	meshData.indices = indices;

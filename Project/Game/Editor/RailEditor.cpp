@@ -23,6 +23,10 @@ void RailEditor::Init() {
 	NewMoonGame::SetToEditor(this);
 
 	LoadRailPoints();
+
+	// アーク長の事前計算
+	PrecomputeArcLengths(512);
+
 }
 void RailEditor::Update() {
 
@@ -57,6 +61,7 @@ void RailEditor::Draw() {
 
 		sphere->Draw(transform, sphereMaterial_);
 	}
+
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -154,17 +159,33 @@ void RailEditor::ImGui() {
 
 	if (1 < spheres_.size()) {
 		if (ImGui::CollapsingHeader("Edit Vertices", ImGuiTreeNodeFlags_DefaultOpen)) {
-
 			int index = 0;
-			for (auto& sphere : spheres_) {
-				std::string label = "Vertex " + std::to_string(index);
+			const int groupSize = 10; // 10個ごとのグループサイズ
+			int groupIndex = 0;
 
-				if (ImGui::TreeNode(label.c_str())) {
-					ImGui::DragFloat3("Position", &sphere.second.translation.x, 0.01f);
-					railPoints_[index] = sphere.second.translation;
+			for (size_t i = 0; i < spheres_.size(); i += groupSize) {
+				// グループごとにTreeNodeを作成
+				std::string groupLabel = "Vertices " + std::to_string(groupIndex * groupSize) + "-" + std::to_string((groupIndex + 1) * groupSize - 1);
+
+				if (ImGui::TreeNode(groupLabel.c_str())) {
+					for (int j = 0; j < groupSize; j++) {
+						index = groupIndex * groupSize + j;
+						if (index >= spheres_.size()) {
+							break; // spheres_のサイズを超えた場合はループを抜ける
+						}
+
+						auto& sphere = spheres_[index];
+						std::string label = "Vertex " + std::to_string(index);
+
+						if (ImGui::TreeNode(label.c_str())) {
+							ImGui::DragFloat3("Position", &sphere.second.translation.x, 0.01f);
+							railPoints_[index] = sphere.second.translation;
+							ImGui::TreePop();
+						}
+					}
 					ImGui::TreePop();
 				}
-				index++;
+				groupIndex++;
 			}
 		}
 	}
@@ -181,32 +202,30 @@ Vector3 RailEditor::Interpolation(const Vector3& p0, const Vector3& p1, const Ve
 	float t2 = t * t;
 	float t3 = t2 * t;
 
-	Vector3 e3 = -p0 + 3.0f * p1 - 3.0f * p2 + p3;
-	Vector3 e2 = 2.0f * p0 - 5.0f * p1 + 4 * p2 - p3;
+	Vector3 e3 = -p0 + (p1 - p2) * 3.0f + p3;
+	Vector3 e2 = p0 * 2.0f - p1 * 5.0f + p2 * 4.0f - p3;
 	Vector3 e1 = -p0 + p2;
-	Vector3 e0 = 2.0f * p1;
+	Vector3 e0 = p1 * 2.0f;
 
 	return s * (e3 * t3 + e2 * t2 + e1 * t + e0);
 }
 Vector3 RailEditor::SetCatmullRomPos(const std::vector<Vector3>& points, float t) {
 
 	// エラーチェック
-	assert(points.size() >= 4 && "制御点は4点以上必要です");
+	assert(points.size() >= 43 && "制御点は4点以上必要です");
 
-	// 区間数は制御点の数-1
-	size_t division = points.size() - 1;
-	// 1区間の長さ (全体を1.0fとした割合)
+	size_t division = points.size();
+	// 1区間の長さ
 	float areaWidth = 1.0f / division;
 
 	// 区間内の始点を0.0f、終点を1.0fとしたときの現在位置
 	float t_2 = std::fmod(t, areaWidth) * division;
-	// 下限(0.0f)と上限(1.0f)の範囲に収める
 	t_2 = std::clamp(t_2, 0.0f, 1.0f);
 
 	// 区間番号
 	size_t index = static_cast<size_t>(t / areaWidth);
 	// 区間番号が上限を超えないように収める
-	index = std::clamp(index, static_cast<size_t>(0), points.size() - 2);
+	index = std::clamp(index, static_cast<size_t>(0), points.size() - 1);
 
 	// 4点分のインデックス
 	size_t index0 = index - 1;
@@ -220,11 +239,8 @@ Vector3 RailEditor::SetCatmullRomPos(const std::vector<Vector3>& points, float t
 		index0 = index;
 	}
 
-	// 最後の区間のp3はp2を重複使用する
-	if (index3 >= points.size()) {
-
-		index3 = index2;
-	}
+	index2 %= points.size();
+	index3 %= points.size();
 
 	// 4点の座標
 	const Vector3& p0 = points[index0];
@@ -265,6 +281,51 @@ void RailEditor::DrawRailLine() {
 	}
 }
 
+void RailEditor::PrecomputeArcLengths(uint32_t division) {
+
+	arcLengths_.clear();
+	arcLengths_.reserve(division + 1);
+
+	arcLengths_.push_back(0.0f); // 最初は0.0f
+	float totalLength = 0.0f;
+
+	for (uint32_t index = 0; index < division; ++index) {
+
+		float t1 = static_cast<float>(index) / division;
+		float t2 = static_cast<float>(index + 1) / division;
+
+		Vector3 p1 = SetCatmullRomPos(railPoints_, t1);
+		Vector3 p2 = SetCatmullRomPos(railPoints_, t2);
+
+		float segmentLength = Vector3::Length(p2 - p1);
+		totalLength += segmentLength;
+		arcLengths_.push_back(totalLength);
+	}
+
+	for (auto& length : arcLengths_) {
+		length /= totalLength;
+	}
+
+	arcLengths_.back() = 1.0f;
+}
+
+float RailEditor::GetReparameterizedT(float t) const {
+
+	// t に対する適切なアーク長を探す
+	for (size_t i = 1; i < arcLengths_.size(); ++i) {
+		if (t < arcLengths_[i]) {
+
+			// 2つのアーク長の間で線形補間
+			float segmentT = (t - arcLengths_[i - 1]) / (arcLengths_[i] - arcLengths_[i - 1]);
+			float result = (static_cast<float>(i - 1) + segmentT) / static_cast<float>(arcLengths_.size() - 1);
+			return result;
+		}
+	}
+
+	// 万一のフォールバック
+	return t;
+}
+
 const std::vector<Vector3>& RailEditor::GetControlPoints() const { return railPoints_; }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -291,21 +352,15 @@ void RailEditor::CreateRailModel() {
 
 	for (size_t index = 0; index < segmentCount_; ++index) {
 
-		// セグメントの始点と終点を取得
-		float t0 = 1.0f / segmentCount_ * index;
-		float t1 = 1.0f / segmentCount_ * (index + 1);
+		float t0 = GetReparameterizedT(static_cast<float>(index) / segmentCount_);
+		float t1 = GetReparameterizedT(static_cast<float>(index + 1) / segmentCount_);
 
 		Vector3 p0 = SetCatmullRomPos(railPoints_, t0);
 		Vector3 p1 = SetCatmullRomPos(railPoints_, t1);
 
-		// 方向ベクトル
-		Vector3 direction = p1 - p0;
-		direction = Vector3::Normalize(direction);
-
-		// 上向きのベクトル
+		Vector3 direction = Vector3::Normalize(p1 - p0);
 		Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
-		Vector3 right = Vector3::Cross(up, direction);
-		right = Vector3::Normalize(right);
+		Vector3 right = Vector3::Normalize(Vector3::Cross(up, direction));
 
 		// 上面の頂点位置を計算
 		Vector3 topVertex0 = p0 + right * (railSize_ * 0.5f); // 左下（上面）

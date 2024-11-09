@@ -36,15 +36,19 @@ public:
 
 	//* catmull-Rom *//
 
-	const size_t segmentCount_ = 128; // 線分の数
+	const size_t segmentCount_ = 512; // 線分の数
 
 	Vector3 Interpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t);
 	Vector3 SetCatmullRomPos(const std::vector<Vector3>& points, float t);
 	void DrawRailLine();
 
+	void PrecomputeArcLengths(uint32_t division);
+	float GetReparameterizedT(float t) const;
+
 	//* getter *//
 
 	const std::vector<Vector3>& GetControlPoints() const;
+	const std::vector<float>& GetArcLengths() const { return arcLengths_; }
 
 private:
 	//===================================================================*/
@@ -66,6 +70,8 @@ private:
 	MaterialObject3D sphereMaterial_;                                         // 共通マテリアル
 	const float sphereScale_ = 0.05f;                                         // 表示用の球のS
 	Vector3 spherePos_;                                                       // 調整用座標
+
+	std::vector<float> arcLengths_;
 
 	//* json *//
 

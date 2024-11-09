@@ -11,8 +11,8 @@ void Camera3D::Init() {
 
 	// Affine
 	data_.transform.scale.SetInit(1.0f);
-	data_.transform.rotate = { 0.14f,0.0f,0.0f };
-	data_.transform.translate = { -4.59f,6.55f,-34.34f };
+	data_.transform.rotate = { 0.26f,0.0f,0.0f };
+	data_.transform.translate = { 0.0f,4.9f,-15.0f };
 
 	data_.matrix =
 		Matrix4x4::MakeAffineMatrix(data_.transform.scale, data_.transform.rotate, data_.transform.translate);

@@ -30,6 +30,8 @@ public:
 
 	void ImGui();
 
+	float CalculateEvenT(float desiredDistance);
+
 	// Getter
 	Vector3 GetWorldPos() const;
 	Vector3 GetFoward() const;
@@ -49,13 +51,13 @@ public:
 
 	Vector3 forward_;
 
-	float eyeT_;
-	float targetT_;
-
 	CameraObject cameraBuffer_;
 	ViewProjectionBuffer viewProBuffer_;
 
-	// スタート
-	bool isStart_;
+	bool isStart_; //* スタート
+
+	float timer_ = 0.0f;
+	const float durationtime_ = 180.0f;
+	float reparamT_;
 
 };

@@ -17,10 +17,6 @@ void RailCamera::Init(RailEditor* railEditor, const Vector3& worldPos) {
 	camera_ = std::make_unique<Camera3D>();
 	camera_->Init();
 
-	// t補完を少しずらす 注視点の方が先
-	eyeT_ = 0;
-	targetT_ = 0.01f;
-
 	// ConstBuffer初期化
 	cameraBuffer_.Init();
 	viewProBuffer_.Init();
@@ -32,35 +28,34 @@ void RailCamera::Update() {
 
 	if (isStart_) {
 
-		// 進ませる速度
-		const float speed = 0.0003f;
+		timer_ += NewMoonGame::GetDeltaTime();
 
-		// tを進める
-		eyeT_ = eyeT_ + speed;
-		targetT_ = targetT_ + speed;
-
-		// レールが終わるまで
-		if (targetT_ < 1.0f) {
-
-			// レール上の視点（eye）と少し進んだ地点（target）を求める
-			Vector3 eye = railEditor_->SetCatmullRomPos(railEditor_->GetControlPoints(), eyeT_);
-			Vector3 target = railEditor_->SetCatmullRomPos(railEditor_->GetControlPoints(), targetT_);
-
-			transform_.translation = eye;
-
-			// targetとeyeの差分ベクトル
-			forward_ = target - eye;
-			forward_ = Vector3::Normalize(forward_);
-
-			// 差分ベクトルから回転角を求める
-			// Y軸
-			transform_.eulerRotate_.y = std::atan2(forward_.x, forward_.z);
-			// X軸
-			float length = Vector3::Length({ forward_.x, 0.0f, forward_.z });
-			transform_.eulerRotate_.x = std::atan2(-forward_.y, length);
-
-			transform_.rotation = Quaternion::EulerToQuaternion(transform_.eulerRotate_);
+		float t = timer_ / durationtime_;
+		if (timer_ > durationtime_ - 5.0f) {
+			isStart_ = false;
+			timer_ = 0.0f;
 		}
+
+		reparamT_ = railEditor_->GetReparameterizedT(t);
+
+		// 視点
+		transform_.translation = railEditor_->SetCatmullRomPos(railEditor_->GetControlPoints(), reparamT_);
+
+		float nextT = reparamT_ + (0.01f / railEditor_->GetArcLengths().back());
+
+		// 注視点
+		Vector3 nextPosition = railEditor_->SetCatmullRomPos(railEditor_->GetControlPoints(), nextT);
+
+		forward_ = Vector3::Normalize(nextPosition - transform_.translation);
+
+		// 差分ベクトルから回転角を求める
+		// Y軸
+		transform_.eulerRotate_.y = std::atan2(forward_.x, forward_.z);
+		// X軸
+		float length = Vector3::Length({ forward_.x, 0.0f, forward_.z });
+		transform_.eulerRotate_.x = std::atan2(-forward_.y, length);
+
+		transform_.rotation = Quaternion::EulerToQuaternion(transform_.eulerRotate_);
 
 		const float yOffset = 0.5f;
 
@@ -68,6 +63,7 @@ void RailCamera::Update() {
 		setTranslate.y = setTranslate.y + yOffset;
 		NewMoonGame::GameCamera()->GetCamera3D()->SetTranslate(setTranslate);
 		NewMoonGame::GameCamera()->GetCamera3D()->SetRotate(transform_.eulerRotate_);
+
 	}
 
 	transform_.Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
@@ -82,7 +78,10 @@ void RailCamera::Update() {
 
 void RailCamera::ImGui() {
 #ifdef _DEBUG
-	ImGui::Text("time: %f", eyeT_);
+
+	float elapsedSeconds = timer_;
+	float totalDurationSeconds = durationtime_;
+	ImGui::Text("Time: %.2f s / %.2f s", elapsedSeconds, totalDurationSeconds);
 	ImGui::DragFloat3("Translate##Rail", &transform_.translation.x, 0.01f);
 	if (!isStart_) {
 		if (ImGui::Button("Start")) {
@@ -92,8 +91,7 @@ void RailCamera::ImGui() {
 	if (isStart_) {
 		if (ImGui::Button("STOP")) {
 			isStart_ = false;
-			targetT_ = 0.0f;
-			eyeT_ = 0.0f;
+			timer_ = 0.0f;
 
 			NewMoonGame::GameCamera()->GetCamera3D()->Reset();
 			transform_.Init();

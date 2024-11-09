@@ -22,7 +22,7 @@ SceneManager::SceneManager() {
 	isSceneSwitching_ = false;
 	gameLoop_ = true;
 
-	LoadScene("Title");
+	LoadScene("Game");
 }
 SceneManager::~SceneManager() {}
 

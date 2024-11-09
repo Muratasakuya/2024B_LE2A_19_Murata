@@ -14,7 +14,7 @@ void Rail::Init(const std::string& modelName, const std::string& textureName) {
 	model_->SetTexture(textureName);
 	model_->SetPipelineType(PipelineType::RailNoneBackCulling);
 
-	color_ = { 0.498f,0.498f ,0.498f ,1.0f };
+	color_ = { 0.64f,0.64f ,0.64f ,1.0f };
 
 	SetName(modelName);
 }

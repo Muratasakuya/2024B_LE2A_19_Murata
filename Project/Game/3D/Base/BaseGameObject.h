@@ -59,4 +59,6 @@ private:
 
 	std::string name_;
 
+	uintptr_t ptrAddress_;
+
 };

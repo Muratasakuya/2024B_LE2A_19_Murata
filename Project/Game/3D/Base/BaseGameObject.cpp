@@ -9,6 +9,8 @@
 
 void BaseGameObject::Init(const std::string& modelName) {
 
+	ptrAddress_ = reinterpret_cast<uintptr_t>(this);
+
 	model_ = std::make_unique<Model>();
 	model_->Init(modelName);
 
@@ -63,7 +65,7 @@ void BaseGameObject::ImGui() {
 				materialLabel = "Material " + std::to_string(i);
 			}
 
-			materialLabel += "##" + std::to_string(reinterpret_cast<uintptr_t>(&materials_[i]));
+			materialLabel += "##" + std::to_string(i);
 			if (ImGui::TreeNode(materialLabel.c_str())) {
 				ImGui::ColorEdit4("Color", &color_.x);
 				ImGui::TreePop();
@@ -76,8 +78,8 @@ void BaseGameObject::ImGui() {
 
 	if (ImGui::TreeNode("Transform")) {
 
-		ImGui::DragFloat3(("Translate##" + std::to_string(reinterpret_cast<uintptr_t>(this))).c_str(), &transform_.translation.x, 0.01f);
-		ImGui::DragFloat3(("Scale##" + std::to_string(reinterpret_cast<uintptr_t>(this))).c_str(), &transform_.scale.x, 0.01f);
+		ImGui::DragFloat3(("Translate##" + std::to_string(ptrAddress_)).c_str(), &transform_.translation.x, 0.01f);
+		ImGui::DragFloat3(("Scale##" + std::to_string(ptrAddress_)).c_str(), &transform_.scale.x, 0.01f);
 		ImGui::TreePop();
 	}
 
