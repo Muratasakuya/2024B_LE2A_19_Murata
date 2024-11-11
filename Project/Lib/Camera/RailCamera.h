@@ -30,8 +30,6 @@ public:
 
 	void ImGui();
 
-	float CalculateEvenT(float desiredDistance);
-
 	// Getter
 	Vector3 GetWorldPos() const;
 	Vector3 GetFoward() const;
@@ -55,6 +53,9 @@ public:
 	ViewProjectionBuffer viewProBuffer_;
 
 	bool isStart_; //* スタート
+
+	float deltaRate_; //* レールの速度管理
+	float targetDeltaRate_ = 0.78f;
 
 	float timer_ = 0.0f;
 	const float durationtime_ = 180.0f;

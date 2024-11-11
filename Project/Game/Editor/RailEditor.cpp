@@ -307,6 +307,7 @@ void RailEditor::PrecomputeArcLengths(uint32_t division) {
 	}
 
 	arcLengths_.back() = 1.0f;
+
 }
 
 float RailEditor::GetReparameterizedT(float t) const {

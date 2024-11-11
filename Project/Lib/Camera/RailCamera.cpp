@@ -3,6 +3,11 @@
 #include "Engine/Base/NewMoonGame.h"
 #include "Engine/Managers/ImGuiManager.h"
 
+/// レールの配置によってスピードを変える。 // △だが最低限これでいいだろう。
+/// フィールドの作成
+/// 敵の配置とスコア表記
+/// 演出
+
 /*////////////////////////////////////////////////////////////////////////////////
 *							RailCamera classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
@@ -22,14 +27,40 @@ void RailCamera::Init(RailEditor* railEditor, const Vector3& worldPos) {
 	viewProBuffer_.Init();
 
 	isStart_ = false;
+
+	deltaRate_ = 1.0f; // デフォで1.0f
+
 }
 
 void RailCamera::Update() {
 
 	if (isStart_) {
 
-		timer_ += NewMoonGame::GetDeltaTime();
+		float currentHeight = transform_.translation.y;
 
+		float nextT = reparamT_ + (0.01f / railEditor_->GetArcLengths().back());
+		Vector3 nextPosition = railEditor_->SetCatmullRomPos(railEditor_->GetControlPoints(), nextT);
+		float nextHeight = nextPosition.y;
+
+		float heightDifference = nextHeight - currentHeight;
+		if (heightDifference > 0.0f) {
+			
+			targetDeltaRate_ = 0.6f;
+		} else if (heightDifference < 0.0f) {
+
+			targetDeltaRate_ = 2.5f;
+		} else {
+
+			targetDeltaRate_ = 0.78f;
+		}
+
+		// 現在の deltaRate_ を目標値へ滑らかに補完
+		deltaRate_ = std::lerp(deltaRate_, targetDeltaRate_, 0.01f);
+
+		// deltaRate_ を利用して timer_ を更新
+		timer_ += NewMoonGame::GetDeltaTime() * deltaRate_;
+
+		// 以下、既存の処理
 		float t = timer_ / durationtime_;
 		if (timer_ > durationtime_ - 5.0f) {
 			isStart_ = false;
@@ -38,29 +69,22 @@ void RailCamera::Update() {
 
 		reparamT_ = railEditor_->GetReparameterizedT(t);
 
-		// 視点
+		// 視点の設定
 		transform_.translation = railEditor_->SetCatmullRomPos(railEditor_->GetControlPoints(), reparamT_);
 
-		float nextT = reparamT_ + (0.01f / railEditor_->GetArcLengths().back());
-
-		// 注視点
-		Vector3 nextPosition = railEditor_->SetCatmullRomPos(railEditor_->GetControlPoints(), nextT);
-
+		// 注視点を計算
 		forward_ = Vector3::Normalize(nextPosition - transform_.translation);
 
-		// 差分ベクトルから回転角を求める
-		// Y軸
+		// 回転の設定
 		transform_.eulerRotate_.y = std::atan2(forward_.x, forward_.z);
-		// X軸
 		float length = Vector3::Length({ forward_.x, 0.0f, forward_.z });
 		transform_.eulerRotate_.x = std::atan2(-forward_.y, length);
-
 		transform_.rotation = Quaternion::EulerToQuaternion(transform_.eulerRotate_);
 
+		// カメラ位置と回転の更新
 		const float yOffset = 0.5f;
-
 		Vector3 setTranslate = transform_.translation;
-		setTranslate.y = setTranslate.y + yOffset;
+		setTranslate.y += yOffset;
 		NewMoonGame::GameCamera()->GetCamera3D()->SetTranslate(setTranslate);
 		NewMoonGame::GameCamera()->GetCamera3D()->SetRotate(transform_.eulerRotate_);
 
@@ -74,6 +98,7 @@ void RailCamera::Update() {
 	// ConstBuffer転送
 	cameraBuffer_.Update(camera_->GetWorldPos());
 	viewProBuffer_.Update(camera_->GetViewProjectionMatrix());
+
 }
 
 void RailCamera::ImGui() {
@@ -82,6 +107,7 @@ void RailCamera::ImGui() {
 	float elapsedSeconds = timer_;
 	float totalDurationSeconds = durationtime_;
 	ImGui::Text("Time: %.2f s / %.2f s", elapsedSeconds, totalDurationSeconds);
+	ImGui::DragFloat("deltaRate", &deltaRate_, 0.01f);
 	ImGui::DragFloat3("Translate##Rail", &transform_.translation.x, 0.01f);
 	if (!isStart_) {
 		if (ImGui::Button("Start")) {
