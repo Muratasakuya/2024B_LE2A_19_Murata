@@ -3,31 +3,47 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/3D/Base/BaseGameObject.h"
+#include "Game/2D/Sprite.h"
 
 // c++
-#include <string>
+#include <memory>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Rail Class
+*								RailScore Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class Rail :
-	public BaseGameObject {
+class RailScore {
 public:
 	//===================================================================*/
-	//							public Function
+	//							public Methods
 	//===================================================================*/
 
-	Rail() = default;
-	~Rail() = default;
+	RailScore() = default;
+	~RailScore() = default;
 
-	void Init(const std::string& modelName, const std::string& textureName);
-	void Update(const Matrix4x4& viewPro);
+	void Init();
+
+	void Update();
+
 	void Draw();
+
+	void ImGui();
+
+	// Setter
+	void SetScore(float score);
 
 private:
 	//===================================================================*/
-	//							private variable
+	//							private Methods
 	//===================================================================*/
+
+	std::unique_ptr<Sprite> score_;
+	Vector2 scorePos_;
+
+	float scoreValue_;
+
+	std::array<std::unique_ptr<Sprite>, 4> scoreNumbers_;
+
+	std::unique_ptr<Sprite> scoreBack_;
+	Vector2 scoreBackPos_;
 
 };

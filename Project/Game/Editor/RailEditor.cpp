@@ -49,7 +49,7 @@ void RailEditor::Draw() {
 		rail_->Draw();
 	}
 
-	if (NewMoonGame::GameCamera()->GetRailCamera()->IsStart()) {
+	/*if (NewMoonGame::GameCamera()->GetRailCamera()->IsStart()) {
 		return;
 	}
 
@@ -60,7 +60,7 @@ void RailEditor::Draw() {
 		auto& transform = spherePair.second;
 
 		sphere->Draw(transform, sphereMaterial_);
-	}
+	}*/
 
 }
 
@@ -189,6 +189,11 @@ void RailEditor::ImGui() {
 			}
 		}
 	}
+	if (ImGui::Button("Export RailModel")) {
+
+		NewMoonGame::GetModelMangager()->ExportToOBJ("Rail0", "./Resources/Output/rail.obj");
+	}
+
 #endif // _DEBUG
 }
 
@@ -430,6 +435,7 @@ void RailEditor::CreateRailModel() {
 	std::unique_ptr<Rail> rail = std::make_unique<Rail>();
 	rail->Init(modelName + std::to_string(modelId), railTextureName_);
 	rail_ = std::move(rail);
+
 }
 
 void RailEditor::SaveRailPoints() {

@@ -101,10 +101,21 @@ void BaseGameObject::SetLightingEnable(bool enable) {
 	}
 }
 
+void BaseGameObject::SetUVScale(const Vector3& scale) {
+
+	for (auto& material : materials_) {
+		material.properties.SetUVScale(scale);
+	}
+}
+
 std::string BaseGameObject::GetName() const {
 	return name_;
 }
 
 Vector3 BaseGameObject::GetWorldPos() const {
 	return transform_.GetWorldPos();
+}
+
+Vector3 BaseGameObject::GetScale() const {
+	return transform_.scale;
 }

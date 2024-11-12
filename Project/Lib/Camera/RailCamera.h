@@ -30,12 +30,17 @@ public:
 
 	void ImGui();
 
+	void CameraInit();
+	void GuiCameraUpdate();
+
 	// Getter
 	Vector3 GetWorldPos() const;
 	Vector3 GetFoward() const;
 	Matrix4x4 GetViewProjectionMatrix() const;
 	WorldTransform& GetTransform();
 	bool IsStart() const;
+	float GetTimeT() const { return t_; }
+	float GetReparamT() const { return reparamT_; }
 
 public:
 	//===================================================================*/
@@ -52,7 +57,10 @@ public:
 	CameraObject cameraBuffer_;
 	ViewProjectionBuffer viewProBuffer_;
 
+	float t_;
+
 	bool isStart_; //* スタート
+	bool guiUpdate_;
 
 	float deltaRate_; //* レールの速度管理
 	float targetDeltaRate_ = 0.78f;

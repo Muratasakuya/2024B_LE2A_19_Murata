@@ -43,11 +43,34 @@ void GameScene::Run() {
 
 void GameScene::Load() {
 
+	//===================================================================*/
+	//* primitive *//
+
 	NewMoonGame::LoadModel(baseModelDirectory_, "cube.obj");
 	NewMoonGame::LoadModel(baseModelDirectory_, "sphere.obj");
 
+	//===================================================================*/
+	//* enemy *//
+
+	NewMoonGame::LoadModel(baseModelDirectory_, "balloon.obj"); // 風船
+	NewMoonGame::LoadModel(baseModelDirectory_, "UFO.obj");     // UFO
+	NewMoonGame::LoadModel(baseModelDirectory_, "star.obj");    // 星
+	NewMoonGame::LoadModel(baseModelDirectory_, "ghost.obj");   // お化け
+
+	//===================================================================*/
+	//* field *//
+
+	NewMoonGame::LoadModel(baseModelDirectory_, "ground.obj");
+	NewMoonGame::LoadModel(baseModelDirectory_, "cylinder.obj");
+
+	//===================================================================*/
+	//* texture *//
+
 	NewMoonGame::LoadTexture("white");
 	NewMoonGame::LoadTexture("bulletTargetReticle");
+	NewMoonGame::LoadTexture("score");
+	NewMoonGame::LoadTexture("scoreNumber");
+	NewMoonGame::LoadTexture("scoreBack");
 
 }
 
@@ -66,14 +89,18 @@ void GameScene::Init() {
 	enemyManager_ = std::make_unique<EnemyManager>();
 	enemyManager_->Init(railEditor_.get());
 
-	/*skydome_ = std::make_unique<Skydome>();
-	skydome_->Init();*/
+	ground_ = std::make_unique<Ground>();
+	ground_->Init();
+
+	cylinderCollection_ = std::make_unique<CylinderCollection>();
+	cylinderCollection_->Init();
+
+	railScore_ = std::make_unique<RailScore>();
+	railScore_->Init();
 
 }
 
 void GameScene::Update() {
-
-	//skydome_->Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 
 	railEditor_->Update();
 
@@ -82,23 +109,28 @@ void GameScene::Update() {
 
 	enemyManager_->Update();
 
+	ground_->Update();
+
+	cylinderCollection_->Update();
+
+	railScore_->SetScore(enemyManager_->GetScore());
+	railScore_->Update();
+
 }
 
 void GameScene::Draw() {
 
-	//NewMoonGame::DrawGrid();
-
 	railEditor_->Draw();
 
-	//skydome_->Draw();
+	ground_->Draw();
 
-	if (!NewMoonGame::GameCamera()->GetRailCamera()->IsStart()) {
-		return;
-	}
+	cylinderCollection_->Draw();
+
+	enemyManager_->Draw();
 
 	player_->Draw();
 
-	enemyManager_->Draw();
+	railScore_->Draw();
 
 }
 

@@ -10,7 +10,9 @@
 #include "Game/Entities/Player.h"
 #include "Game/Objects/TestCollisionObject.h"
 #include "Game/Managers/EnemyManager.h"
-#include "Game/Objects/Skydome.h"
+#include "Game/Objects/Ground.h"
+#include "Game/Objects/Cylinder.h"
+#include "Game/Objects/RailScore.h"
 
 // c++
 #include <memory>
@@ -49,7 +51,15 @@ private:
 
 	std::unique_ptr<EnemyManager> enemyManager_;
 
-	std::unique_ptr<Skydome> skydome_;
+	//* field *//
+
+	std::unique_ptr<Ground> ground_;
+
+	std::unique_ptr<CylinderCollection> cylinderCollection_;
+
+	//* 2D *//
+
+	std::unique_ptr<RailScore> railScore_;
 
 private:
 	//===================================================================*/

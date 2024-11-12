@@ -15,7 +15,7 @@ void PlayerBullet::Init(const Vector3& pos, const Vector3& velocity, const Vecto
 	transform_.translation = pos;
 
 	//* スケール *//
-	const float kInitScale = 0.1f;
+	const float kInitScale = 0.05f;
 	transform_.scale.SetInit(kInitScale);
 
 	//* 回転の計算 *//
@@ -26,7 +26,7 @@ void PlayerBullet::Init(const Vector3& pos, const Vector3& velocity, const Vecto
 	deathTimer_ = deathTime_; //* deathTimer_ < 0; isAlive_ = false;
 	isAlive_ = true;          //* false -> delete
 
-	Collider::SetCollisionShapeSphere({ .radius = {1.0f * kInitScale + 0.1f} });
+	Collider::SetCollisionShapeSphere({ .radius = {1.0f * kInitScale + 0.4f} });
 
 	Collider::type_ = ColliderType::Type_PlayerBullet;
 	Collider::targetType_ = ColliderType::Type_Enemy;

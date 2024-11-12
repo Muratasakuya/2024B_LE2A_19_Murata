@@ -117,8 +117,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Objects\Cylinder.cpp" />
     <ClCompile Include="Game\Entities\Enemy.cpp" />
     <ClCompile Include="Game\Particle\IBaseParticle.cpp" />
+    <ClCompile Include="Game\Objects\Ground.cpp" />
     <ClCompile Include="Lib\Adapter\Easing.cpp" />
     <ClCompile Include="Game\Managers\EnemyManager.cpp" />
     <ClCompile Include="Game\Managers\CollisionManager.cpp" />
@@ -209,11 +211,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\TestParticle.cpp" />
     <ClCompile Include="Game\Particle\ParticleParameter.cpp" />
     <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
+    <ClCompile Include="Game\Objects\RailScore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Objects\Cylinder.h" />
     <ClInclude Include="Game\Entities\Enemy.h" />
     <ClInclude Include="Game\Particle\ParticleTraits.h" />
     <ClInclude Include="Game\Particle\IBaseParticle.h" />
+    <ClInclude Include="Game\Objects\Ground.h" />
     <ClInclude Include="Lib\Adapter\Easing.h" />
     <ClInclude Include="Game\Managers\EnemyManager.h" />
     <ClInclude Include="Game\Managers\CollisionManager.h" />
@@ -309,6 +314,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Objects\TestParticle.h" />
     <ClInclude Include="Game\Particle\ParticleParameter.h" />
     <ClInclude Include="Game\Particle\ParticleVisitor.h" />
+    <ClInclude Include="Game\Objects\RailScore.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

@@ -24,6 +24,7 @@ void Player::Init() {
 
 	bulletReticle_->AjustTextureSize(false);
 	bulletReticle_->SetOriginalTextureSize(Vector2(48.0f, 48.0f));
+	bulletReticle_->SetTextureSize(Vector2(96.0f, 96.0f));
 
 	bulletReticleTransform_.Init();
 

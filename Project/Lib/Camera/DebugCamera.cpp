@@ -73,39 +73,37 @@ void DebugCamera::Move() {
 	}
 
 	// 中クリック + Shift
-	//if (NewMoonGame::PushMouseCenter() && NewMoonGame::PushKey(DIK_LSHIFT)) {
+	if (NewMoonGame::PushMouseCenter() && NewMoonGame::PushKey(DIK_LSHIFT)) {
 
-	//	Vector3 right = { panSpeed * deltaX, 0.0f, 0.0f };
-	//	Vector3 up = { 0.0f, -panSpeed * deltaY, 0.0f };
+		Vector3 right = { panSpeed * deltaX, 0.0f, 0.0f };
+		Vector3 up = { 0.0f, -panSpeed * deltaY, 0.0f };
 
-	//	// 平行移動ベクトルを変換
-	//	right = Vector3::TransferNormal(right, matrix_);
-	//	up = Vector3::TransferNormal(up, matrix_);
+		// 平行移動ベクトルを変換
+		right = Vector3::TransferNormal(right, matrix_);
+		up = Vector3::TransferNormal(up, matrix_);
 
-	//	translation_ += right + up;
+		translation_ += right + up;
+	}
+	//Vector3 movement{ 0.0f, 0.0f, 0.0f };
+	//// Wキーで前進
+	//if (NewMoonGame::PushKey(DIK_W)) {
+	//	movement.y += panSpeed;
 	//}
-	Vector3 movement{ 0.0f, 0.0f, 0.0f };
-
-	// Wキーで前進
-	if (NewMoonGame::PushKey(DIK_W)) {
-		movement.y += panSpeed;
-	}
-	// Sキーで後退
-	if (NewMoonGame::PushKey(DIK_S)) {
-		movement.y -= panSpeed;
-	}
-	// Dキーで右移動
-	if (NewMoonGame::PushKey(DIK_D)) {
-		movement.x += panSpeed;
-	}
-	// Aキーで左移動
-	if (NewMoonGame::PushKey(DIK_A)) {
-		movement.x -= panSpeed;
-	}
-
-	// 平行移動ベクトルを変換
-	movement = Vector3::TransferNormal(movement, matrix_);
-	translation_ += movement;
+	//// Sキーで後退
+	//if (NewMoonGame::PushKey(DIK_S)) {
+	//	movement.y -= panSpeed;
+	//}
+	//// Dキーで右移動
+	//if (NewMoonGame::PushKey(DIK_D)) {
+	//	movement.x += panSpeed;
+	//}
+	//// Aキーで左移動
+	//if (NewMoonGame::PushKey(DIK_A)) {
+	//	movement.x -= panSpeed;
+	//}
+	//// 平行移動ベクトルを変換
+	//movement = Vector3::TransferNormal(movement, matrix_);
+	//translation_ += movement;
 
 	Vector3 forward = { 0.0f, 0.0f, NewMoonGame::GetMouseWheel() * zoomRate_ };
 	forward = Vector3::TransferNormal(forward, rotateMatrix_);

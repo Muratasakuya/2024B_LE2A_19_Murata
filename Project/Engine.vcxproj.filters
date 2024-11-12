@@ -122,6 +122,9 @@
     <ClCompile Include="Game\Particle\ParticleParameter.cpp" />
     <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
     <ClCompile Include="Game\Particle\IBaseParticle.cpp" />
+    <ClCompile Include="Game\Objects\Ground.cpp" />
+    <ClCompile Include="Game\Objects\Cylinder.cpp" />
+    <ClCompile Include="Game\Objects\RailScore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -222,6 +225,9 @@
     <ClInclude Include="Game\Particle\ParticleVisitor.h" />
     <ClInclude Include="Game\Particle\ParticleTraits.h" />
     <ClInclude Include="Game\Particle\IBaseParticle.h" />
+    <ClInclude Include="Game\Objects\Ground.h" />
+    <ClInclude Include="Game\Objects\Cylinder.h" />
+    <ClInclude Include="Game\Objects\RailScore.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

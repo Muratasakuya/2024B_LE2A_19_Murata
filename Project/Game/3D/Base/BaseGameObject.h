@@ -33,12 +33,18 @@ public:
 	virtual void DerivedImGui() {};
 
 	// Setter
+	//* engine
 	void SetName(const std::string& name = "object");
+
+	//* material
 	void SetLightingEnable(bool enable);
+	void SetUVScale(const Vector3& scale);
+
 
 	// Getter
 	std::string GetName() const;
 	Vector3 GetWorldPos() const;
+	Vector3 GetScale() const;
 
 protected:
 	//===================================================================*/

@@ -148,6 +148,12 @@ struct Material3D {
 		specularColor.SetInit(1.0f);
 		uvTransform = Matrix4x4::MakeIdentity4x4();
 	}
+
+	void SetUVScale(const Vector3& scale) {
+
+		uvTransform =
+			Matrix4x4::MakeAffineMatrix(scale, Vector3::Zero(), Vector3::Zero());
+	};
 };
 struct Material2D {
 

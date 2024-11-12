@@ -472,6 +472,58 @@ void ModelManager::MakeRailModel(const std::string& modelName, uint32_t id,
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
+*								  Objの出力
+////////////////////////////////////////////////////////////////////////////////*/
+void ModelManager::ExportToOBJ(const std::string& modelName, const std::string& filePath) {
+
+	auto& modelData = models_.at(modelName);
+	if (modelData.meshes.empty()) {
+		return;
+	}
+
+	// ファイルオープン
+	std::ofstream objFile(filePath);
+	if (!objFile.is_open()) {
+		throw std::runtime_error("Failed to open file for OBJ export.");
+	}
+
+	auto& meshData = modelData.meshes[0];
+	auto& vertices = meshData.vertices;
+	auto& indices = meshData.indices;
+
+	// 頂点データの書き込み
+	for (auto& vertex : vertices) {
+
+		vertex.pos.x *= -1.0f;
+
+		objFile << "v " << vertex.pos.x << " " << vertex.pos.y << " " << vertex.pos.z << "\n";
+	}
+
+	// 法線データの書き込み
+	for (const auto& vertex : vertices) {
+		objFile << "vn " << vertex.normal.x << " " << vertex.normal.y << " " << vertex.normal.z << "\n";
+	}
+
+	// テクスチャ座標の書き込み（無ければ省略）
+	for (const auto& vertex : vertices) {
+		objFile << "vt " << vertex.texcoord.x << " " << vertex.texcoord.y << "\n";
+	}
+
+	// 面の書き込み（インデックス情報を使う）
+	size_t numTriangles = indices.size() / 3;
+	for (size_t i = 0; i < numTriangles; ++i) {
+
+		// インデックスを1から始めるため+1をする
+		objFile << "f "
+			<< indices[i * 3 + 0] + 1 << "/" << indices[i * 3 + 0] + 1 << "/" << indices[i * 3 + 0] + 1 << " "
+			<< indices[i * 3 + 1] + 1 << "/" << indices[i * 3 + 1] + 1 << "/" << indices[i * 3 + 1] + 1 << " "
+			<< indices[i * 3 + 2] + 1 << "/" << indices[i * 3 + 2] + 1 << "/" << indices[i * 3 + 2] + 1 << "\n";
+	}
+
+	objFile.close();
+}
+
+/*////////////////////////////////////////////////////////////////////////////////
 *								Skeletonの更新
 ////////////////////////////////////////////////////////////////////////////////*/
 void ModelManager::SkeletonUpdate(const std::string& animationName) {

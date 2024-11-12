@@ -9,20 +9,20 @@
 #include <string>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Rail Class
+*								Ground Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class Rail :
+class Ground :
 	public BaseGameObject {
 public:
 	//===================================================================*/
 	//							public Function
 	//===================================================================*/
 
-	Rail() = default;
-	~Rail() = default;
+	Ground() = default;
+	~Ground() = default;
 
-	void Init(const std::string& modelName, const std::string& textureName);
-	void Update(const Matrix4x4& viewPro);
+	void Init();
+	void Update();
 	void Draw();
 
 private:
