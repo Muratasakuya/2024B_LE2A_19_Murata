@@ -13,7 +13,7 @@ void Welcome::Init() {
 	BaseGameObject::Init("welcome.obj");
 
 	transform_.translation = Vector3(0.0f, -1.69f, 33.2f);
-	transform_.rotation = Quaternion::EulerToQuaternion(Vector3(0.0f, std::numbers::pi_v<float>, 0.0f));
+	//transform_.rotation = Quaternion::EulerToQuaternion(Vector3(0.0f, std::numbers::pi_v<float>, 0.0f));
 
 	color_ = Vector4(0.4118f, 0.4118f, 0.4118f, 1.0f);
 

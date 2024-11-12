@@ -59,6 +59,8 @@ private:
 
 	bool isAlive_; //* 生存フラグ
 
+	float deathTimer_;
+
 	//* move
 	Vector3 targetPosition_;
 	Vector3 initPos_;

@@ -171,6 +171,7 @@ void Enemy::Move() {
 				initPos_.z + Random::Generate(-1.2f, 1.2f)   // Z方向の範囲
 			);
 		}
+
 		break;
 	}
 	case EnemyType::kGhost: {
