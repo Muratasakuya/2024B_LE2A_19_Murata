@@ -62,6 +62,7 @@ void GameScene::Load() {
 
 	NewMoonGame::LoadModel(baseModelDirectory_, "ground.obj");
 	NewMoonGame::LoadModel(baseModelDirectory_, "cylinder.obj");
+	NewMoonGame::LoadModel(baseModelDirectory_, "welcome.obj");
 
 	//===================================================================*/
 	//* texture *//
@@ -71,6 +72,13 @@ void GameScene::Load() {
 	NewMoonGame::LoadTexture("score");
 	NewMoonGame::LoadTexture("scoreNumber");
 	NewMoonGame::LoadTexture("scoreBack");
+
+	//===================================================================*/
+	//* sound *//
+
+	NewMoonGame::LoadWave("./Resources/Sound/maou_game_vehicle03.wav");
+	NewMoonGame::PlayWave("maou_game_vehicle03", true);
+	NewMoonGame::SetVolume("maou_game_vehicle03", 0.1f);
 
 }
 
@@ -92,15 +100,33 @@ void GameScene::Init() {
 	ground_ = std::make_unique<Ground>();
 	ground_->Init();
 
+	welcome_ = std::make_unique<Welcome>();
+	welcome_->Init();
+
 	cylinderCollection_ = std::make_unique<CylinderCollection>();
 	cylinderCollection_->Init();
 
 	railScore_ = std::make_unique<RailScore>();
 	railScore_->Init();
 
+	fireworkCollection_ = std::make_unique<FireworkCollection>();
+	fireworkCollection_->Init(railEditor_.get());
+
+	game_ = false;
+
 }
 
 void GameScene::Update() {
+
+	if (NewMoonGame::GameCamera()->GetRailCamera()->IsStart() && !game_) {
+
+		enemyManager_->Reset();
+		game_ = true;
+	}
+	if (!NewMoonGame::GameCamera()->GetRailCamera()->IsStart() && game_) {
+
+		game_ = false;
+	}
 
 	railEditor_->Update();
 
@@ -111,10 +137,14 @@ void GameScene::Update() {
 
 	ground_->Update();
 
+	welcome_->Update();
+
 	cylinderCollection_->Update();
 
 	railScore_->SetScore(enemyManager_->GetScore());
 	railScore_->Update();
+
+	fireworkCollection_->Update();
 
 }
 
@@ -124,6 +154,8 @@ void GameScene::Draw() {
 
 	ground_->Draw();
 
+	welcome_->Draw();
+
 	cylinderCollection_->Draw();
 
 	enemyManager_->Draw();
@@ -131,6 +163,10 @@ void GameScene::Draw() {
 	player_->Draw();
 
 	railScore_->Draw();
+
+	fireworkCollection_->Draw();
+
+	player_->ReticleDraw();
 
 }
 

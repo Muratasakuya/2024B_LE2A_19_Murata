@@ -31,6 +31,8 @@ public:
 
 	void Draw();
 
+	void ReticleDraw();
+
 	// Setter
 	void SetForward(const Vector3& forward);
 

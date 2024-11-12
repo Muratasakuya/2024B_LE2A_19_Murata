@@ -39,7 +39,10 @@ void RailCamera::Init(RailEditor* railEditor, const Vector3& worldPos) {
 
 void RailCamera::Update() {
 
-	GuiCameraUpdate();
+	if (NewMoonGame::TriggerKey(DIK_SPACE)) {
+
+		isStart_ = true;
+	}
 
 	if (isStart_) {
 

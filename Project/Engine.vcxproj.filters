@@ -125,6 +125,8 @@
     <ClCompile Include="Game\Objects\Ground.cpp" />
     <ClCompile Include="Game\Objects\Cylinder.cpp" />
     <ClCompile Include="Game\Objects\RailScore.cpp" />
+    <ClCompile Include="Game\Objects\Firework.cpp" />
+    <ClCompile Include="Game\Objects\Welcome.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -228,6 +230,8 @@
     <ClInclude Include="Game\Objects\Ground.h" />
     <ClInclude Include="Game\Objects\Cylinder.h" />
     <ClInclude Include="Game\Objects\RailScore.h" />
+    <ClInclude Include="Game\Objects\Firework.h" />
+    <ClInclude Include="Game\Objects\Welcome.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

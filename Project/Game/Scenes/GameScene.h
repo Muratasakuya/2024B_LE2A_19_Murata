@@ -13,6 +13,10 @@
 #include "Game/Objects/Ground.h"
 #include "Game/Objects/Cylinder.h"
 #include "Game/Objects/RailScore.h"
+#include "Game/Objects/Welcome.h"
+
+//* particle
+#include "Game/Objects/Firework.h"
 
 // c++
 #include <memory>
@@ -45,6 +49,8 @@ private:
 
 	const std::string& baseModelDirectory_ = "./Resources/Obj";
 
+	bool game_;
+
 	std::unique_ptr<RailEditor> railEditor_;
 
 	std::unique_ptr<Player> player_;
@@ -55,11 +61,17 @@ private:
 
 	std::unique_ptr<Ground> ground_;
 
+	std::unique_ptr<Welcome> welcome_;;
+
 	std::unique_ptr<CylinderCollection> cylinderCollection_;
 
 	//* 2D *//
 
 	std::unique_ptr<RailScore> railScore_;
+
+	//* particle *//
+
+	std::unique_ptr<FireworkCollection> fireworkCollection_;
 
 private:
 	//===================================================================*/

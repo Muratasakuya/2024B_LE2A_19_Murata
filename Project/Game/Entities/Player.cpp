@@ -45,6 +45,11 @@ void Player::Draw() {
 
 		bullet->Draw();
 	}
+
+}
+
+void Player::ReticleDraw() {
+
 	bulletReticle_->Draw();
 }
 

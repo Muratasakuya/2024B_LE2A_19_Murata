@@ -49,19 +49,6 @@ void RailEditor::Draw() {
 		rail_->Draw();
 	}
 
-	/*if (NewMoonGame::GameCamera()->GetRailCamera()->IsStart()) {
-		return;
-	}
-
-	DrawRailLine();
-
-	for (auto& spherePair : spheres_) {
-		auto& sphere = spherePair.first;
-		auto& transform = spherePair.second;
-
-		sphere->Draw(transform, sphereMaterial_);
-	}*/
-
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -333,6 +320,11 @@ float RailEditor::GetReparameterizedT(float t) const {
 }
 
 const std::vector<Vector3>& RailEditor::GetControlPoints() const { return railPoints_; }
+
+const Vector3& RailEditor::GetControlPointsByIndex(uint32_t index) const {
+	
+	return railPoints_[index];
+}
 
 /*////////////////////////////////////////////////////////////////////////////////
 *							RailModelの自作

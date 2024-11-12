@@ -14,9 +14,8 @@ void Rail::Init(const std::string& modelName, const std::string& textureName) {
 	model_->SetTexture(textureName);
 	model_->SetPipelineType(PipelineType::RailNoneBackCulling);
 
-	color_ = { 0.64f,0.64f ,0.64f ,1.0f };
+	color_ = Vector4(0.16f, 0.16f, 0.16f, 1.0f);
 
-	SetName(modelName);
 }
 
 void Rail::Update(const Matrix4x4& viewPro) {

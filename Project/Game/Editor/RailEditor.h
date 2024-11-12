@@ -48,6 +48,7 @@ public:
 	//* getter *//
 
 	const std::vector<Vector3>& GetControlPoints() const;
+	const Vector3& GetControlPointsByIndex(uint32_t index) const;
 	const std::vector<float>& GetArcLengths() const { return arcLengths_; }
 
 private:

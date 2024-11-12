@@ -33,6 +33,10 @@ public:
 
 	void Draw();
 
+	void Reset() {
+		score_ = 0.0f;
+	}
+
 	// Getter
 	float GetScore() const { return score_; }
 

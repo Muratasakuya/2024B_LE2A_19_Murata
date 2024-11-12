@@ -115,6 +115,11 @@ void ParticleSystem::CreateParticle(
 
 	particleGroups_[name].behavior->Create(particleGroups_[name].particles, parameter);
 
+	// 最初は0.0fにして暴発しないようにする
+	for (auto& particle : particleGroups_[name].particles) {
+		particle.lifeTime = 0.0f;
+	}
+
 	//!! alreadyLoadModel !!//
 	particleGroups_[name].model.data = NewMoonGame::GetModelMangager()->GetModelData(modelName);
 	CreateVertexData(name);

@@ -33,7 +33,6 @@ void Enemy::TypeInit() {
 
 		modelName = "UFO.obj";
 		BaseGameObject::Init(modelName);
-		BaseGameObject::SetLightingEnable(false);
 
 		scale = 0.25f;
 		color_ = Vector4(0.9f, 0.9f, 0.05f, 1.0f);

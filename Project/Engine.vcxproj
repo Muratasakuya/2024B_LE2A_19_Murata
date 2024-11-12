@@ -117,6 +117,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Objects\Firework.cpp" />
     <ClCompile Include="Game\Objects\Cylinder.cpp" />
     <ClCompile Include="Game\Entities\Enemy.cpp" />
     <ClCompile Include="Game\Particle\IBaseParticle.cpp" />
@@ -212,8 +213,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Particle\ParticleParameter.cpp" />
     <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
     <ClCompile Include="Game\Objects\RailScore.cpp" />
+    <ClCompile Include="Game\Objects\Welcome.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Objects\Firework.h" />
     <ClInclude Include="Game\Objects\Cylinder.h" />
     <ClInclude Include="Game\Entities\Enemy.h" />
     <ClInclude Include="Game\Particle\ParticleTraits.h" />
@@ -315,6 +318,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Particle\ParticleParameter.h" />
     <ClInclude Include="Game\Particle\ParticleVisitor.h" />
     <ClInclude Include="Game\Objects\RailScore.h" />
+    <ClInclude Include="Game\Objects\Welcome.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

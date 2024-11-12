@@ -20,6 +20,8 @@ void Cylinder::Init(uint32_t index, const Vector3& pos, const Vector3& scale) {
 	transform_.scale.x = 0.5f;
 	transform_.scale.z = 0.5f;
 
+	color_= Vector4(0.4118f, 0.4118f, 0.4118f, 1.0f);
+
 }
 
 void Cylinder::Update() {
