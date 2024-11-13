@@ -14,8 +14,9 @@ void AnimationModel::Init(const std::string& modelName, const std::string& anima
 
 	BaseModel::Init(modelName);
 
-	inputVertices_.Init(inputAssembler_.verticesNum.front(), inputAssembler_.vertices.front().GetResource());
-	outputVertices_.Init(inputAssembler_.verticesNum.front());
+	inputVertices_.Init(static_cast<UINT>(inputAssembler_.GetVertexData().data.size()),
+		inputAssembler_.GetVertexData().GetResource());
+	outputVertices_.Init(static_cast<UINT>(inputAssembler_.GetVertexData().data.size()));
 
 	if (modelData_.meshes.front().material.textureName) {
 		pipelineType_ = PipelineType::pObject3D;
@@ -27,8 +28,6 @@ void AnimationModel::Init(const std::string& modelName, const std::string& anima
 void AnimationModel::Draw(AnimationTransform transform, MaterialObject3D material, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
-	auto cameraBuffer = NewMoonGame::GameCamera()->GetCamera3D()->GetCameraBuffer();
-	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
 
 	SetComputeCommands(animationName_);
 
@@ -39,16 +38,14 @@ void AnimationModel::Draw(AnimationTransform transform, MaterialObject3D materia
 		D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
 	NewMoon::SetGraphicsPipeline(commandList, pipelineType_, blendMode);
-	inputAssembler_.SetBuffer(commandList);
-	material.SetCommand(commandList, material.GetRootParameterIndex());
-	transform.SetCommand();
-	lightBuffer.SetCommand(commandList, lightBuffer.GetRootParameterIndex(pipelineType_));
-	cameraBuffer.SetCommand(commandList, cameraBuffer.GetRootParameterIndex(pipelineType_));
-
+	inputAssembler_.SetBuffer(commandList, 0);
+	material.SetCommand(commandList);
+	transform.SetCommand(commandList);
+	NewMoonGame::SetEnvironmentCommand(commandList, pipelineType_);
 	if (modelData_.meshes.front().material.textureName) {
 		NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, modelData_.meshes.front().material.textureName.value());
 	}
-	inputAssembler_.DrawCall(commandList);
+	inputAssembler_.DrawCall(commandList, 0);
 
 	// D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER -> D3D12_RESOURCE_STATE_UNORDERED_ACCESS
 	NewMoon::TransitionBarrier(
@@ -63,12 +60,12 @@ void AnimationModel::SetComputeCommands(const std::string& animationName) {
 
 	NewMoon::SetComputePipeline(commandList, ComputePipelineType::SkinningCS);
 	commandList->SetComputeRootDescriptorTable(0,
-		NewMoonGame::GetModelMangager()->GetSkinClusterData(animationName).paletteSrvHandle.second);
+		NewMoonGame::GetModelManager()->GetSkinClusterData(animationName).paletteSrvHandle.second);
 	commandList->SetComputeRootDescriptorTable(1, inputVertices_.GetGpuHandle());
 	commandList->SetComputeRootDescriptorTable(2,
-		NewMoonGame::GetModelMangager()->GetSkinClusterData(animationName).influenceSrvHandle.second);
+		NewMoonGame::GetModelManager()->GetSkinClusterData(animationName).influenceSrvHandle.second);
 	commandList->SetComputeRootDescriptorTable(3, outputVertices_.GetGpuHandle());
-	commandList->SetComputeRootConstantBufferView(4, skinningInfoDatas_.GetResource()->GetGPUVirtualAddress());
+	commandList->SetComputeRootConstantBufferView(4, skinningInfoDates_.GetResource()->GetGPUVirtualAddress());
 	// Compute起動
 	commandList->Dispatch(static_cast<UINT>(modelData_.meshes.front().vertices.size() + 1023) / 1024, 1, 1);
 }

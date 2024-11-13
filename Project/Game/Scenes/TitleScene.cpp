@@ -24,8 +24,6 @@ void TitleScene::Run() {
 
 		Draw();
 
-		NewMoonGame::Renderer2D();
-
 		NewMoonGame::Reset();
 		NewMoon::EndFrame();
 
@@ -61,8 +59,6 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw() {
-
-	NewMoonGame::DrawGrid();
 
 	particle_->Draw(kBlendModeAdd);
 

@@ -10,8 +10,6 @@
 void Model::Draw(WorldTransform transform, std::vector<MaterialObject3D>& materials, BlendMode blendMode) {
 
 	auto commandList = NewMoon::GetCommandList();
-	auto cameraBuffer = NewMoonGame::GameCamera()->GetCamera3D()->GetCameraBuffer();
-	auto lightBuffer = NewMoonGame::GetGameLight()->GetLightBuffer();
 
 	for (uint32_t meshIndex = 0; meshIndex < meshNum_; ++meshIndex) {
 
@@ -26,10 +24,9 @@ void Model::Draw(WorldTransform transform, std::vector<MaterialObject3D>& materi
 
 		NewMoon::SetGraphicsPipeline(commandList, pipelineType_, blendMode);
 		inputAssembler_.SetBuffer(commandList, meshIndex);
-		materials[meshIndex].SetCommand(commandList, materials[meshIndex].GetRootParameterIndex());
-		transform.SetCommand();
-		lightBuffer.SetCommand(commandList, lightBuffer.GetRootParameterIndex(pipelineType_));
-		cameraBuffer.SetCommand(commandList, cameraBuffer.GetRootParameterIndex(pipelineType_));
+		materials[meshIndex].SetCommand(commandList);
+		transform.SetCommand(commandList);
+		NewMoonGame::SetEnvironmentCommand(commandList, pipelineType_);
 		if (modelData_.meshes[meshIndex].material.textureName) {
 			NewMoon::SetGraphicsRootDescriptorTable(commandList, 2, modelData_.meshes[meshIndex].material.textureName.value());
 		}

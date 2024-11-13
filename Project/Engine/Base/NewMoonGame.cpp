@@ -20,10 +20,6 @@ std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
 std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
 std::vector<IBaseParticle*> NewMoonGame::particles_ = {};
 std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
-RailEditor* NewMoonGame::railEditor_ = nullptr;
-bool NewMoonGame::showRailEditorWindow_ = false;
-std::unique_ptr<UIEditor> NewMoonGame::uiEditor_ = nullptr;
-bool NewMoonGame::showUIEditorWindow_ = false;
 #pragma endregion
 ///===============================================================================
 
@@ -58,9 +54,6 @@ void NewMoonGame::Init() {
 	lineDrawer3D_->Init(cameraManager_->GetCamera3D()->GetViewProBuffer());
 
 	collisionManager_ = std::make_unique<CollisionManager>();
-
-	uiEditor_ = std::make_unique<UIEditor>();
-	uiEditor_->Init();
 
 }
 
@@ -107,50 +100,7 @@ void NewMoonGame::ImGui() {
 			}
 		}
 
-		// 今はUI表示した時点で消す
-		if (!showUIEditorWindow_) {
-			// Editors
-			if (ImGui::BeginTabItem("Editor")) {
-
-				if (railEditor_) {
-					// Rail Editor
-					if (ImGui::CollapsingHeader("Rail")) {
-						if (ImGui::Button("Start##Rail")) {
-
-							showRailEditorWindow_ = true;
-						}
-					}
-				}
-
-				// UI Editor
-				if (ImGui::CollapsingHeader("UI")) {
-					if (ImGui::Button("Start##UI")) {
-
-						showUIEditorWindow_ = true;
-					}
-				}
-
-				ImGui::EndTabItem();
-			}
-		}
-
 		ImGui::EndTabBar();
-	}
-
-	if (showRailEditorWindow_) {
-		ImGui::Begin("Rail Editor", &showRailEditorWindow_);
-
-		railEditor_->ImGui();
-
-		ImGui::End();
-	}
-
-	if (showUIEditorWindow_) {
-		ImGui::Begin("UI Editor", &showUIEditorWindow_);
-
-		uiEditor_->ImGui();
-
-		ImGui::End();
 	}
 
 	ImGui::End();
@@ -176,7 +126,6 @@ void NewMoonGame::Update() {
 
 	collisionManager_->UpdateAllCollisions();
 
-	uiEditor_->Update();
 }
 
 void NewMoonGame::Close() {
@@ -190,7 +139,6 @@ void NewMoonGame::Close() {
 	lightManager_.reset();
 	lineDrawer2D_.reset();
 	lineDrawer3D_.reset();
-	uiEditor_.reset();
 }
 
 void NewMoonGame::Reset() {
@@ -353,10 +301,6 @@ void NewMoonGame::DrawGrid() {
 	lineDrawer3D_->DrawGrid();
 }
 
-void NewMoonGame::Renderer2D() {
-	uiEditor_->Draw();
-}
-
 ///===================================================================
 // Setter
 
@@ -368,8 +312,13 @@ void NewMoonGame::SetToImGui(IBaseParticle* particle) {
 	particles_.push_back(particle);
 }
 
-void NewMoonGame::SetToEditor(RailEditor* railEditor) {
-	railEditor_ = railEditor;
+//* command
+void NewMoonGame::SetEnvironmentCommand(ID3D12GraphicsCommandList* commandList, PipelineType pipeline) {
+
+	// light
+	lightManager_->GetLightBuffer().SetCommand(commandList, pipeline);
+	// camera
+	cameraManager_->GetCamera3D()->SetCommand(commandList, pipeline);
 }
 
 ///===================================================================
@@ -379,7 +328,7 @@ TextureManager* NewMoonGame::GetTextureManager() {
 	return textureManager_.get();
 }
 
-ModelManager* NewMoonGame::GetModelMangager() {
+ModelManager* NewMoonGame::GetModelManager() {
 	return modelManager_.get();
 }
 

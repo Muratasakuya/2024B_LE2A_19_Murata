@@ -21,7 +21,6 @@ public:
 	PrimitiveMaterial() = default;
 	~PrimitiveMaterial() = default;
 
-	// Main
 	void Init();
 	void Update();
 
@@ -43,16 +42,13 @@ public:
 	//							public Functions
 	//===================================================================*/
 
-	// default
 	MaterialObject3D() = default;
 	~MaterialObject3D() = default;
 
-	// Main
 	void Init();
 	void Update();
 
-	// Getter
-	UINT GetRootParameterIndex() const;
+	void SetCommand(ID3D12GraphicsCommandList* commandList);
 
 public:
 	//===================================================================*/
@@ -61,6 +57,14 @@ public:
 
 	Vector4 color;
 	Material3D properties;
+
+private:
+	//===================================================================*/
+	//							private Variables
+	//===================================================================*/
+
+	const UINT rootParameterIndex_ = 0;
+
 };
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -73,11 +77,9 @@ public:
 	//							public Functions
 	//===================================================================*/
 
-	// default
 	MaterialObject2D() = default;
 	~MaterialObject2D() = default;
 
-	// Main
 	void Init();
 	void Update();
 
@@ -100,11 +102,9 @@ public:
 	//							public Functions
 	//===================================================================*/
 
-	// default
 	OffscreenDepthMaterial() = default;
 	~OffscreenDepthMaterial() = default;
 
-	// Main
 	void Init();
 	void Update();
 
@@ -126,11 +126,9 @@ public:
 	//							public Functions
 	//===================================================================*/
 
-	// default
 	OffscreenDissolveMaterial() = default;
 	~OffscreenDissolveMaterial() = default;
 
-	// Main
 	void Init();
 	void Update();
 
@@ -141,4 +139,5 @@ public:
 
 	DissolveMaterial properties;
 	std::string textureName_;
+
 };

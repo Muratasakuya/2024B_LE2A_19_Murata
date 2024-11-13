@@ -2,9 +2,8 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Components/VertexObject.h"
-#include "Game/Components/IndexObject.h"
 #include "Game/Components/ParticleBuffer.h"
+#include "Game/Components/InputAssembler.h"
 #include "Game/Particle/ParticleBehavior.h"
 #include "Game/Particle/ParticleParameter.h"
 #include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
@@ -31,8 +30,7 @@ private:
 	struct ParticleModel {
 
 		ModelData data;
-		std::vector<VertexObject<VertexData3D>> vertices;
-		std::vector<IndexObject> indices;
+		InputAssembler inputAssembler;
 	};
 
 	//* ParticleGroup *//

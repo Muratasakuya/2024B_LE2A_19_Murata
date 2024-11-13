@@ -31,11 +31,6 @@ void CameraManager::Update() {
 		camera3D_->Update();
 	}
 
-	if (railCamera_) {
-
-		railCamera_->Update();
-	}
-
 }
 
 void CameraManager::ImGui() {
@@ -44,28 +39,11 @@ void CameraManager::ImGui() {
 		camera3D_->ImGui();
 	}
 
-	if (railCamera_) {
-		ImGui::Separator();
-		if (ImGui::CollapsingHeader("Rail Camera")) {
-			railCamera_->ImGui();
-		}
-	}
-
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Debug Camera")) {
 		debugCamera_->ImGui();
 	}
 
-}
-
-void CameraManager::SetUpRailCamera(RailEditor* railEditor, const Vector3& initPos) {
-
-	if (railCamera_) {
-		return;
-	}
-
-	railCamera_ = std::make_unique<RailCamera>();
-	railCamera_->Init(railEditor, initPos);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -77,12 +55,6 @@ Camera2D* CameraManager::GetCamera2D() const {
 Camera3D* CameraManager::GetCamera3D() const {
 	return camera3D_.get();
 }
-RailCamera* CameraManager::GetRailCamera() const {
-
-	return railCamera_.get();
-}
-
 DebugCamera* CameraManager::GetDebugCamera() const {
-
 	return debugCamera_.get();
 }

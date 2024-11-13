@@ -61,7 +61,7 @@ void Camera3D::Reset() {
 	data_ = resetData_;
 }
 
-void Camera3D::CameraSetCommand(ID3D12GraphicsCommandList* commandList, const PipelineType& pipelineType) {
+void Camera3D::SetCommand(ID3D12GraphicsCommandList* commandList, const PipelineType& pipelineType) {
 
 	cameraBuffer_.SetCommand(commandList, cameraBuffer_.GetRootParameterIndex(pipelineType));
 }
@@ -78,13 +78,13 @@ void Camera3D::SetViewMatrix(const Matrix4x4& viewMatrix) { data_.viewMatrix = v
 void Camera3D::SetProjectionMatrix(const Matrix4x4& projectionMatrix) { data_.projectionMatrix = projectionMatrix; }
 void Camera3D::SetTranslate(const Vector3& translate) { data_.transform.translate = translate; }
 void Camera3D::SetRotate(const Vector3& rotate) { data_.transform.rotate = rotate; }
-
 void Camera3D::SetCamera(const Matrix4x4& viewProMatrix, const Vector3& pos) {
 
 	data_.viewProjectionMatrix = viewProMatrix;
 
 	cameraBuffer_.Update(pos);
 	viewProBuffer_.Update(data_.viewProjectionMatrix);
+
 }
 
 /*///////////////////////////////////////////////////////////////////////////////

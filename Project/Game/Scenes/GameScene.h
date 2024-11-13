@@ -6,17 +6,7 @@
 #include "Game/Scenes/Methods/IScene.h"
 
 //* gameObjects
-#include "Game/Editor/RailEditor.h"
-#include "Game/Entities/Player.h"
 #include "Game/Objects/TestCollisionObject.h"
-#include "Game/Managers/EnemyManager.h"
-#include "Game/Objects/Ground.h"
-#include "Game/Objects/Cylinder.h"
-#include "Game/Objects/RailScore.h"
-#include "Game/Objects/Welcome.h"
-
-//* particle
-#include "Game/Objects/Firework.h"
 
 // c++
 #include <memory>
@@ -40,6 +30,8 @@ public:
 
 	void Update() override;
 
+	void Draw();
+
 	void Cleanup() override;
 
 private:
@@ -49,37 +41,11 @@ private:
 
 	const std::string& baseModelDirectory_ = "./Resources/Obj";
 
-	bool game_;
-
-	std::unique_ptr<RailEditor> railEditor_;
-
-	std::unique_ptr<Player> player_;
-
-	std::unique_ptr<EnemyManager> enemyManager_;
-
-	//* field *//
-
-	std::unique_ptr<Ground> ground_;
-
-	std::unique_ptr<Welcome> welcome_;;
-
-	std::unique_ptr<CylinderCollection> cylinderCollection_;
-
-	//* 2D *//
-
-	std::unique_ptr<RailScore> railScore_;
-
-	//* particle *//
-
-	std::unique_ptr<FireworkCollection> fireworkCollection_;
-
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
 	void Load();
-
-	void Draw();
 
 };

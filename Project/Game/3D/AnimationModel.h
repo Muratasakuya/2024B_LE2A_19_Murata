@@ -41,7 +41,7 @@ private:
 	InputVertexObject inputVertices_;
 	OutputVertexObject outputVertices_;
 	// SkinningInfo
-	SkinningInfoData skinningInfoDatas_;
+	SkinningInfoData skinningInfoDates_;
 
 private:
 	//===================================================================*/

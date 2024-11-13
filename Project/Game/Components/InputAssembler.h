@@ -3,47 +3,41 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/2D/Sprite.h"
+#include "Game/Components/VertexObject.h"
+#include "Game/Components/IndexObject.h"
 
 // c++
-#include <memory>
+#include <vector>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								RailScore Class
+*							InputAssembler Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class RailScore {
+class InputAssembler {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	RailScore() = default;
-	~RailScore() = default;
+	InputAssembler() = default;
+	~InputAssembler() = default;
 
-	void Init();
+	void Init(const MeshModelData& meshData);
 
-	void Update();
+	void SetBuffer(ID3D12GraphicsCommandList* commandList, uint32_t meshIndex);
 
-	void Draw();
+	void DrawCall(ID3D12GraphicsCommandList* commandList, uint32_t meshIndex);
+	void DrawCall(ID3D12GraphicsCommandList* commandList, uint32_t instanceNum, uint32_t meshIndex);
 
-	void ImGui();
-
-	// Setter
-	void SetScore(float score);
+	// Getter
+	const VertexObject<VertexData3D>& GetVertexData() const { return vertices.front(); }
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	std::unique_ptr<Sprite> score_;
-	Vector2 scorePos_;
+	std::vector<VertexObject<VertexData3D>> vertices;
 
-	float scoreValue_;
-
-	std::array<std::unique_ptr<Sprite>, 4> scoreNumbers_;
-
-	std::unique_ptr<Sprite> scoreBack_;
-	Vector2 scoreBackPos_;
+	std::vector<IndexObject> indices;
 
 };

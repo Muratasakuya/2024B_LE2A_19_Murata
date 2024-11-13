@@ -15,9 +15,7 @@ void BaseTransform::Init() {
 	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
-void BaseTransform::SetCommand() {
-
-	auto commandList = NewMoon::GetCommandList();
+void BaseTransform::SetCommand(ID3D12GraphicsCommandList* commandList) {
 
 	DXConstBuffer::SetCommand(commandList, rootParameterIndex_);
 }

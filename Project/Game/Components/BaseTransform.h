@@ -21,7 +21,7 @@ public:
 	virtual void Init();
 	virtual void Update(const Matrix4x4& viewPro) = 0;
 
-	virtual void SetCommand();
+	virtual void SetCommand(ID3D12GraphicsCommandList* commandList);
 
 	// Getter
 	virtual Vector3 GetWorldPos() const;
@@ -35,7 +35,6 @@ public:
 	Vector3 translation;
 	Quaternion rotation;
 
-	//* Euler、ほぼ使う予定はない *//
 	Vector3 eulerRotate_;
 
 	TransformationMatrix matrix;

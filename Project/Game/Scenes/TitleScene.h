@@ -27,6 +27,8 @@ public:
 
 	void Update() override;
 
+	void Draw();
+
 	void Cleanup() override;
 
 private:
@@ -44,7 +46,5 @@ private:
 	//===================================================================*/
 
 	void Load();
-
-	void Draw();
 
 };

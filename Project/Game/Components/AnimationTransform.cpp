@@ -10,12 +10,12 @@ void AnimationTransform::Init(const std::string& modelName, const std::string& a
 
 	BaseTransform::Init();
 
-	animationData_ = NewMoonGame::GetModelMangager()->GetAnimationData(animationName);
-	skeleton_ = NewMoonGame::GetModelMangager()->GetSkeletonData(animationName);
+	animationData_ = NewMoonGame::GetModelManager()->GetAnimationData(animationName);
+	skeleton_ = NewMoonGame::GetModelManager()->GetSkeletonData(animationName);
 	skeleton_.value().name = animationName;
-	skinCluster_ = NewMoonGame::GetModelMangager()->GetSkinClusterData(animationName);
+	skinCluster_ = NewMoonGame::GetModelManager()->GetSkinClusterData(animationName);
 
-	modelData_ = NewMoonGame::GetModelMangager()->GetModelData(modelName);
+	modelData_ = NewMoonGame::GetModelManager()->GetModelData(modelName);
 
 	isPlayAnimation_ = false;
 	animationtime_ = 0.0f;

@@ -60,7 +60,7 @@ public:
 
 	void Reset();
 
-	void CameraSetCommand(ID3D12GraphicsCommandList* commandList, const PipelineType& pipelineType);
+	void SetCommand(ID3D12GraphicsCommandList* commandList, const PipelineType& pipelineType);
 	void ViewProSetCommand(ID3D12GraphicsCommandList* commandList);
 
 	// Setter

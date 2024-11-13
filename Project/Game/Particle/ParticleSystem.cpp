@@ -13,29 +13,9 @@ void ParticleSystem::CreateVertexData(const std::string& name) {
 
 	size_t meshNum = particleGroups_[name].model.data.meshes.size();
 
-	particleGroups_[name].model.vertices.resize(meshNum);
-	particleGroups_[name].model.indices.resize(meshNum);
-
 	for (uint32_t index = 0; index < meshNum; ++index) {
 
-		particleGroups_[name].model.vertices[index].Init(static_cast<UINT>(particleGroups_[name].model.data.meshes[index].vertices.size()));
-		particleGroups_[name].model.indices[index].Init(static_cast<UINT>(particleGroups_[name].model.data.meshes[index].indices.size()));
-
-		particleGroups_[name].model.vertices[index].data.resize(particleGroups_[name].model.data.meshes[index].vertices.size());
-		std::copy(
-			particleGroups_[name].model.data.meshes[index].vertices.begin(),
-			particleGroups_[name].model.data.meshes[index].vertices.end(),
-			particleGroups_[name].model.vertices[index].data.begin());
-
-		particleGroups_[name].model.indices[index].data.resize(particleGroups_[name].model.data.meshes[index].indices.size());
-		std::copy(
-			particleGroups_[name].model.data.meshes[index].indices.begin(),
-			particleGroups_[name].model.data.meshes[index].indices.end(),
-			particleGroups_[name].model.indices[index].data.begin());
-
-		// 転送
-		particleGroups_[name].model.vertices[index].Update();
-		particleGroups_[name].model.indices[index].Update();
+		particleGroups_[name].model.inputAssembler.Init(particleGroups_[name].model.data.meshes[index]);
 	}
 
 }
@@ -95,13 +75,11 @@ void ParticleSystem::Draw(const std::string& name, BlendMode blendMode) {
 	for (uint32_t index = 0; index < particleGroups_[name].model.data.meshes.size(); ++index) {
 
 		NewMoon::SetGraphicsPipeline(commandList, pParticle, blendMode);
-		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		commandList->IASetVertexBuffers(0, 1, &particleGroups_[name].model.vertices[index].GetVertexBuffer());
-		commandList->IASetIndexBuffer(&particleGroups_[name].model.indices[index].GetIndexBuffer());
+		particleGroups_[name].model.inputAssembler.SetBuffer(commandList, index);
 		particleGroups_[name].particleBuffer.SetCommand(commandList, particleGroups_[name].particleBuffer.GetRootParameterIndex());
 		NewMoon::SetGraphicsRootDescriptorTable(commandList, 1, particleGroups_[name].model.data.meshes[index].material.textureName.value());
 		commandList->SetGraphicsRootDescriptorTable(2, NewMoon::GetSrvManagerPtr()->GetGPUHandle(particleGroups_[name].instancingSrvIndex));
-		commandList->DrawIndexedInstanced(static_cast<UINT>(particleGroups_[name].model.indices[index].data.size()), particleGroups_[name].numInstance, 0, 0, 0);
+		particleGroups_[name].model.inputAssembler.DrawCall(commandList, particleGroups_[name].numInstance, index);
 	}
 }
 
@@ -121,7 +99,7 @@ void ParticleSystem::CreateParticle(
 	}
 
 	//!! alreadyLoadModel !!//
-	particleGroups_[name].model.data = NewMoonGame::GetModelMangager()->GetModelData(modelName);
+	particleGroups_[name].model.data = NewMoonGame::GetModelManager()->GetModelData(modelName);
 	CreateVertexData(name);
 
 	//* CreateStructureBuffer *//
@@ -135,14 +113,14 @@ void ParticleSystem::CreateParticle(
 }
 
 void ParticleSystem::EmitParticle(
-	const std::string& name, ParticleType behaiviorType, ParticleParameter& parameter) {
+	const std::string& name, ParticleType particleType, ParticleParameter& parameter) {
 
 	auto it = particleGroups_.find(name);
 	if (it != particleGroups_.end()) {
 
 		ParticleGroup& group = it->second;
 
-		if (group.behavior->GetType() == behaiviorType) {
+		if (group.behavior->GetType() == particleType) {
 
 			particleGroups_[name].behavior->Create(particleGroups_[name].particles, parameter);
 		} else {

@@ -13,7 +13,6 @@
 #include "Game/3D/Base/BaseGameObject.h"
 #include "Game/Particle/IBaseParticle.h"
 #include "Game/Managers/CollisionManager.h"
-#include "Game/Editor/RailEditor.h"
 #include "Game/Editor/UIEditor.h"
 
 // c++
@@ -101,21 +100,20 @@ public:
 	static void DrawLine3D(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
 	static void DrawGrid();
 
-	static void Renderer2D();
-
 	///===================================================================
 	// Setter
 
 	static void SetToImGui(BaseGameObject* gameObject);
 	static void SetToImGui(IBaseParticle* particle);
-	
-	static void SetToEditor(RailEditor* railEditor);
 
+	//* command
+	static void SetEnvironmentCommand(ID3D12GraphicsCommandList* commandList, PipelineType pipeline);
+	
 	///===================================================================
 	// Getter
 
 	static TextureManager* GetTextureManager();
-	static ModelManager* GetModelMangager();
+	static ModelManager* GetModelManager();
 	static CameraManager* GameCamera();
 	static LightManager* GetGameLight();
 	static float GetDeltaTime();
@@ -144,11 +142,6 @@ private:
 	static std::vector<IBaseParticle*> particles_;
 
 	static std::unique_ptr<CollisionManager> collisionManager_;
-
-	static RailEditor* railEditor_;
-	static bool showRailEditorWindow_;
-	static std::unique_ptr<UIEditor> uiEditor_;
-	static bool showUIEditorWindow_;
 
 	static void ImGui();
 
