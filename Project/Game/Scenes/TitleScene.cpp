@@ -47,6 +47,9 @@ void TitleScene::Init() {
 
 	Load();
 
+	object_ = std::make_unique<TestGameObject>();
+	object_->Init();
+
 	particle_ = std::make_unique<TestParticle>();
 	particle_->Init();
 
@@ -54,11 +57,15 @@ void TitleScene::Init() {
 
 void TitleScene::Update() {
 
+	object_->Update();
+
 	particle_->Update();
 
 }
 
 void TitleScene::Draw() {
+
+	object_->Draw();
 
 	particle_->Draw(kBlendModeAdd);
 

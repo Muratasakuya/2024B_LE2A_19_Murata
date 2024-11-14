@@ -25,7 +25,7 @@ public:
 
 	virtual void Init(const std::string& modelName);
 
-	virtual void Update(const Matrix4x4& viewPro);
+	virtual void Update();
 
 	virtual void Draw(BlendMode blendMode = kBlendModeNormal);
 

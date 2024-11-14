@@ -101,7 +101,6 @@
     <ClCompile Include="Game\Editor\UIEditor.cpp" />
     <ClCompile Include="Game\3D\Base\Collider.cpp" />
     <ClCompile Include="Game\Managers\CollisionManager.cpp" />
-    <ClCompile Include="Game\Objects\TestCollisionObject.cpp" />
     <ClCompile Include="Game\Particle\BaseParticle.cpp" />
     <ClCompile Include="Game\Particle\ParticleSystem.cpp" />
     <ClCompile Include="Game\Components\ParticleBuffer.cpp" />
@@ -113,6 +112,7 @@
     <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
     <ClCompile Include="Game\Particle\IBaseParticle.cpp" />
     <ClCompile Include="Game\Components\InputAssembler.cpp" />
+    <ClCompile Include="Game\Objects\TestGameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -191,7 +191,6 @@
     <ClInclude Include="Game\Editor\UIEditor.h" />
     <ClInclude Include="Game\3D\Base\Collider.h" />
     <ClInclude Include="Game\Managers\CollisionManager.h" />
-    <ClInclude Include="Game\Objects\TestCollisionObject.h" />
     <ClInclude Include="Game\Particle\BaseParticle.h" />
     <ClInclude Include="Game\Particle\ParticleSystem.h" />
     <ClInclude Include="Game\Components\ParticleBuffer.h" />
@@ -204,6 +203,7 @@
     <ClInclude Include="Game\Particle\ParticleTraits.h" />
     <ClInclude Include="Game\Particle\IBaseParticle.h" />
     <ClInclude Include="Game\Components\InputAssembler.h" />
+    <ClInclude Include="Game\Objects\TestGameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

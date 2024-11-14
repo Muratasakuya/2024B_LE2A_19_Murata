@@ -191,7 +191,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Components\WaveBuffer.cpp" />
     <ClCompile Include="Game\Scenes\TitleScene.cpp" />
     <ClCompile Include="Game\Editor\UIEditor.cpp" />
-    <ClCompile Include="Game\Objects\TestCollisionObject.cpp" />
     <ClCompile Include="Game\Particle\BaseParticle.cpp" />
     <ClCompile Include="Game\Particle\ParticleSystem.cpp" />
     <ClCompile Include="Game\Components\ParticleBuffer.cpp" />
@@ -200,6 +199,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\TestParticle.cpp" />
     <ClCompile Include="Game\Particle\ParticleParameter.cpp" />
     <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
+    <ClCompile Include="Game\Objects\TestGameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Particle\ParticleTraits.h" />
@@ -282,7 +282,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Components\WaveBuffer.h" />
     <ClInclude Include="Game\Scenes\TitleScene.h" />
     <ClInclude Include="Game\Editor\UIEditor.h" />
-    <ClInclude Include="Game\Objects\TestCollisionObject.h" />
     <ClInclude Include="Game\Particle\BaseParticle.h" />
     <ClInclude Include="Game\Particle\ParticleSystem.h" />
     <ClInclude Include="Game\Components\ParticleBuffer.h" />
@@ -291,6 +290,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Objects\TestParticle.h" />
     <ClInclude Include="Game\Particle\ParticleParameter.h" />
     <ClInclude Include="Game\Particle\ParticleVisitor.h" />
+    <ClInclude Include="Game\Objects\TestGameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

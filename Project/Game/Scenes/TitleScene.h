@@ -7,6 +7,7 @@
 
 //* object
 #include "Game/Objects/TestParticle.h"
+#include "Game/Objects/TestGameObject.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								TitleScene Class
@@ -37,6 +38,8 @@ private:
 	//===================================================================*/
 
 	const std::string& baseModelDirectory_ = "./Resources/Obj";
+
+	std::unique_ptr<TestGameObject> object_;
 
 	std::unique_ptr<TestParticle> particle_;
 

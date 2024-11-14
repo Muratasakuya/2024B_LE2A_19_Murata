@@ -5,9 +5,6 @@
 //===================================================================*/
 #include "Game/Scenes/Methods/IScene.h"
 
-//* gameObjects
-#include "Game/Objects/TestCollisionObject.h"
-
 // c++
 #include <memory>
 

@@ -27,9 +27,9 @@ void BaseGameObject::Init(const std::string& modelName) {
 	}
 }
 
-void BaseGameObject::Update(const Matrix4x4& viewPro) {
+void BaseGameObject::Update() {
 
-	transform_.Update(viewPro);
+	transform_.Update(NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix());
 	for (auto& material : materials_) {
 
 		material.color = color_;

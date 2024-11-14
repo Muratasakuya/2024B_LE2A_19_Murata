@@ -316,7 +316,8 @@ void NewMoonGame::SetToImGui(IBaseParticle* particle) {
 void NewMoonGame::SetEnvironmentCommand(ID3D12GraphicsCommandList* commandList, PipelineType pipeline) {
 
 	// light
-	lightManager_->GetLightBuffer().SetCommand(commandList, pipeline);
+	lightManager_->GetLightBuffer().SetCommand(
+		commandList, lightManager_->GetLightBuffer().GetRootParameterIndex(pipeline));
 	// camera
 	cameraManager_->GetCamera3D()->SetCommand(commandList, pipeline);
 }
