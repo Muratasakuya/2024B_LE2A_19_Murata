@@ -6,6 +6,20 @@
 *								Collider classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
 
+void Collider::OBBUpdate() {
+
+	if (shape_ && std::holds_alternative <CollisionShapes::OBB>(*shape_)) {
+		CollisionShapes::OBB& obb = std::get<CollisionShapes::OBB>(*shape_);
+
+		obb.center = centerPos_;
+		obb.rotate = rotate_;
+		obb.size = size_;
+	} else {
+
+		assert(false && "collisionShape is not OBB");
+	}
+}
+
 void Collider::DrawCollider() {
 
 	std::visit([&](const auto& shape) {
@@ -41,46 +55,44 @@ void Collider::DrawCollider() {
 			}
 
 		}
-		//* AABB *//
-		else if constexpr (std::is_same_v<ShapeType, CollisionShapes::AABB>) {
-
-			Vector3 min = shape.min;
-			Vector3 max = shape.max;
-
-			std::vector<Vector3> vertices = {
-
-				{shape.min.x, shape.min.y, shape.min.z},
-				{shape.max.x, shape.min.y, shape.min.z},
-				{shape.min.x, shape.max.y, shape.min.z},
-				{shape.max.x, shape.max.y, shape.min.z},
-				{shape.min.x, shape.min.y, shape.max.z},
-				{shape.max.x, shape.min.y, shape.max.z},
-				{shape.min.x, shape.max.y, shape.max.z},
-				{shape.max.x, shape.max.y, shape.max.z}
-			};
-
-			std::vector<std::pair<uint32_t, uint32_t>> edges = {
-
-				{0, 1}, {1, 3}, {3, 2}, {2, 0}, // 前面
-				{4, 5}, {5, 7}, {7, 6}, {6, 4}, // 背面
-				{0, 4}, {1, 5}, {2, 6}, {3, 7}  // 前面と背面を繋ぐ辺
-			};
-
-			for (const auto& edge : edges) {
-
-				const Vector3& start = vertices[edge.first];
-				const Vector3& end = vertices[edge.second];
-
-				NewMoonGame::DrawLine3D(start, end, LineColor::Red);
-			}
-
-		}
 		//* OBB *//
 		else if constexpr (std::is_same_v<ShapeType, CollisionShapes::OBB>) {
 
-			Vector3 size = shape.size;
+			const uint32_t vertexNum = 8;
 
+			Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(rotate_);
 
+			Vector3 vertices[vertexNum];
+			Vector3 halfSizeX = Vector3::Transform({ 1.0f,0.0f,0.0f }, rotateMatrix) * size_.x;
+			Vector3 halfSizeY = Vector3::Transform({ 0.0f,1.0f,0.0f }, rotateMatrix) * size_.y;
+			Vector3 halfSizeZ = Vector3::Transform({ 0.0f,0.0f,1.0f }, rotateMatrix) * size_.z;
+
+			Vector3 offsets[vertexNum] = {
+				{-1, -1, -1}, {-1,  1, -1}, {1, -1, -1}, {1,  1, -1},
+				{-1, -1,  1}, {-1,  1,  1}, {1, -1,  1}, {1,  1,  1}
+			};
+
+			for (int i = 0; i < vertexNum; ++i) {
+
+				Vector3 localVertex = offsets[i].x * halfSizeX +
+					offsets[i].y * halfSizeY +
+					offsets[i].z * halfSizeZ;
+				vertices[i] = centerPos_ + localVertex;
+			}
+
+			int edges[12][2] = {
+				{0, 1}, {1, 3}, {3, 2}, {2, 0},
+				{4, 5}, {5, 7}, {7, 6}, {6, 4},
+				{0, 4}, {1, 5}, {2, 6}, {3, 7}
+			};
+
+			for (int i = 0; i < 12; ++i) {
+
+				int start = edges[i][0];
+				int end = edges[i][1];
+
+				NewMoonGame::DrawLine3D(vertices[start], vertices[end], LineColor::Red);
+			}
 		}
 		}, shape_.value());
 }
@@ -88,13 +100,6 @@ void Collider::DrawCollider() {
 void Collider::SetCollisionShapeSphere(const CollisionShapes::Sphere& sphere) {
 	shape_ = sphere;
 	shapeType_ = ShapeType::Type_Sphere;
-
-	NewMoonGame::AddCollider(this);
-}
-
-void Collider::SetCollisionShapeAABB(const CollisionShapes::AABB& aabb) {
-	shape_ = aabb;
-	shapeType_ = ShapeType::Type_AABB;
 
 	NewMoonGame::AddCollider(this);
 }

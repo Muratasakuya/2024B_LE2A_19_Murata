@@ -86,9 +86,7 @@
     <ClCompile Include="Game\2D\Sprite.cpp" />
     <ClCompile Include="Engine\Managers\SrvManager.cpp" />
     <ClCompile Include="Game\Components\WorldTransform.cpp" />
-    <ClCompile Include="Game\3D\Triangle.cpp" />
     <ClCompile Include="Game\Components\VertexObject.cpp" />
-    <ClCompile Include="Game\3D\Sphere.cpp" />
     <ClCompile Include="Game\Managers\CameraManager.cpp" />
     <ClCompile Include="Game\Managers\LightManager.cpp" />
     <ClCompile Include="Engine\Base\NewMoonGame.cpp" />
@@ -101,16 +99,20 @@
     <ClCompile Include="Game\3D\AnimationModel.cpp" />
     <ClCompile Include="Game\3D\Base\BaseGameObject.cpp" />
     <ClCompile Include="Game\Editor\UIEditor.cpp" />
-    <ClCompile Include="Game\Objects\Skydome.cpp" />
     <ClCompile Include="Game\3D\Base\Collider.cpp" />
     <ClCompile Include="Game\Managers\CollisionManager.cpp" />
-    <ClCompile Include="Game\Objects\TestCollisionObject.cpp" />
-    <ClCompile Include="Game\Managers\EnemyManager.cpp" />
-    <ClCompile Include="Game\3D\Particle.cpp" />
-    <ClCompile Include="Game\Methods\ParticleSystem.cpp" />
+    <ClCompile Include="Game\Particle\BaseParticle.cpp" />
+    <ClCompile Include="Game\Particle\ParticleSystem.cpp" />
     <ClCompile Include="Game\Components\ParticleBuffer.cpp" />
     <ClCompile Include="Lib\Adapter\Random.cpp" />
     <ClCompile Include="Lib\Adapter\Easing.cpp" />
+    <ClCompile Include="Game\Particle\ParticleBehavior.cpp" />
+    <ClCompile Include="Game\Objects\TestParticle.cpp" />
+    <ClCompile Include="Game\Particle\ParticleParameter.cpp" />
+    <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
+    <ClCompile Include="Game\Particle\IBaseParticle.cpp" />
+    <ClCompile Include="Game\Components\InputAssembler.cpp" />
+    <ClCompile Include="Game\Objects\TestGameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -172,9 +174,7 @@
     <ClInclude Include="Game\2D\Sprite.h" />
     <ClInclude Include="Engine\Managers\SrvManager.h" />
     <ClInclude Include="Game\Components\WorldTransform.h" />
-    <ClInclude Include="Game\3D\Triangle.h" />
     <ClInclude Include="Game\Components\VertexObject.h" />
-    <ClInclude Include="Game\3D\Sphere.h" />
     <ClInclude Include="Engine\Managers\TextureManager.h" />
     <ClInclude Include="Game\Managers\CameraManager.h" />
     <ClInclude Include="Game\Managers\LightManager.h" />
@@ -189,16 +189,21 @@
     <ClInclude Include="Game\3D\AnimationModel.h" />
     <ClInclude Include="Game\3D\Base\BaseGameObject.h" />
     <ClInclude Include="Game\Editor\UIEditor.h" />
-    <ClInclude Include="Game\Objects\Skydome.h" />
     <ClInclude Include="Game\3D\Base\Collider.h" />
     <ClInclude Include="Game\Managers\CollisionManager.h" />
-    <ClInclude Include="Game\Objects\TestCollisionObject.h" />
-    <ClInclude Include="Game\Managers\EnemyManager.h" />
-    <ClInclude Include="Game\3D\Particle.h" />
-    <ClInclude Include="Game\Methods\ParticleSystem.h" />
+    <ClInclude Include="Game\Particle\BaseParticle.h" />
+    <ClInclude Include="Game\Particle\ParticleSystem.h" />
     <ClInclude Include="Game\Components\ParticleBuffer.h" />
     <ClInclude Include="Lib\Adapter\Random.h" />
     <ClInclude Include="Lib\Adapter\Easing.h" />
+    <ClInclude Include="Game\Particle\ParticleBehavior.h" />
+    <ClInclude Include="Game\Objects\TestParticle.h" />
+    <ClInclude Include="Game\Particle\ParticleParameter.h" />
+    <ClInclude Include="Game\Particle\ParticleVisitor.h" />
+    <ClInclude Include="Game\Particle\ParticleTraits.h" />
+    <ClInclude Include="Game\Particle\IBaseParticle.h" />
+    <ClInclude Include="Game\Components\InputAssembler.h" />
+    <ClInclude Include="Game\Objects\TestGameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

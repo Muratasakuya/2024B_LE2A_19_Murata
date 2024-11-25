@@ -48,6 +48,7 @@ public:
 
 	void MakeRailModel(const std::string& modelName, uint32_t id,
 		const std::vector<VertexData3D>& vertexData);
+	void ExportToOBJ(const std::string& modelName, const std::string& filePath);
 
 	void SkeletonUpdate(const std::string& animationName);
 	void ApplyAnimation(const std::string& animationName, float animationTime);

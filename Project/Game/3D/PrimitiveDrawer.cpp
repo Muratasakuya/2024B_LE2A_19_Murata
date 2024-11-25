@@ -82,7 +82,7 @@ void PrimitiveDrawer::DrawLine3D(const Vector3& pointA, const Vector3& pointB, c
 void PrimitiveDrawer::DrawGrid() {
 
 	const uint32_t kSubdivision = 24;
-	const float kGridHalfWidth = 5.0f;
+	const float kGridHalfWidth = 32.0f;
 	const float kGridEvery = (kGridHalfWidth * 2.0f) / float(kSubdivision);
 
 	for (uint32_t index = 0; index <= kSubdivision; ++index) {

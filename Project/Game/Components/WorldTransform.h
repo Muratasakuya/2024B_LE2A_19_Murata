@@ -18,7 +18,7 @@ public:
 	WorldTransform() = default;
 	~WorldTransform() = default;
 
-	void Update(const Matrix4x4& viewPro) override;
+	void Update() override;
 
 	// Getter
 	Vector3 GetWorldPos() const override;

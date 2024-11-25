@@ -7,15 +7,15 @@
 *						WorldTransform classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
 
-void WorldTransform::Update(const Matrix4x4& viewPro) {
+void WorldTransform::Update() {
 
 	Matrix4x4 worldMatrix =
-		Matrix4x4::MakeAffineMatrix(scale, rotation, translation);
+		Matrix4x4::MakeAxisAffineMatrix(scale, rotation, translation);
 	if (parent_) {
 
 		worldMatrix = Matrix4x4::Multiply(worldMatrix, parent_->matrix.World);
 	}
-	Matrix4x4 wvpMatrix = worldMatrix * viewPro;
+	Matrix4x4 wvpMatrix = worldMatrix * NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix();
 	Matrix4x4 worldInverseTranspose = Matrix4x4::Transpose(Matrix4x4::Inverse(worldMatrix));
 
 	matrix.World = worldMatrix;

@@ -38,6 +38,11 @@ struct Quaternion {
 	/*-------------------------------------------------------------*/
 	/// 関数
 
+	// 0.0f初期化
+	void Init();
+
+	// Euler -> Quaternion
+	static Quaternion EulerToQuaternion(const Vector3& euler);
 	// 積
 	static Quaternion Multiply(const Quaternion& lhs, const Quaternion& rhs);
 	// 単位

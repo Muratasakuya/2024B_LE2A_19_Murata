@@ -32,9 +32,9 @@ void MaterialObject3D::Update() {
 	TransferData(properties);
 }
 
-UINT MaterialObject3D::GetRootParameterIndex() const {
+void MaterialObject3D::SetCommand(ID3D12GraphicsCommandList* commandList) {
 
-	return 0;
+	DXConstBuffer::SetCommand(commandList, rootParameterIndex_);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////

@@ -11,6 +11,7 @@
 #include "Game/Managers/LightManager.h"
 #include "Game/3D/PrimitiveDrawer.h"
 #include "Game/3D/Base/BaseGameObject.h"
+#include "Game/Particle/IBaseParticle.h"
 #include "Game/Managers/CollisionManager.h"
 #include "Game/Editor/UIEditor.h"
 
@@ -68,6 +69,7 @@ public:
 	static Vector2 GetMousePos();                                 // マウスカーソル座標の取得
 	static Vector2 GetMousePrePos();                              // マウスカーソル前座標の取得
 	static float GetMouseWheel();                                 // マウスホイールの値の取得
+	static Vector2 GetMouseMoveValue();                           // マウス移動量
 	static void InputInformation();                               // Input情報表示
 
 	///===================================================================
@@ -98,18 +100,21 @@ public:
 	static void DrawLine3D(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
 	static void DrawGrid();
 
-	static void Renderer2D();
-
 	///===================================================================
 	// Setter
 
 	static void SetToImGui(BaseGameObject* gameObject);
+	static void EraseToImGui(BaseGameObject* gameObject);
+	static void SetToImGui(IBaseParticle* particle);
 
+	//* command
+	static void SetEnvironmentCommand(ID3D12GraphicsCommandList* commandList, PipelineType pipeline);
+	
 	///===================================================================
 	// Getter
 
 	static TextureManager* GetTextureManager();
-	static ModelManager* GetModelMangager();
+	static ModelManager* GetModelManager();
 	static CameraManager* GameCamera();
 	static LightManager* GetGameLight();
 	static float GetDeltaTime();
@@ -135,10 +140,9 @@ private:
 	static std::unique_ptr<PrimitiveDrawer> lineDrawer3D_;
 
 	static std::vector<BaseGameObject*> gameObjects_;
+	static std::vector<IBaseParticle*> particles_;
 
 	static std::unique_ptr<CollisionManager> collisionManager_;
-
-	static std::unique_ptr<UIEditor> uiEditor_;
 
 	static void ImGui();
 

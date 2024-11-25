@@ -129,6 +129,7 @@ void WinApp::CreateMainWindow(uint32_t width, uint32_t height) {
 
 	// ウィンドウを表示する
 	ShowWindow(hwnd_, SW_SHOW);
+
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
