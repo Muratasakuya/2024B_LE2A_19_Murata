@@ -164,13 +164,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\MyDirectXClass\DXSwapChain.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\Pipeline\DXRootSignature.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\Pipeline\DXRasterizerState.cpp" />
-    <ClCompile Include="Externals\imgui\imgui.cpp" />
-    <ClCompile Include="Externals\imgui\imgui_demo.cpp" />
-    <ClCompile Include="Externals\imgui\imgui_draw.cpp" />
-    <ClCompile Include="Externals\imgui\imgui_impl_dx12.cpp" />
-    <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
-    <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Managers\ImGuiManager.cpp" />
     <ClCompile Include="Engine\MyDirectXClass\Logger.cpp" />
     <ClCompile Include="Game\Managers\LightManager.cpp" />
@@ -256,14 +249,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\MyDirectXClass\DXSwapChain.h" />
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXRootSignature.h" />
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXRasterizerState.h" />
-    <ClInclude Include="Externals\imgui\imconfig.h" />
-    <ClInclude Include="Externals\imgui\imgui.h" />
-    <ClInclude Include="Externals\imgui\imgui_impl_dx12.h" />
-    <ClInclude Include="Externals\imgui\imgui_impl_win32.h" />
-    <ClInclude Include="Externals\imgui\imgui_internal.h" />
-    <ClInclude Include="Externals\imgui\imstb_rectpack.h" />
-    <ClInclude Include="Externals\imgui\imstb_textedit.h" />
-    <ClInclude Include="Externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\Managers\ImGuiManager.h" />
     <ClInclude Include="Engine\MyDirectXClass\ComPtr.h" />
     <ClInclude Include="Engine\MyDirectXClass\Logger.h" />
@@ -291,9 +276,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Particle\ParticleParameter.h" />
     <ClInclude Include="Game\Particle\ParticleVisitor.h" />
     <ClInclude Include="Game\Objects\TestGameObject.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Externals\imgui\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\BoxFilter.PS.hlsl">
@@ -484,6 +466,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ProjectReference Include="Externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
+    </ProjectReference>
+    <ProjectReference Include="Externals\imgui\imgui.vcxproj">
+      <Project>{af2cc86a-f74b-4938-b6fd-6b410193b121}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
