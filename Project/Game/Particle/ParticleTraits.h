@@ -36,3 +36,12 @@ struct ParticleTraits<kConverge> {
 
 	using ParameterType = ConvergeParticleParameter;
 };
+
+/// <summary>
+/// InjectionParticle
+/// </summary>
+template <>
+struct ParticleTraits<kInjection> {
+
+	using ParameterType = InjectionParticleParameter;
+};

@@ -18,11 +18,14 @@ void AnimationModel::Init(const std::string& modelName, const std::string& anima
 		inputAssembler_.GetVertexData().GetResource());
 	outputVertices_.Init(static_cast<UINT>(inputAssembler_.GetVertexData().data.size()));
 
+	skinningInfoDates_.Init(static_cast<UINT>(inputAssembler_.GetVertexData().data.size()));
+
 	if (modelData_.meshes.front().material.textureName) {
 		pipelineType_ = PipelineType::pObject3D;
 	} else {
 		pipelineType_ = PipelineType::Object3DUnTex;
 	}
+
 }
 
 void AnimationModel::Draw(AnimationTransform transform, MaterialObject3D material, BlendMode blendMode) {
@@ -38,7 +41,9 @@ void AnimationModel::Draw(AnimationTransform transform, MaterialObject3D materia
 		D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
 	NewMoon::SetGraphicsPipeline(commandList, pipelineType_, blendMode);
-	inputAssembler_.SetBuffer(commandList, 0);
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	commandList->IASetVertexBuffers(0, 1, &outputVertices_.GetVertexBuffer());
+	commandList->IASetIndexBuffer(&inputAssembler_.GetIndexData().GetIndexBuffer());
 	material.SetCommand(commandList);
 	transform.SetCommand(commandList);
 	NewMoonGame::SetEnvironmentCommand(commandList, pipelineType_);
@@ -68,4 +73,9 @@ void AnimationModel::SetComputeCommands(const std::string& animationName) {
 	commandList->SetComputeRootConstantBufferView(4, skinningInfoDates_.GetResource()->GetGPUVirtualAddress());
 	// Compute起動
 	commandList->Dispatch(static_cast<UINT>(modelData_.meshes.front().vertices.size() + 1023) / 1024, 1, 1);
+
+}
+
+void AnimationModel::SetAnimationName(const std::string& animationName) {
+	animationName_ = animationName;
 }

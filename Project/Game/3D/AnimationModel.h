@@ -28,6 +28,8 @@ public:
 	void Init(const std::string& modelName, const std::string& animationName);
 	void Draw(AnimationTransform transform, MaterialObject3D material, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
+	void SetAnimationName(const std::string& animationName);
+
 private:
 	//===================================================================*/
 	//							private Methods

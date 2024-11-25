@@ -35,6 +35,9 @@ public:
 	std::optional<float> speed = std::nullopt;
 	std::optional<float> lifeTime = std::nullopt;
 	std::optional<Vector4> color = std::nullopt;
+	std::optional<RandomParticleColor> randomParticleColor_;
+
+	ParticlePhysics physics;
 
 	//* easing *//
 	std::optional<EasingType> easingType = std::nullopt;
@@ -101,5 +104,24 @@ public:
 	void Accept(ParticleVisitor& visitor, std::list<ParticleData>& particles) override;
 
 	float sphereScale;
+
+};
+
+//================================================================================
+//								InjectionParticleParameter
+//================================================================================
+class InjectionParticleParameter
+	: public ParticleParameter {
+public:
+	//===================================================================*/
+	//							public Methods
+	//===================================================================*/
+
+	InjectionParticleParameter() = default;
+	~InjectionParticleParameter() = default;
+
+	void Accept(ParticleVisitor& visitor, std::list<ParticleData>& particles) override;
+
+	Vector3 injectionDirection;
 
 };

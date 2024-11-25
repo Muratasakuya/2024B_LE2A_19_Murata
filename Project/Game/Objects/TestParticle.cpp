@@ -18,7 +18,7 @@ void TestParticle::Init() {
 
 	parameter_.isUniform = false;
 
-	parameter_.count = 96;
+	parameter_.count = 4;
 	parameter_.frequency = 0.1f;
 
 	//* subSetting *//
@@ -30,6 +30,8 @@ void TestParticle::Init() {
 }
 
 void TestParticle::Update() {
+
+	UpdateFrequencyEmit(NewMoonGame::GetDeltaTime());
 
 	particleSystem_->Update();
 

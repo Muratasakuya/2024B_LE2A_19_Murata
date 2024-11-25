@@ -43,7 +43,7 @@ void DispersionBehavior::Update(ParticleData& particle, const Matrix4x4& billboa
 	particle.worldMatrix = scaleMatrix * billboardMatrix * translateMatrix;
 	particle.wvpMatrix = particle.worldMatrix * NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix();
 
-	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);;
+	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);
 
 }
 
@@ -124,6 +124,47 @@ void ConvergeBehavior::Update(ParticleData& particle, const Matrix4x4& billboard
 }
 
 //================================================================================
+// InjectionBehavior
+//================================================================================
+
+void InjectionBehavior::Create(std::list<ParticleData>& particles, ParticleParameter& parameter) {
+
+	InjectionVisitor visitor;
+	parameter.Accept(visitor, particles);
+}
+
+void InjectionBehavior::Update(ParticleData& particle, const Matrix4x4& billboardMatrix) {
+
+	particle.currentTime += NewMoonGame::GetDeltaTime();
+
+	particle.transform.translate += {
+		particle.velocity.x* NewMoonGame::GetDeltaTime(),
+			particle.velocity.y* NewMoonGame::GetDeltaTime(),
+			particle.velocity.z* NewMoonGame::GetDeltaTime()
+	};
+
+	Vector3 gravityEffect =
+		particle.physics.gravityDirection.value() * particle.physics.gravityStrength.value() * NewMoonGame::GetDeltaTime();
+	particle.velocity += gravityEffect;
+
+	float lifeRatio = 1.0f - (particle.currentTime / particle.lifeTime);
+	if (particle.easingType.has_value()) {
+		particle.easedLifeRatio = EasedValue(particle.easingType.value(), lifeRatio);
+	}
+
+	Vector3 scaledTransform = particle.transform.scale * particle.easedLifeRatio.value_or(lifeRatio);
+	Matrix4x4 scaleMatrix = Matrix4x4::MakeScaleMatrix(scaledTransform);
+
+	Matrix4x4 translateMatrix = Matrix4x4::MakeTranslateMatrix(particle.transform.translate);
+
+	particle.worldMatrix = scaleMatrix * billboardMatrix * translateMatrix;
+	particle.wvpMatrix = particle.worldMatrix * NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix();
+
+	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);;
+
+}
+
+//================================================================================
 // ParticleBehaviorFactory
 //================================================================================
 
@@ -139,6 +180,9 @@ std::unique_ptr<ParticleBehavior> ParticleBehaviorFactory::CreateBehavior(Partic
 	case ParticleType::kConverge:
 
 		return std::make_unique<ConvergeBehavior>();
+	case ParticleType::kInjection:
+
+		return std::make_unique<InjectionBehavior>();
 	}
 
 	throw std::runtime_error("unKnown particleType");

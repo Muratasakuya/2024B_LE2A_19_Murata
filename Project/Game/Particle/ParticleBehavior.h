@@ -17,6 +17,7 @@ enum ParticleType {
 	kDispersion, // 分散
 	kChase,      // 追跡
 	kConverge,   // 収束
+	kInjection,  // 噴射
 };
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -97,6 +98,25 @@ public:
 
 	ConvergeBehavior() { type_ = ParticleType::kConverge; };
 	~ConvergeBehavior() = default;
+
+	void Create(std::list<ParticleData>& particles, ParticleParameter& parameter) override;
+
+	void Update(ParticleData& particle, const Matrix4x4& billboardMatrix) override;
+
+};
+
+//================================================================================
+// InjectionBehavior
+//================================================================================
+class InjectionBehavior
+	: public ParticleBehavior {
+public:
+	//===================================================================*/
+	//							public Methods
+	//===================================================================*/
+
+	InjectionBehavior() { type_ = ParticleType::kInjection; };
+	~InjectionBehavior() = default;
 
 	void Create(std::list<ParticleData>& particles, ParticleParameter& parameter) override;
 

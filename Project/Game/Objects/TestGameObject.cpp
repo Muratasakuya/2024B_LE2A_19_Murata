@@ -13,7 +13,7 @@ TestGameObject::~TestGameObject() {
 void TestGameObject::Init() {
 
 	BaseGameObject::Init("cube.obj");
-	SetName();
+	BaseGameObject::SetName("testGameObject");
 
 	Collider::SetCollisionShapeOBB();
 	Collider::size_.SetInit(1.0f);

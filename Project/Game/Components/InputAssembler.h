@@ -29,7 +29,8 @@ public:
 	void DrawCall(ID3D12GraphicsCommandList* commandList, uint32_t instanceNum, uint32_t meshIndex);
 
 	// Getter
-	const VertexObject<VertexData3D>& GetVertexData() const { return vertices.front(); }
+	VertexObject<VertexData3D>& GetVertexData() { return vertices.front(); }
+	IndexObject& GetIndexData() { return indices.front(); }
 
 private:
 	//===================================================================*/

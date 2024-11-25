@@ -149,10 +149,16 @@ struct Material3D {
 		uvTransform = Matrix4x4::MakeIdentity4x4();
 	}
 
-	void SetUVScale(const Vector3& scale) {
+	void SetUVTransform(
+		const std::optional<Vector3>& scale = std::nullopt,
+		const std::optional<Vector3>& rotate = std::nullopt,
+		const std::optional<Vector3>& translate = std::nullopt) {
 
 		uvTransform =
-			Matrix4x4::MakeAffineMatrix(scale, Vector3::Zero(), Vector3::Zero());
+			Matrix4x4::MakeAffineMatrix(
+				scale.value_or(Vector3(1.0f, 1.0f, 1.0f)),
+				rotate.value_or(Vector3::Zero()),
+				translate.value_or(Vector3::Zero()));
 	};
 };
 struct Material2D {

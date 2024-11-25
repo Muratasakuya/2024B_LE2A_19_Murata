@@ -28,6 +28,8 @@ public:
 	virtual void CreateUniformParticles(std::list<ParticleData>& particles, ParticleParameter& parameter) = 0;
 	virtual void CreateNonUniformParticles(std::list<ParticleData>& particles, ParticleParameter& parameter) = 0;
 
+	Vector4 SettingColor(const std::optional<Vector4>& color, const std::optional<RandomParticleColor>& randomParticleColor);
+
 };
 
 //================================================================================
@@ -80,6 +82,25 @@ public:
 
 	ConvergeVisitor() = default;
 	~ConvergeVisitor() = default;
+
+	void Visit(std::list<ParticleData>& particles, ParticleParameter& parameter) override;
+	void CreateUniformParticles(std::list<ParticleData>& particles, ParticleParameter& parameter) override;
+	void CreateNonUniformParticles(std::list<ParticleData>& particles, ParticleParameter& parameter) override;
+
+};
+
+//================================================================================
+//								InjectionVisitor
+//================================================================================
+class InjectionVisitor
+	: public ParticleVisitor {
+public:
+	//===================================================================*/
+	//							public Methods
+	//===================================================================*/
+
+	InjectionVisitor() = default;
+	~InjectionVisitor() = default;
 
 	void Visit(std::list<ParticleData>& particles, ParticleParameter& parameter) override;
 	void CreateUniformParticles(std::list<ParticleData>& particles, ParticleParameter& parameter) override;

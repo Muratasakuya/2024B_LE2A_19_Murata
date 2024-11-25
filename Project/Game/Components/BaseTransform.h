@@ -19,7 +19,7 @@ public:
 	virtual ~BaseTransform() = default;
 
 	virtual void Init();
-	virtual void Update(const Matrix4x4& viewPro) = 0;
+	virtual void Update() = 0;
 
 	virtual void SetCommand(ID3D12GraphicsCommandList* commandList);
 

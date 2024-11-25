@@ -72,7 +72,7 @@ private:
 	//===================================================================*/
 	///* variables
 
-	const uint32_t instanceMaxCount_ = 128; //* Instancing
+	const uint32_t instanceMaxCount_ = 512; //* Instancing
 
 	std::unordered_map<std::string, ParticleGroup> particleGroups_;
 
