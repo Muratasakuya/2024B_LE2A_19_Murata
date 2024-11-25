@@ -6,7 +6,9 @@
 #include "Game/Components/BaseTransform.h"
 
 // c++
+#include <utility>
 #include <optional>
+#include <unordered_map>
 
 /*////////////////////////////////////////////////////////////////////////////////
 *						AnimationTransform Class
@@ -22,10 +24,11 @@ public:
 	~AnimationTransform() = default;
 
 	void Init(const std::string& modelName, const std::string& animationName);
-	void Update(const Matrix4x4& viewPro) override;
+	void Update() override;
 
 	// Setter
-	void SetPlayAnimation(bool isPlayAnimation);
+	void SetPlayAnimation(bool isPlayAnimation, const std::string& animationName);
+	void SetNewAnimationData(const std::string& animationName);
 
 private:
 	//===================================================================*/
@@ -33,12 +36,12 @@ private:
 	//===================================================================*/
 
 	//* Animation *//
-	AnimationData animationData_;
-	std::optional<Skeleton> skeleton_;
-	SkinCluster skinCluster_;
+	std::unordered_map<std::string, AnimationData> animationData_;
+	std::unordered_map<std::string, std::optional<Skeleton>> skeleton_;
+	std::unordered_map<std::string, SkinCluster> skinCluster_;
 	ModelData modelData_;
 
-	bool isPlayAnimation_;
-	float animationtime_;
+	std::pair<bool, std::string> animationController_;
+	float animationTime_;
 
 };

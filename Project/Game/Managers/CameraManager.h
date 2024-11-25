@@ -6,16 +6,10 @@
 #include "Game/Components/CameraObject.h"
 #include "Lib/Camera/Camera2D.h"
 #include "Lib/Camera/Camera3D.h"
+#include "Lib/Camera/DebugCamera.h"
 
 // c++
 #include <memory>
-
-// カメラタイプ
-enum class CameraType {
-
-	Perspective, // 3D
-	Orthographic // 2D
-};
 
 /*////////////////////////////////////////////////////////////////////////////////
 *									Model Class
@@ -37,6 +31,7 @@ public:
 	// Getter
 	Camera2D* GetCamera2D() const;
 	Camera3D* GetCamera3D() const;
+	DebugCamera* GetDebugCamera() const;
 
 private:
 	//===================================================================*/
@@ -45,5 +40,7 @@ private:
 
 	std::unique_ptr<Camera2D> camera2D_;
 	std::unique_ptr<Camera3D> camera3D_;
+
+	std::unique_ptr<DebugCamera> debugCamera_;
 
 };

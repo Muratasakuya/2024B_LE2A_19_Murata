@@ -29,7 +29,7 @@ private:
 		Matrix4x4 viewProjectionMatrix;
 		Matrix4x4 projectionInverseMatrix;
 
-		WorldTransform transform;
+		Transform3D transform;
 
 		CameraData& operator=(const CameraData& other) {
 			if (this != &other) {
@@ -38,8 +38,8 @@ private:
 				this->projectionMatrix = other.projectionMatrix;
 				this->viewProjectionMatrix = other.viewProjectionMatrix;
 				this->projectionInverseMatrix = other.projectionInverseMatrix;
-				this->transform.translation = other.transform.translation;
-				this->transform.rotation = other.transform.rotation;
+				this->transform.translate = other.transform.translate;
+				this->transform.rotate = other.transform.rotate;
 			}
 			return *this;
 		}
@@ -60,17 +60,19 @@ public:
 
 	void Reset();
 
-	void CameraSetCommand(ID3D12GraphicsCommandList* commandList, const PipelineType& pipelineType);
+	void SetCommand(ID3D12GraphicsCommandList* commandList, const PipelineType& pipelineType);
 	void ViewProSetCommand(ID3D12GraphicsCommandList* commandList);
 
 	// Setter
 	void SetViewMatrix(const Matrix4x4& viewMatrix);
 	void SetProjectionMatrix(const Matrix4x4& projectionMatrix);
+	void SetCamera(const Matrix4x4& viewProMatrix, const Vector3& pos);
 	void SetTranslate(const Vector3& translate);
 	void SetRotate(const Vector3& rotate);
 
 	// Getter
 	Vector3 GetWorldPos() const;
+	Vector3 GetRotate() const;
 	Matrix4x4 GetCameraMatrix() const;
 	Matrix4x4 GetViewMatrix() const;
 	Matrix4x4 GetProjectionMatrix() const;

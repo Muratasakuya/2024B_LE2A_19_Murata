@@ -19,9 +19,9 @@ public:
 	virtual ~BaseTransform() = default;
 
 	virtual void Init();
-	virtual void Update(const Matrix4x4& viewPro) = 0;
+	virtual void Update() = 0;
 
-	virtual void SetCommand();
+	virtual void SetCommand(ID3D12GraphicsCommandList* commandList);
 
 	// Getter
 	virtual Vector3 GetWorldPos() const;
@@ -32,8 +32,10 @@ public:
 	//===================================================================*/
 
 	Vector3 scale;
-	Vector3 rotation;
 	Vector3 translation;
+	Quaternion rotation;
+
+	Vector3 eulerRotate_;
 
 	TransformationMatrix matrix;
 

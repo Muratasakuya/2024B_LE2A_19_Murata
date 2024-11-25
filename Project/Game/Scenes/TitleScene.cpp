@@ -22,9 +22,7 @@ void TitleScene::Run() {
 
 		Update();
 
-		BackDraw();
-		NewMoon::ClearDepthBuffer();
-		FrontDraw();
+		Draw();
 
 		NewMoonGame::Reset();
 		NewMoon::EndFrame();
@@ -38,25 +36,39 @@ void TitleScene::Run() {
 
 }
 
+
+void TitleScene::Load() {
+
+	NewMoonGame::LoadModel(baseModelDirectory_, "cube.obj");
+
+}
+
 void TitleScene::Init() {
 
+	Load();
 
+	object_ = std::make_unique<TestGameObject>();
+	object_->Init();
+
+	particle_ = std::make_unique<TestParticle>();
+	particle_->Init();
 
 }
 
 void TitleScene::Update() {
 
-	if (NewMoonGame::TriggerKey(DIK_SPACE)) {
+	object_->Update();
 
-		SceneManager::GetInstance()->SetNextScene("Game");
-	}
-}
-
-void TitleScene::BackDraw() {
+	particle_->Update();
 
 }
 
-void TitleScene::FrontDraw() {
+void TitleScene::Draw() {
+
+	object_->Draw();
+
+	particle_->Draw(kBlendModeAdd);
+
 }
 
 void TitleScene::Cleanup() {

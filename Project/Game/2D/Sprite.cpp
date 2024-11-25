@@ -72,11 +72,11 @@ void Sprite::VertexUpdate() {
 
 	// テクスチャのサイズを画像サイズに合わせる
 	const DirectX::TexMetadata& metadata = NewMoonGame::GetTextureManager()->GetMetaData(textureName_);
-	transform2D_.textureSize = { static_cast<float>(metadata.width) ,static_cast<float>(metadata.height) };
 
 	if (ajustTexture_) {
 
 		transform2D_.size = transform2D_.textureSize;
+		transform2D_.textureSize = { static_cast<float>(metadata.width) ,static_cast<float>(metadata.height) };
 	}
 
 	// 横

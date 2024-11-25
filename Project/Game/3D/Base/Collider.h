@@ -15,8 +15,6 @@ enum class ColliderType {
 
 	Type_None,
 	Type_Test,
-	Type_PlayerBullet,
-	Type_Enemy,
 };
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -37,17 +35,19 @@ public:
 
 	virtual void OnCollisionExit([[maybe_unused]] Collider* other) {};
 
+	virtual void OBBUpdate();
+
 	virtual void DrawCollider();
 
 	// Setter
 	void SetCollisionShapeSphere(const CollisionShapes::Sphere& sphere = CollisionShapes::Sphere::Default());
 
-	void SetCollisionShapeAABB(const CollisionShapes::AABB& aabb = CollisionShapes::AABB::Default());
-
 	void SetCollisionShapeOBB(const CollisionShapes::OBB& obb = CollisionShapes::OBB::Default());
 
 	// Getter
 	Vector3 GetCenterPos() const { return centerPos_; }
+	Quaternion GetRotate() const { return rotate_; }
+	Vector3 GetSize() const { return size_; }
 
 	ColliderType GetType() const { return type_; }
 	ColliderType GetTargetType() const { return targetType_; }
@@ -62,6 +62,9 @@ protected:
 	//===================================================================*/
 
 	Vector3 centerPos_; //* 衝突判定用中心座標
+
+	Quaternion rotate_; //* OBB衝突用の回転
+	Vector3 size_;      //* OBB衝突用の大きさ
 
 	ColliderType type_;       //* 自身のタイプ
 	ColliderType targetType_; //* 衝突相手のタイプ

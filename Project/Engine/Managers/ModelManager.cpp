@@ -197,11 +197,6 @@ ModelData ModelManager::LoadObjFile(const std::string& directoryPath, const std:
 	// メッシュがないのには対応しない
 	assert(scene->HasMeshes());
 
-	// AABBの初期化
-	CollisionShapes::AABB aabb;
-	aabb.min = Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
-	aabb.max = Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-
 	// メッシュ解析
 	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
 
@@ -227,14 +222,6 @@ ModelData ModelManager::LoadObjFile(const std::string& directoryPath, const std:
 			meshModelData.vertices[vertexIndex].pos = { -pos.x,pos.y,pos.z,1.0f };
 			meshModelData.vertices[vertexIndex].normal = { normal.x,normal.y,normal.z };
 			meshModelData.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
-
-			aabb.min.x = std::min(aabb.min.x, -pos.x);
-			aabb.min.y = std::min(aabb.min.y, pos.y);
-			aabb.min.z = std::min(aabb.min.z, pos.z);
-
-			aabb.max.x = std::max(aabb.max.x, -pos.x);
-			aabb.max.y = std::max(aabb.max.y, pos.y);
-			aabb.max.z = std::max(aabb.max.z, pos.z);
 		}
 
 		// index解析
@@ -289,8 +276,6 @@ ModelData ModelManager::LoadObjFile(const std::string& directoryPath, const std:
 
 		modelData.meshes.push_back(meshModelData);
 	}
-
-	modelData.aabb = aabb;
 
 	// 階層構造の作成
 	modelData.rootNode = ReadNode(scene->mRootNode);
@@ -451,6 +436,28 @@ void ModelManager::MakeRailModel(const std::string& modelName, uint32_t id,
 		indices.push_back(baseIndex + 6);
 		indices.push_back(baseIndex + 2);
 		indices.push_back(baseIndex + 1);
+
+		// 前面
+		if (i == 0) {
+			indices.push_back(baseIndex + 0);
+			indices.push_back(baseIndex + 1);
+			indices.push_back(baseIndex + 5);
+
+			indices.push_back(baseIndex + 5);
+			indices.push_back(baseIndex + 4);
+			indices.push_back(baseIndex + 0);
+		}
+
+		// 背面
+		if (i == numSegments - 1) {
+			indices.push_back(baseIndex + 3);
+			indices.push_back(baseIndex + 2);
+			indices.push_back(baseIndex + 6);
+
+			indices.push_back(baseIndex + 6);
+			indices.push_back(baseIndex + 7);
+			indices.push_back(baseIndex + 3);
+		}
 	}
 
 	meshData.indices = indices;
@@ -462,6 +469,58 @@ void ModelManager::MakeRailModel(const std::string& modelName, uint32_t id,
 	modelData.meshes.push_back(meshData);
 	const std::string modelNameId = modelName + std::to_string(id);
 	models_[modelNameId] = modelData;
+}
+
+/*////////////////////////////////////////////////////////////////////////////////
+*								  Objの出力
+////////////////////////////////////////////////////////////////////////////////*/
+void ModelManager::ExportToOBJ(const std::string& modelName, const std::string& filePath) {
+
+	auto& modelData = models_.at(modelName);
+	if (modelData.meshes.empty()) {
+		return;
+	}
+
+	// ファイルオープン
+	std::ofstream objFile(filePath);
+	if (!objFile.is_open()) {
+		throw std::runtime_error("Failed to open file for OBJ export.");
+	}
+
+	auto& meshData = modelData.meshes[0];
+	auto& vertices = meshData.vertices;
+	auto& indices = meshData.indices;
+
+	// 頂点データの書き込み
+	for (auto& vertex : vertices) {
+
+		vertex.pos.x *= -1.0f;
+
+		objFile << "v " << vertex.pos.x << " " << vertex.pos.y << " " << vertex.pos.z << "\n";
+	}
+
+	// 法線データの書き込み
+	for (const auto& vertex : vertices) {
+		objFile << "vn " << vertex.normal.x << " " << vertex.normal.y << " " << vertex.normal.z << "\n";
+	}
+
+	// テクスチャ座標の書き込み（無ければ省略）
+	for (const auto& vertex : vertices) {
+		objFile << "vt " << vertex.texcoord.x << " " << vertex.texcoord.y << "\n";
+	}
+
+	// 面の書き込み（インデックス情報を使う）
+	size_t numTriangles = indices.size() / 3;
+	for (size_t i = 0; i < numTriangles; ++i) {
+
+		// インデックスを1から始めるため+1をする
+		objFile << "f "
+			<< indices[i * 3 + 0] + 1 << "/" << indices[i * 3 + 0] + 1 << "/" << indices[i * 3 + 0] + 1 << " "
+			<< indices[i * 3 + 1] + 1 << "/" << indices[i * 3 + 1] + 1 << "/" << indices[i * 3 + 1] + 1 << " "
+			<< indices[i * 3 + 2] + 1 << "/" << indices[i * 3 + 2] + 1 << "/" << indices[i * 3 + 2] + 1 << "\n";
+	}
+
+	objFile.close();
 }
 
 /*////////////////////////////////////////////////////////////////////////////////

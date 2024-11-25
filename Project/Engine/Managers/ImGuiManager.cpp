@@ -87,4 +87,7 @@ void ImGuiManager::Init(WinApp* winApp, DXCommon* dxCommon, SrvManager* srvManag
 	ImGuiIO& io = ImGui::GetIO();
 	const std::string fontFilePath = "Resources/ImGuiFont/FiraMono-Bold.ttf";
 	io.Fonts->AddFontFromFileTTF(fontFilePath.c_str(), 16.0f);
+
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 }

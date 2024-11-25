@@ -5,9 +5,6 @@
 //===================================================================*/
 #include "Game/Scenes/Methods/IScene.h"
 
-//* object
-#include "Game/3D/Particle.h"
-
 // c++
 #include <memory>
 
@@ -30,6 +27,8 @@ public:
 
 	void Update() override;
 
+	void Draw();
+
 	void Cleanup() override;
 
 private:
@@ -45,7 +44,5 @@ private:
 	//===================================================================*/
 
 	void Load();
-
-	void Draw();
 
 };

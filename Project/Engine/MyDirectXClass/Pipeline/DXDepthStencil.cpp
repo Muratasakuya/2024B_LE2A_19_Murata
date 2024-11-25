@@ -30,7 +30,7 @@ void DXDepthStencil::Create(PipelineType pipelineType) {
 	if (pipelineType == PipelineType::pParticle) {
 
 		// Depth機能無効
-		depthStencilDesc_.DepthEnable = false;
+		depthStencilDesc_.DepthEnable = true;
 		depthStencilDesc_.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 		depthStencilDesc_.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 	}

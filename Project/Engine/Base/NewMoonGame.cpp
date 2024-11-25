@@ -1,8 +1,8 @@
 #include "NewMoonGame.h"
 
 #include "NewMoon.h"
-#include "Engine/Managers/ImGuiManager.h"
 #include "Engine/Managers/SrvManager.h"
+#include "Engine/Managers/ImGuiManager.h"
 
 ///===============================================================================
 /// staticメンバ変数初期化
@@ -18,8 +18,8 @@ std::unique_ptr<LightManager> NewMoonGame::lightManager_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer2D_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
 std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
+std::vector<IBaseParticle*> NewMoonGame::particles_ = {};
 std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
-std::unique_ptr<UIEditor> NewMoonGame::uiEditor_ = nullptr;
 #pragma endregion
 ///===============================================================================
 
@@ -55,9 +55,6 @@ void NewMoonGame::Init() {
 
 	collisionManager_ = std::make_unique<CollisionManager>();
 
-	uiEditor_ = std::make_unique<UIEditor>();
-	uiEditor_->Init();
-
 }
 
 void NewMoonGame::ImGui() {
@@ -79,24 +76,28 @@ void NewMoonGame::ImGui() {
 			input_->ImGui();
 			ImGui::EndTabItem();
 		}
-		if (ImGui::BeginTabItem("GameObject")) {
-			for (auto& gameObject : gameObjects_) {
-				if (ImGui::CollapsingHeader(gameObject->GetName().c_str())) {
 
-					gameObject->ImGui();
+		if (!gameObjects_.empty()) {
+			if (ImGui::BeginTabItem("GameObject")) {
+				for (auto& gameObject : gameObjects_) {
+					if (ImGui::CollapsingHeader(gameObject->GetName().c_str())) {
+
+						gameObject->ImGui();
+					}
 				}
+				ImGui::EndTabItem();
 			}
-			ImGui::EndTabItem();
 		}
-		// Editors
-		if (ImGui::BeginTabItem("Editor")) {
+		if (!particles_.empty()) {
+			if (ImGui::BeginTabItem("Particle")) {
+				for (auto& particle : particles_) {
+					if (ImGui::CollapsingHeader(particle->GetName().c_str())) {
 
-			// UI Editor
-			if (ImGui::CollapsingHeader("UI Editor")) {
-				uiEditor_->ImGui();
+						particle->ImGui();
+					}
+				}
+				ImGui::EndTabItem();
 			}
-
-			ImGui::EndTabItem();
 		}
 
 		ImGui::EndTabBar();
@@ -125,7 +126,6 @@ void NewMoonGame::Update() {
 
 	collisionManager_->UpdateAllCollisions();
 
-	uiEditor_->Update();
 }
 
 void NewMoonGame::Close() {
@@ -139,7 +139,6 @@ void NewMoonGame::Close() {
 	lightManager_.reset();
 	lineDrawer2D_.reset();
 	lineDrawer3D_.reset();
-	uiEditor_.reset();
 }
 
 void NewMoonGame::Reset() {
@@ -227,12 +226,15 @@ Vector2 NewMoonGame::GetMousePos() {
 }
 
 Vector2 NewMoonGame::GetMousePrePos() {
-
 	return input_->GetMousePrePos();
 }
 
 float NewMoonGame::GetMouseWheel() {
 	return input_->GetMouseWheel();
+}
+
+Vector2 NewMoonGame::GetMouseMoveValue() {
+	return input_->GetMouseMoveValue();
 }
 
 void NewMoonGame::InputInformation() {
@@ -299,15 +301,29 @@ void NewMoonGame::DrawGrid() {
 	lineDrawer3D_->DrawGrid();
 }
 
-void NewMoonGame::Renderer2D() {
-	uiEditor_->Draw();
-}
-
 ///===================================================================
 // Setter
 
 void NewMoonGame::SetToImGui(BaseGameObject* gameObject) {
 	gameObjects_.push_back(gameObject);
+}
+
+void NewMoonGame::EraseToImGui(BaseGameObject* gameObject) {
+	gameObjects_.erase(std::remove(gameObjects_.begin(), gameObjects_.end(), gameObject), gameObjects_.end());
+}
+
+void NewMoonGame::SetToImGui(IBaseParticle* particle) {
+	particles_.push_back(particle);
+}
+
+//* command
+void NewMoonGame::SetEnvironmentCommand(ID3D12GraphicsCommandList* commandList, PipelineType pipeline) {
+
+	// light
+	lightManager_->GetLightBuffer().SetCommand(
+		commandList, lightManager_->GetLightBuffer().GetRootParameterIndex(pipeline));
+	// camera
+	cameraManager_->GetCamera3D()->SetCommand(commandList, pipeline);
 }
 
 ///===================================================================
@@ -317,7 +333,7 @@ TextureManager* NewMoonGame::GetTextureManager() {
 	return textureManager_.get();
 }
 
-ModelManager* NewMoonGame::GetModelMangager() {
+ModelManager* NewMoonGame::GetModelManager() {
 	return modelManager_.get();
 }
 

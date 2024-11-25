@@ -14,31 +14,46 @@ public:
 	//							public Functions
 	//===================================================================*/
 
-	DebugCamera() = default;
+	DebugCamera();
 	~DebugCamera() = default;
 
-	void Update();
+	void Update(const Vector3& pos, const Vector3& rotate);
+
+	void ImGui();
+
+	// Setter
+	void SetEnable(bool enable);
+
+	// Getter
+	Vector3 GetTranslate() const;
+	Vector3 GetRotate() const;
+	bool Enable() const;
+	Matrix4x4 GetViewProjectionMatrix() const;
 
 private:
 	//===================================================================*/
-	//							private Variables
+	//							private Methods
 	//===================================================================*/
 
-	Vector3 translation_;
-	Vector3 rotation_;
-
-	Matrix4x4 rotateMatrix_;
-	Matrix4x4 matrix_;
-
-	Matrix4x4 viewProjectionMatrix_;
-
-	bool enable_;
-
-private:
 	//===================================================================*/
-	//							private Function
-	//===================================================================*/
+	///* variables
 
-	void Move();
+	Vector3 translation_; //* 移動座標
+	Vector3 rotation_;    //* 回転
+
+	Matrix4x4 rotateMatrix_;         //* 回転行列
+	Matrix4x4 matrix_;               //* World行列
+	Matrix4x4 viewProjectionMatrix_; //* 渡す用の行列
+
+	bool enable_; //* ON:OFF 切り替え
+
+	//* parameter *//
+
+	float zoomRate_; //* マウスホイール移動感度
+
+	//===================================================================*/
+	///* functions
+
+	void Move(); //* 移動
 
 };

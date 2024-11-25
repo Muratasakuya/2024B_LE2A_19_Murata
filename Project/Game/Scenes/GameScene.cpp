@@ -27,8 +27,6 @@ void GameScene::Run() {
 
 		Draw();
 
-		NewMoonGame::Renderer2D();
-
 		NewMoonGame::Reset();
 		NewMoon::EndFrame();
 
@@ -43,6 +41,12 @@ void GameScene::Run() {
 
 void GameScene::Load() {
 
+	//===================================================================*/
+	//* primitive *//
+
+	NewMoonGame::LoadModel(baseModelDirectory_, "cube.obj");
+	NewMoonGame::LoadModel(baseModelDirectory_, "sphere.obj");
+
 }
 
 void GameScene::Init() {
@@ -53,11 +57,16 @@ void GameScene::Init() {
 
 void GameScene::Update() {
 
+
 }
 
 void GameScene::Draw() {
 
+
+
 }
 
 void GameScene::Cleanup() {
+
+
 }

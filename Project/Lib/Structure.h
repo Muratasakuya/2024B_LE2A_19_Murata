@@ -10,6 +10,7 @@
 #include "Lib/Math/Matrix3x3.h"
 #include "Lib/Math/Matrix4x4.h"
 #include "Lib/Math/Quaternion.h"
+#include "Lib/Adapter/Easing.h"
 
 // directX
 #include <d3d12.h>
@@ -45,40 +46,29 @@ namespace CollisionShapes {
 		};
 	};
 
-	struct AABB {
-
-		Vector3 min;
-		Vector3 max;
-
-		static AABB Default() {
-			AABB aabb = {
-				.min = {-1.0f,-1.0f,-1.0f},
-				.max = {1.0f,1.0f,1.0f}
-			};
-			return aabb;
-		};
-	};
-
 	struct OBB {
 
 		Vector3 size;
+		Vector3 center;
+		Quaternion rotate;
 
 		static OBB Default() {
 			OBB obb = {
-				.size = {1.0f,1.0f,1.0f}
+				.size = {1.0f,1.0f,1.0f},
+				.center = {0.0f,0.0f,0.0f},
+				.rotate = {0.0f,0.0f,0.0f}
 			};
 			return obb;
 		};
 	};
 
-	using Shapes = std::variant<Sphere, AABB, OBB>;
+	using Shapes = std::variant<Sphere, OBB>;
 
 };
 
 enum class ShapeType {
 
 	Type_Sphere,
-	Type_AABB,
 	Type_OBB
 };
 
@@ -158,6 +148,18 @@ struct Material3D {
 		specularColor.SetInit(1.0f);
 		uvTransform = Matrix4x4::MakeIdentity4x4();
 	}
+
+	void SetUVTransform(
+		const std::optional<Vector3>& scale = std::nullopt,
+		const std::optional<Vector3>& rotate = std::nullopt,
+		const std::optional<Vector3>& translate = std::nullopt) {
+
+		uvTransform =
+			Matrix4x4::MakeAffineMatrix(
+				scale.value_or(Vector3(1.0f, 1.0f, 1.0f)),
+				rotate.value_or(Vector3::Zero()),
+				translate.value_or(Vector3::Zero()));
+	};
 };
 struct Material2D {
 
@@ -276,28 +278,41 @@ struct ParticleForGPU {
 	Matrix4x4 WVP;
 	Vector4 color;
 };
+enum class RandomParticleColor {
+
+	RED,    //* 赤の色域
+	GREEN,  //* 緑の色域
+	BLUE,   //* 青の色域
+	PURPLE, //* 紫の色域
+	GRAY,   //* 灰色の色域
+
+	//* Add
+	DARKBLUE, //* 濃い青
+};
+struct ParticlePhysics {
+
+	std::optional<Vector3> gravityDirection; // 重力のかかる方向
+	std::optional<float> gravityStrength;    // 重力の強さ
+};
 struct ParticleData {
 
 	Transform3D transform;
+	Vector3 prePos;
 	Vector3 velocity;
 	Vector4 color;
 	float lifeTime;
-	std::optional<float> easedT_;
 	float currentTime;
-};
-struct Emitter {
+	std::optional<float> easedLifeRatio;
+	std::optional<EasingType> easingType;
 
-	Transform3D transform; // SRT
-	Vector3 prePos_;       // 前座標
-	Vector4 color;         // 色
-	uint32_t count;        // 個数
-	float frequency;       // ~秒置き、発生頻度
-	float frequencyTime;   // 発生頻度用の時刻
+	ParticlePhysics physics;
+
+	Matrix4x4 worldMatrix;
+	Matrix4x4 wvpMatrix;
 };
 struct AccelerationField {
 
 	Vector3 acceleration;
-	CollisionShapes::AABB area;
 };
 /*==========================================================*/
 /// カメラ座標
@@ -349,7 +364,6 @@ struct ModelData {
 	std::vector<MeshModelData> meshes;
 	std::map<std::string, JointWeightData> skinClusterData;
 	Node rootNode;
-	CollisionShapes::AABB  aabb;
 };
 /*==========================================================*/
 /// アニメーション

@@ -1,6 +1,10 @@
 #pragma once
 
-#include "Lib/Structure.h"
+// c++
+#include <cmath>
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include <numbers>
 
 //===================================================================*/
 //							Easing Methods
@@ -31,24 +35,28 @@ float EaseInOutCirc(float t);
 enum class EasingType {
 
 	EaseInSine,
-	EaseOutSine,
-	EaseInOutSine,
 	EaseInQuad,
-	EaseOutQuad,
-	EaseInOutQuad,
 	EaseInCubic,
-	EaseOutCubic,
-	EaseInOutCubic,
 	EaseInQuart,
-	EaseOutQuart,
-	EaseInOutQuart,
 	EaseInQuint,
-	EaseOutQuint,
-	EaseInOutQuint,
 	EaseInExpo,
-	EaseOutExpo,
-	EaseInOutExpo,
 	EaseInCirc,
+
+	EaseOutSine,
+	EaseOutQuad,
+	EaseOutCubic,
+	EaseOutQuart,
+	EaseOutQuint,
+	EaseOutExpo,
 	EaseOutCirc,
+
+	EaseInOutSine,
+	EaseInOutQuad,
+	EaseInOutCubic,
+	EaseInOutQuart,
+	EaseInOutQuint,
+	EaseInOutExpo,
 	EaseInOutCirc
 };
+
+float EasedValue(EasingType easingType, float t);

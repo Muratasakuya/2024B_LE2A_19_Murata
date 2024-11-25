@@ -10,14 +10,13 @@ void BaseTransform::Init() {
 
 	scale.SetInit(1.0f);
 	rotation.Init();
+	eulerRotate_.Init();
 	translation.Init();
 
 	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
-void BaseTransform::SetCommand() {
-
-	auto commandList = NewMoon::GetCommandList();
+void BaseTransform::SetCommand(ID3D12GraphicsCommandList* commandList) {
 
 	DXConstBuffer::SetCommand(commandList, rootParameterIndex_);
 }
