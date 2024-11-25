@@ -104,6 +104,7 @@ public:
 	// Setter
 
 	static void SetToImGui(BaseGameObject* gameObject);
+	static void EraseToImGui(BaseGameObject* gameObject);
 	static void SetToImGui(IBaseParticle* particle);
 
 	//* command

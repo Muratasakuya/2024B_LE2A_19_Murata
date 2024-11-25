@@ -278,6 +278,22 @@ struct ParticleForGPU {
 	Matrix4x4 WVP;
 	Vector4 color;
 };
+enum class RandomParticleColor {
+
+	RED,    //* 赤の色域
+	GREEN,  //* 緑の色域
+	BLUE,   //* 青の色域
+	PURPLE, //* 紫の色域
+	GRAY,   //* 灰色の色域
+
+	//* Add
+	DARKBLUE, //* 濃い青
+};
+struct ParticlePhysics {
+
+	std::optional<Vector3> gravityDirection; // 重力のかかる方向
+	std::optional<float> gravityStrength;    // 重力の強さ
+};
 struct ParticleData {
 
 	Transform3D transform;
@@ -288,6 +304,8 @@ struct ParticleData {
 	float currentTime;
 	std::optional<float> easedLifeRatio;
 	std::optional<EasingType> easingType;
+
+	ParticlePhysics physics;
 
 	Matrix4x4 worldMatrix;
 	Matrix4x4 wvpMatrix;

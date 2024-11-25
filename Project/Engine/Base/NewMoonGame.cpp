@@ -308,6 +308,10 @@ void NewMoonGame::SetToImGui(BaseGameObject* gameObject) {
 	gameObjects_.push_back(gameObject);
 }
 
+void NewMoonGame::EraseToImGui(BaseGameObject* gameObject) {
+	gameObjects_.erase(std::remove(gameObjects_.begin(), gameObjects_.end(), gameObject), gameObjects_.end());
+}
+
 void NewMoonGame::SetToImGui(IBaseParticle* particle) {
 	particles_.push_back(particle);
 }
