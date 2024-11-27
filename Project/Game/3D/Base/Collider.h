@@ -12,10 +12,32 @@
 //							  ColliderType
 //===================================================================*/
 enum class ColliderType {
-
-	Type_None,
-	Type_Test,
+	Type_None = 0,        // ビットが立っていない状態
+	Type_Test = 1 << 0,
 };
+
+// ビット演算のオーバーロード
+inline ColliderType operator|(ColliderType lhs, ColliderType rhs) {
+	using T = std::underlying_type_t<ColliderType>;
+	return static_cast<ColliderType>(static_cast<T>(lhs) | static_cast<T>(rhs));
+}
+
+inline ColliderType& operator|=(ColliderType& lhs, ColliderType rhs) {
+	lhs = lhs | rhs;
+	return lhs;
+}
+
+// ビットAND演算のオーバーロード
+inline ColliderType operator&(ColliderType lhs, ColliderType rhs) {
+	using T = std::underlying_type_t<ColliderType>;
+	return static_cast<ColliderType>(static_cast<T>(lhs) & static_cast<T>(rhs));
+}
+
+// ビットAND代入演算のオーバーロード
+inline ColliderType& operator&=(ColliderType& lhs, ColliderType rhs) {
+	lhs = lhs & rhs;
+	return lhs;
+}
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								Collider Class
