@@ -47,27 +47,31 @@ void TitleScene::Init() {
 
 	Load();
 
-	object_ = std::make_unique<TestGameObject>();
-	object_->Init();
+	for (uint32_t index = 0; index < 2; ++index) {
 
-	particle_ = std::make_unique<TestParticle>();
-	particle_->Init();
+		auto object = std::make_unique<TestGameObject>();
+		object->Init();
+
+		objects_.emplace_back(std::move(object));
+	}
 
 }
 
 void TitleScene::Update() {
 
-	object_->Update();
+	for (const auto& object : objects_) {
 
-	particle_->Update();
-
+		object->Update();
+	}
+	
 }
 
 void TitleScene::Draw() {
 
-	object_->Draw();
+	for (const auto& object : objects_) {
 
-	particle_->Draw(kBlendModeAdd);
+		object->Draw();
+	}
 
 }
 

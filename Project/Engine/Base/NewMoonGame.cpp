@@ -18,6 +18,7 @@ std::unique_ptr<LightManager> NewMoonGame::lightManager_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer2D_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
 std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
+int NewMoonGame::currentObjectIndex_ = 0;
 std::vector<IBaseParticle*> NewMoonGame::particles_ = {};
 std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
 #pragma endregion
@@ -79,15 +80,28 @@ void NewMoonGame::ImGui() {
 
 		if (!gameObjects_.empty()) {
 			if (ImGui::BeginTabItem("GameObject")) {
-				for (auto& gameObject : gameObjects_) {
-					if (ImGui::CollapsingHeader(gameObject->GetName().c_str())) {
+				if (ImGui::BeginCombo("List", gameObjects_[currentObjectIndex_]->GetName().c_str())) {
+					for (size_t i = 0; i < gameObjects_.size(); ++i) {
 
-						gameObject->ImGui();
+						bool isSelected = (currentObjectIndex_ == static_cast<int>(i));
+						if (ImGui::Selectable(gameObjects_[i]->GetName().c_str(), isSelected)) {
+
+							currentObjectIndex_ = static_cast<int>(i);
+						}
+						if (isSelected) {
+
+							ImGui::SetItemDefaultFocus();
+						}
 					}
+					ImGui::EndCombo();
 				}
+
+				gameObjects_[currentObjectIndex_]->ImGui();
+
 				ImGui::EndTabItem();
 			}
 		}
+
 		if (!particles_.empty()) {
 			if (ImGui::BeginTabItem("Particle")) {
 				for (auto& particle : particles_) {
@@ -299,6 +313,15 @@ void NewMoonGame::DrawLine3D(const Vector3& pointA, const Vector3& pointB, const
 
 void NewMoonGame::DrawGrid() {
 	lineDrawer3D_->DrawGrid();
+}
+
+void NewMoonGame::DrawSphere(float DrawSphere, const Vector3& centerPos, const LineColor& color) {
+	lineDrawer3D_->DrawSphere(DrawSphere, centerPos, color);
+}
+
+void NewMoonGame::DrawOBB(
+	const Vector3& size, const Quaternion& rotate, const Vector3& centerPos, const LineColor& color) {
+	lineDrawer3D_->DrawOBB(size, rotate, centerPos, color);
 }
 
 ///===================================================================

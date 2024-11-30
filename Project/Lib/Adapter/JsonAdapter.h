@@ -36,6 +36,9 @@ public:
 	static Json FromVector3(const Vector3& v);
 	static Vector3 ToVector3(const Json& data);
 
+	static Json FromVector4(const Vector4& v);
+	static Vector4 ToVector4(const Json& data);
+
 private:
 	//===================================================================*/
 	//							private Methods

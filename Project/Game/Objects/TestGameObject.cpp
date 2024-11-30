@@ -1,6 +1,7 @@
 #include "TestGameObject.h"
 
 #include "Engine/Base/NewMoonGame.h"
+#include "Engine/Managers/ImGuiManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *							TestGameObject classMethods
@@ -13,19 +14,27 @@ TestGameObject::~TestGameObject() {
 void TestGameObject::Init() {
 
 	BaseGameObject::Init("cube.obj");
+
+	// TestGameObject or decltype(*this)
+	BaseGameObject::AssignIndex<TestGameObject>();
+	// 複数自身を生成する場合はAssignIndex()を先に呼びだす
 	BaseGameObject::SetName("testGameObject");
 
-	Collider::SetCollisionShapeOBB();
-	Collider::size_.SetInit(1.0f);
+	// json適応
+	/*BaseGameObject::ApplyJsonForColor();
+	BaseGameObject::ApplyJsonForTransform(transform_);*/
 
-	Collider::type_ = ColliderType::Type_None;
-	Collider::targetType_ = ColliderType::Type_Test;
+	Collider::SetCollisionShapeOBB();
+
+	// log用
+	Collider::name_ = BaseGameObject::GetName();
 
 }
 
 void TestGameObject::Update() {
 
 	Collider::centerPos_ = transform_.translation;
+	Collider::size_ = transform_.scale;
 	Collider::rotate_ = transform_.rotation;
 
 	Collider::OBBUpdate();
@@ -36,7 +45,7 @@ void TestGameObject::Update() {
 
 void TestGameObject::Draw() {
 
-	Collider::DrawCollider();
+	Collider::DrawCollider(LineColor::Red);
 
 	BaseGameObject::Draw();
 }
@@ -46,6 +55,10 @@ void TestGameObject::KeyMove() {
 
 void TestGameObject::DerivedImGui() {
 #ifdef _DEBUG
+
+	ImGui::DragFloat3("rotate", &transform_.eulerRotate_.x, 0.01f);
+	transform_.rotation = Quaternion::EulerToQuaternion(transform_.eulerRotate_);
+
 #endif // _DEBUG
 }
 

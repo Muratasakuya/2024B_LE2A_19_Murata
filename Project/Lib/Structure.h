@@ -30,6 +30,17 @@
 #include <cassert>
 
 /*==========================================================*/
+/// LineColor
+
+enum class LineColor {
+
+	White, // 白
+	Red,   // 赤
+	Green, // 緑
+	Blue,  // 青
+};
+
+/*==========================================================*/
 /// Collision
 
 namespace CollisionShapes {

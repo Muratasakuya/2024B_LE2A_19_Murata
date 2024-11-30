@@ -39,9 +39,7 @@ private:
 
 	const std::string& baseModelDirectory_ = "./Resources/Obj";
 
-	std::unique_ptr<TestGameObject> object_;
-
-	std::unique_ptr<TestParticle> particle_;
+	std::vector<std::unique_ptr<TestGameObject>> objects_;
 
 private:
 	//===================================================================*/

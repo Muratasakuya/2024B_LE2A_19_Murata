@@ -11,6 +11,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <format>
 
 /*////////////////////////////////////////////////////////////////////////////////
 *						BaseGameObject Class
@@ -24,22 +25,33 @@ public:
 	BaseGameObject() = default;
 	virtual ~BaseGameObject() = default;
 
+	//* normal *//
+
 	virtual void Init(const std::string& modelName);
-	virtual void Init(const std::string& modelName, const std::string& animationName);
-
 	virtual void Update();
-	virtual void UpdateAnimation();
-
 	virtual void Draw(BlendMode blendMode = kBlendModeNormal);
+
+	//* animation *//
+
+	virtual void Init(const std::string& modelName, const std::string& animationName);
+	virtual void UpdateAnimation();
 	virtual void DrawAnimation(BlendMode blendMode = kBlendModeNormal);
+
+	//* imgui *//
 
 	virtual void ImGui();
 	virtual void DerivedImGui() {};
 
-	//* json *//
+	//* utility *//
+
+	virtual void ApplyJsonForColor();
+	virtual void SaveJsonForColor();
 
 	virtual void ApplyJsonForTransform(BaseTransform& transform);
 	virtual void SaveJsonForTransform(const BaseTransform& transform);
+
+	template <typename Derived>
+	void AssignIndex();
 
 	//* setter *//
 
@@ -63,6 +75,9 @@ protected:
 	//							protected Methods
 	//===================================================================*/
 
+	//===================================================================*/
+	///* variables
+
 	std::unique_ptr<Model> model_;
 	std::unique_ptr<AnimationModel> animationModel_;
 
@@ -82,4 +97,22 @@ private:
 
 	bool isAnimationModel_;
 
+	int index_;
+
+	template <typename Derived>
+	static int GenerateIndex();
+
 };
+
+template<typename Derived>
+inline void BaseGameObject::AssignIndex() {
+
+	index_ = GenerateIndex<Derived>();
+}
+
+template<typename Derived>
+inline int BaseGameObject::GenerateIndex() {
+
+	static int counter = 0;
+	return counter++;
+}

@@ -97,6 +97,16 @@ void Vector3::SetInit(float value) {
 	this->z = value;
 }
 
+// 自身の正規化
+Vector3 Vector3::Normalize() const {
+
+	float length = std::sqrt(x * x + y * y + z * z);
+	if (length == 0.0f) {
+		return Vector3(0.0f, 0.0f, 0.0f);
+	}
+	return Vector3(x / length, y / length, z / length);
+}
+
 // 三角形の頂点から法線の取得
 Vector3 Vector3::CalculateTriangleNormal(const Vector4& v0, const Vector4& v1, const Vector4& v2) {
 

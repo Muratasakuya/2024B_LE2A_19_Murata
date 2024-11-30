@@ -98,7 +98,10 @@ public:
 
 	static void DrawLine2D(const Vector2& pointA, const Vector2& pointB, const LineColor& color);
 	static void DrawLine3D(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
+
 	static void DrawGrid();
+	static void DrawSphere(float radius, const Vector3& centerPos, const LineColor& color);
+	static void DrawOBB(const Vector3& size, const Quaternion& rotate, const Vector3& centerPos, const LineColor& color);
 
 	///===================================================================
 	// Setter
@@ -140,6 +143,7 @@ private:
 	static std::unique_ptr<PrimitiveDrawer> lineDrawer3D_;
 
 	static std::vector<BaseGameObject*> gameObjects_;
+	static int currentObjectIndex_;
 	static std::vector<IBaseParticle*> particles_;
 
 	static std::unique_ptr<CollisionManager> collisionManager_;

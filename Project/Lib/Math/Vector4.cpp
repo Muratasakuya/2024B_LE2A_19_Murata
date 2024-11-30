@@ -73,7 +73,7 @@ void Vector4::SetInit(float value) {
 }
 
 // 16進数 -> Vector4 色変換
-Vector4 Vector4::ConvertColor(int color) {
+Vector4 Color::Convert(int color) {
 
 	int r = (color >> 16) & 0xFF;
 	int g = (color >> 8) & 0xFF;
@@ -81,4 +81,26 @@ Vector4 Vector4::ConvertColor(int color) {
 	int a = (color >> 24) & 0xFF;
 
 	return Vector4(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+}
+
+// Color
+Vector4 Color::White() {
+
+	return Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+}
+Vector4 Color::Black() {
+
+	return Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+}
+Vector4 Color::Red() {
+
+	return Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+}
+Vector4 Color::Green() {
+
+	return Vector4(0.0f, 1.0f, 0.0f, 1.0f); ;
+}
+Vector4 Color::Blue() {
+
+	return Vector4(0.0f, 0.0f, 1.0f, 1.0f); ;
 }

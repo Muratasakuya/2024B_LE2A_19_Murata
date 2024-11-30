@@ -4,12 +4,14 @@
 //								include
 //===================================================================*/
 #include "Game/3D/Base/Collider.h"
+#include "Lib/Math/Physics.h"
 
 // c++
 #include <list>
 #include <utility>
 #include <unordered_set>
 #include <algorithm>
+#include <chrono>
 
 /*////////////////////////////////////////////////////////////////////////////////
 *							CollisionManager Class
@@ -29,6 +31,8 @@ public:
 
 	void UpdateAllCollisions();
 
+	void DisplayCollisionLogs();
+
 private:
 	//===================================================================*/
 	//							private Methods
@@ -45,6 +49,17 @@ private:
 	std::list<Collider*> colliders_;
 	std::unordered_set<std::pair<Collider*, Collider*>, pair_hash> preCollisions_;
 
+	//* log
+
+	struct CollisionLogEntry {
+
+		std::string message;
+		std::chrono::time_point<std::chrono::steady_clock> enterTime;
+		std::optional<std::chrono::time_point<std::chrono::steady_clock>> exitTime = std::nullopt;
+	};
+	std::deque<CollisionLogEntry> collisionLogs_;
+	static constexpr size_t kMaxLogSize = 16;
+
 	//===================================================================*/
 	//						  collision Methods
 	//===================================================================*/
@@ -58,5 +73,11 @@ private:
 		const Vector3& sphereCenter);
 
 	bool OBBToOBB(const CollisionShapes::OBB& obbA, const CollisionShapes::OBB& obbB);
+
+	void UpdateEnterLog(Collider* colliderA, Collider* colliderB);
+
+	void UpdateStayLog(Collider* colliderA, Collider* colliderB);
+
+	void UpdateExitLog(Collider* colliderA, Collider* colliderB);
 
 };

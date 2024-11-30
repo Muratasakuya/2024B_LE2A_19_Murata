@@ -63,11 +63,33 @@ Json JsonAdapter::FromVector3(const Vector3& v) {
 
 Vector3 JsonAdapter::ToVector3(const Json& data) {
 
-	Vector3 vec;
+	Vector3 v = Vector3::Zero();
 	if (data.contains("x") && data.contains("y") && data.contains("z")) {
-		vec.x = data["x"].get<float>();
-		vec.y = data["y"].get<float>();
-		vec.z = data["z"].get<float>();
+		v.x = data["x"].get<float>();
+		v.y = data["y"].get<float>();
+		v.z = data["z"].get<float>();
 	}
-	return vec;
+	return v;
+}
+
+Json JsonAdapter::FromVector4(const Vector4& v) {
+
+	return Json{
+		{"x", v.x},
+		{"y", v.y},
+		{"z", v.z},
+		{"w", v.w}
+	};
+}
+
+Vector4 JsonAdapter::ToVector4(const Json& data) {
+
+	Vector4 v{};
+	if (data.contains("x") && data.contains("y") && data.contains("z") && data.contains("w")) {
+		v.x = data["x"].get<float>();
+		v.y = data["y"].get<float>();
+		v.z = data["z"].get<float>();
+		v.w = data["w"].get<float>();
+	}
+	return v;
 }
