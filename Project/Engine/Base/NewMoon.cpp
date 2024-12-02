@@ -128,16 +128,17 @@ void NewMoon::Init(uint32_t width, uint32_t height) {
 	srvManager_ = std::make_unique<SrvManager>();
 	srvManager_->Init();
 
+#ifdef _DEBUG
+	imguiManager_ = std::make_unique<ImGuiManager>();
+	imguiManager_->Init(winApp_.get(), dxCommon_.get(), srvManager_.get());
+#endif
+
 	// Offscreen初期化
 	dxCommon_->CreateOffscreenRenderTexture(srvManager_.get(), width, height);
 
 	pipelineManager_ = std::make_unique<PipelineManager>();
 	pipelineManager_->CreatePipelineStateObject(dxCommon_.get());
 
-#ifdef _DEBUG
-	imguiManager_ = std::make_unique<ImGuiManager>();
-	imguiManager_->Init(winApp_.get(), dxCommon_.get(), srvManager_.get());
-#endif
 }
 
 ///===============================================================================

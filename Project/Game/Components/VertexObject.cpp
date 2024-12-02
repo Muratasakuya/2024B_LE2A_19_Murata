@@ -50,7 +50,7 @@ void VertexObject<VertexData2D>::Update() {
 void InputVertexObject::Init(UINT vertexNum, ID3D12Resource* vertexResource) {
 
 	// SRV確保
-	inputVertex.srvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
+	inputVertex.srvIndex = NewMoon::GetSrvManagerPtr()->Allocate("inputResource");
 	inputVertex.srvHandle.first = NewMoon::GetSrvManagerPtr()->GetCPUHandle(inputVertex.srvIndex);
 	inputVertex.srvHandle.second = NewMoon::GetSrvManagerPtr()->GetGPUHandle(inputVertex.srvIndex);
 	// SRV生成
@@ -67,7 +67,7 @@ void OutputVertexObject::Init(UINT vertexNum) {
 	DXConstBuffer<VertexData3D>::CreateUavVertexBuffer(NewMoon::GetDXDevice(), vertexNum);
 
 	// UAV確保
-	outputVertex.uavIndex = NewMoon::GetSrvManagerPtr()->Allocate();
+	outputVertex.uavIndex = NewMoon::GetSrvManagerPtr()->Allocate("outputResource");
 	outputVertex.uavHandle.first = NewMoon::GetSrvManagerPtr()->GetCPUHandle(outputVertex.uavIndex);
 	outputVertex.uavHandle.second = NewMoon::GetSrvManagerPtr()->GetGPUHandle(outputVertex.uavIndex);
 	// UAV生成

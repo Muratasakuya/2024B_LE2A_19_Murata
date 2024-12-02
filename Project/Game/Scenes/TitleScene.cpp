@@ -72,6 +72,8 @@ void TitleScene::Update() {
 
 void TitleScene::Draw() {
 
+	NewMoonGame::DrawGrid();
+
 	for (const auto& object : objects_) {
 
 		object->Draw();

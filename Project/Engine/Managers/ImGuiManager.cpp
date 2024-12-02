@@ -83,6 +83,8 @@ void ImGuiManager::Init(WinApp* winApp, DXCommon* dxCommon, SrvManager* srvManag
 	);
 #endif
 
+	srvManager_->Allocate("imgui");
+
 	//===================================================================*/
 	//							gui settings
 	//===================================================================*/

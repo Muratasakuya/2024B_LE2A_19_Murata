@@ -103,10 +103,10 @@ void ParticleSystem::CreateParticle(
 	CreateVertexData(name);
 
 	//* CreateStructureBuffer *//
-	particleGroups_[name].srvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
+	particleGroups_[name].srvIndex = NewMoon::GetSrvManagerPtr()->Allocate("particleInstancingResource");
 	particleGroups_[name].numInstance = instanceMaxCount_;
 	particleGroups_[name].particleBuffer.Init(particleGroups_[name].numInstance);
-	particleGroups_[name].instancingSrvIndex = NewMoon::GetSrvManagerPtr()->Allocate();
+	particleGroups_[name].instancingSrvIndex = particleGroups_[name].srvIndex;
 	NewMoon::GetSrvManagerPtr()->CreateSRVForStructureBuffer(
 		particleGroups_[name].instancingSrvIndex, particleGroups_[name].particleBuffer.GetResource(),
 		particleGroups_[name].numInstance, sizeof(ParticleForGPU));

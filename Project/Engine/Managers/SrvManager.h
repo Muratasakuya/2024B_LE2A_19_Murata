@@ -10,6 +10,9 @@
 
 // c++
 #include <cstdint>
+#include <vector>
+#include <string>
+#include <utility>
 #include <cassert>
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +27,7 @@ public:
 	SrvManager() = default;
 	~SrvManager() = default;
 
-	uint32_t Allocate();
+	uint32_t Allocate(const std::string& name);
 	bool CanAllocate();
 
 	void CreateSRVForTexture2D(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT format, UINT mipLevels);
@@ -50,10 +53,12 @@ private:
 	//===================================================================*/
 
 	static const uint32_t kMaxSRVCount_;
-	uint32_t useIndex_ = 0;
+	std::vector<std::pair<uint32_t, std::string>> srvUseInformations_;
 
 	ComPtr<ID3D12DescriptorHeap> descriptorHeap_;
 	uint32_t descriptorSize_;
+
+	bool showSrvList_;
 
 private:
 	//===================================================================*/

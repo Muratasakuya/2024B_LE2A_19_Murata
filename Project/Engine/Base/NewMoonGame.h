@@ -137,6 +137,8 @@ private:
 	static std::unique_ptr<Input> input_;
 
 	static std::unique_ptr<CameraManager> cameraManager_;
+	static bool cameraDisplayEnable_;
+	static bool debugCameraEnable_;
 	static std::unique_ptr<LightManager> lightManager_;
 
 	static std::unique_ptr<PrimitiveDrawer> lineDrawer2D_;
@@ -152,6 +154,7 @@ private:
 	//* guiParameter *//
 
 	static Vector2 mainWindowPos_;
+	static bool showUI_;
 
 	static void ImGui();
 

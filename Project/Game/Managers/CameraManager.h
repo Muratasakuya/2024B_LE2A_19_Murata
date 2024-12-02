@@ -26,7 +26,7 @@ public:
 	void Init();
 	void Update();
 
-	void ImGui();
+	void ImGui(bool debugCameraEnable);
 
 	// Getter
 	Camera2D* GetCamera2D() const;

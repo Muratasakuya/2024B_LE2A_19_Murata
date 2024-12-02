@@ -50,9 +50,6 @@ void DebugCamera::Update(const Vector3& pos, const Vector3& rotate) {
 
 void DebugCamera::ImGui() {
 #ifdef _DEBUG
-	ImGui::Checkbox("Enable", &enable_);
-	ImGui::DragFloat3("Translate##Debug", &translation_.x, 0.01f);
-	ImGui::DragFloat3("Rotation##Debug", &rotation_.x, 0.01f);
 	ImGui::DragFloat("ZoomRate", &zoomRate_, 0.01f);
 #endif // DEBUG
 }
