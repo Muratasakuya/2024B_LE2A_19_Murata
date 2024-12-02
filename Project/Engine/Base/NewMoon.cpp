@@ -32,7 +32,6 @@ void NewMoon::BeginFrame() {
 #ifdef _DEBUG
 	imguiManager_->Begin();
 #endif
-	dxCommon_->PreDraw();
 	srvManager_->PreDraw();
 }
 
@@ -42,21 +41,25 @@ void NewMoon::EndFrame() {
 	imguiManager_->End();
 #endif
 	imguiManager_->Draw();
+
+	//* すべての後処理 *//
+
 	dxCommon_->PostDraw();
 }
 
-void NewMoon::OffscreenPreDraw() {
+void NewMoon::BeginPreOffscreen() {
 
-	dxCommon_->OffscreenPreDraw();
+	dxCommon_->BeginPreOffscreen();
 }
-void NewMoon::OffscreenPostDraw() {
+void NewMoon::EndPostOffscreen() {
 
-	dxCommon_->OffscreenPostDraw();
+	dxCommon_->EndPostOffscreen();
 }
 
-void NewMoon::PreDraw() {
+void NewMoon::OffscreenDraw(const PipelineType& pipelineType) {
 
-	dxCommon_->PreDraw();
+	dxCommon_->OffscreenDraw(pipelineType);
+
 }
 
 void NewMoon::PostDraw() {
@@ -125,8 +128,8 @@ void NewMoon::Init(uint32_t width, uint32_t height) {
 	srvManager_ = std::make_unique<SrvManager>();
 	srvManager_->Init();
 
-	// Offscreen初期化、上手くいくまで廃止
-	//dxCommon_->CreateOffscreenRenderTetexture(srvManager_.get(), width, height);
+	// Offscreen初期化
+	dxCommon_->CreateOffscreenRenderTexture(srvManager_.get(), width, height);
 
 	pipelineManager_ = std::make_unique<PipelineManager>();
 	pipelineManager_->CreatePipelineStateObject(dxCommon_.get());
@@ -176,15 +179,6 @@ void NewMoon::TransitionBarrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES 
 
 ///===================================================================
 // TestOffscreen
-
-void NewMoon::OffscreenDraw() {
-
-	auto commandList = dxCommon_->GetCommandList();
-
-	pipelineManager_->SetGraphicsPipeline(commandList, OffscreenCopy, kBlendModeNormal);
-	commandList->SetGraphicsRootDescriptorTable(0, dxCommon_->GetRendreTextureGpuHandle());
-	commandList->DrawInstanced(3, 1, 0, 0);
-}
 
 void NewMoon::OffscreenDepthOutlineDraw(OffscreenDepthMaterial& depthMaterial) {
 

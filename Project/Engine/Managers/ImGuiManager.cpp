@@ -83,11 +83,19 @@ void ImGuiManager::Init(WinApp* winApp, DXCommon* dxCommon, SrvManager* srvManag
 	);
 #endif
 
+	//===================================================================*/
+	//							gui settings
+	//===================================================================*/
+
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 	// ImGuiのフォント設定
 	ImGuiIO& io = ImGui::GetIO();
 	const std::string fontFilePath = "Resources/ImGuiFont/FiraMono-Bold.ttf";
 	io.Fonts->AddFontFromFileTTF(fontFilePath.c_str(), 16.0f);
 
-	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	// 背景色設定
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
 
 }

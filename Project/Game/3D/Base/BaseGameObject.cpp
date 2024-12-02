@@ -28,6 +28,8 @@ void BaseGameObject::Init(const std::string& modelName) {
 
 	isAnimationModel_ = false;
 
+	index_ = -1;
+
 }
 
 void BaseGameObject::Init(const std::string& modelName, const std::string& animationName) {
@@ -84,27 +86,34 @@ void BaseGameObject::DrawAnimation(BlendMode blendMode) {
 void BaseGameObject::ImGui() {
 #ifdef _DEBUG
 
+	uintptr_t ptrAddress = reinterpret_cast<uintptr_t>(this);
+
 	std::string materialHeader;
 	if (materials_.size() == 1) {
-		materialHeader = "Material##" + name_;
+		materialHeader = std::format("Material##{}", ptrAddress);
 	} else {
-		materialHeader = "Materials##" + name_;
+		materialHeader = std::format("Materials##{}", ptrAddress);
 	}
 
 	if (ImGui::TreeNode(materialHeader.c_str())) {
+
+		if (ImGui::Button("Save")) {
+			SaveJsonForColor();
+		}
 		for (size_t i = 0; i < materials_.size(); ++i) {
 			ImGui::PushID(static_cast<int>(i));
 
 			std::string materialLabel;
 			if (materials_.size() == 1) {
-				materialLabel = "Material";
+				materialLabel = "Color";
 			} else {
-				materialLabel = "Material " + std::to_string(i);
+				materialLabel = "Color " + std::to_string(i);
 			}
 
 			materialLabel += "##" + std::to_string(reinterpret_cast<uintptr_t>(&materials_[i]));
 			if (ImGui::TreeNode(materialLabel.c_str())) {
-				ImGui::ColorEdit4("Color", &color_.x);
+				ImGui::ColorEdit4("", &color_.x);
+				ImGui::Text("R:%4.2f G:%4.2f B:%4.2f A:%4.2f", color_.x, color_.y, color_.z, color_.w);
 				ImGui::TreePop();
 			}
 
@@ -113,26 +122,30 @@ void BaseGameObject::ImGui() {
 		ImGui::TreePop();
 	}
 
-	if (ImGui::TreeNode(("Transform##" + name_).c_str())) {
+	std::string transformLabel = std::format("Transform##{}", ptrAddress);
+	if (ImGui::TreeNode(transformLabel.c_str())) {
 
 		if (isAnimationModel_) {
-
-			ImGui::DragFloat3(("Translate##" + name_).c_str(), &animationTransform_.translation.x, 0.01f);
-			ImGui::DragFloat3(("Scale##" + name_).c_str(), &animationTransform_.scale.x, 0.01f);
 
 			if (ImGui::Button("Save")) {
 				SaveJsonForTransform(animationTransform_);
 			}
 
-		} else {
+			std::string translateLabel = std::format("Pos##{}", ptrAddress);
+			std::string scaleLabel = std::format("Scale##{}", ptrAddress);
+			ImGui::DragFloat3(scaleLabel.c_str(), &animationTransform_.scale.x, 0.01f);
+			ImGui::DragFloat3(translateLabel.c_str(), &animationTransform_.translation.x, 0.01f);
 
-			ImGui::DragFloat3(("Translate##" + name_).c_str(), &transform_.translation.x, 0.01f);
-			ImGui::DragFloat3(("Scale##" + name_).c_str(), &transform_.scale.x, 0.01f);
+		} else {
 
 			if (ImGui::Button("Save")) {
 				SaveJsonForTransform(transform_);
 			}
 
+			std::string translateLabel = std::format("Pos##{}", ptrAddress);
+			std::string scaleLabel = std::format("Scale##{}", ptrAddress);
+			ImGui::DragFloat3(scaleLabel.c_str(), &transform_.scale.x, 0.01f);
+			ImGui::DragFloat3(translateLabel.c_str(), &transform_.translation.x, 0.01f);
 		}
 
 		ImGui::TreePop();
@@ -140,32 +153,45 @@ void BaseGameObject::ImGui() {
 
 	ImGui::Separator();
 	DerivedImGui();
-	ImGui::Separator();
 #endif // _DEBUG
+}
+
+void BaseGameObject::ApplyJsonForColor() {
+
+	Json data = JsonAdapter::Load(GetName() + "Color.json");
+	color_ = JsonAdapter::ToVector4(data["color"]);
+}
+
+void BaseGameObject::SaveJsonForColor() {
+
+	Json data;
+	data["color"] = JsonAdapter::FromVector4(color_);
+	JsonAdapter::Save(GetName() + "Color.json", data);
 }
 
 void BaseGameObject::ApplyJsonForTransform(BaseTransform& transform) {
 
-	Json data = JsonAdapter::Load(GetName() + "TransformParameter.json");
-
+	Json data = JsonAdapter::Load(GetName() + "Transform.json");
 	transform.translation = JsonAdapter::ToVector3(data["translation"]);
 	transform.scale = JsonAdapter::ToVector3(data["scale"]);
-
 }
 
 void BaseGameObject::SaveJsonForTransform(const BaseTransform& transform) {
 
 	Json data;
-
 	data["translation"] = JsonAdapter::FromVector3(transform.translation);
 	data["scale"] = JsonAdapter::FromVector3(transform.scale);
-
-	JsonAdapter::Save(GetName() + "TransformParameter.json", data);
+	JsonAdapter::Save(GetName() + "Transform.json", data);
 
 }
 
 void BaseGameObject::SetName(const std::string& name) {
+
 	name_ = name;
+	if (index_ != 0) {
+		name_ = name_ + std::to_string(index_);
+	}
+
 	NewMoonGame::SetToImGui(this);
 }
 

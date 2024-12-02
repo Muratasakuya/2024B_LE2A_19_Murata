@@ -1,5 +1,7 @@
 #include "CollisionManager.h"
 
+#include <imgui.h>
+
 /*////////////////////////////////////////////////////////////////////////////////
 *							CollisionManager classMethods
 ////////////////////////////////////////////////////////////////////////////////*/
@@ -62,10 +64,14 @@ void CollisionManager::UpdateAllCollisions() {
 
 					colliderA->OnCollisionEnter(colliderB);
 					colliderB->OnCollisionEnter(colliderA);
+
+					UpdateEnterLog(colliderA, colliderB);
 				} else {
 
 					colliderA->OnCollisionStay(colliderB);
 					colliderB->OnCollisionStay(colliderA);
+
+					UpdateStayLog(colliderA, colliderB);
 				}
 			}
 		}
@@ -76,10 +82,44 @@ void CollisionManager::UpdateAllCollisions() {
 
 			collision.first->OnCollisionExit(collision.second);
 			collision.second->OnCollisionExit(collision.first);
+
+			UpdateExitLog(collision.first, collision.second);
 		}
 	}
 
 	preCollisions_ = currentCollisions;
+}
+
+void CollisionManager::DisplayCollisionLogs() {
+#ifdef _DEBUG
+
+	if (colliders_.empty()) {
+
+		ImGui::Text("No CollisionSetting");
+		ImGui::Separator();
+
+		return;
+	}
+
+	ImGui::Text("CollisionLog");
+	ImGui::Separator();
+	if (ImGui::Button("Reset")) {
+		collisionLogs_.clear();
+	}
+
+	for (const auto& log : collisionLogs_) {
+
+		if (log.exitTime.has_value()) {
+
+			auto durationMS = std::chrono::duration_cast<std::chrono::milliseconds>(log.exitTime.value() - log.enterTime).count();
+			auto durationS = std::chrono::duration_cast<std::chrono::seconds>(log.exitTime.value() - log.enterTime).count();
+			ImGui::TextColored(ImVec4(0.0f, 0.8f, 0.0f, 1.0f), "%s [%lld ms] [%lld s] ", log.message.c_str(), durationMS, durationS);
+		} else {
+			ImGui::TextColored(ImVec4(0.0f, 0.8f, 0.0f, 1.0f), "%s", log.message.c_str());
+		}
+	}
+
+#endif // _DEBUG
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -133,16 +173,12 @@ bool CollisionManager::SphereToOBB(
 	const CollisionShapes::Sphere& sphere, const CollisionShapes::OBB& obb,
 	const Vector3& sphereCenter) {
 
-	Matrix4x4 rotateX = Matrix4x4::MakePitchMatrix(obb.rotate.x);
-	Matrix4x4 rotateY = Matrix4x4::MakeYawMatrix(obb.rotate.y);
-	Matrix4x4 rotateZ = Matrix4x4::MakeRollMatrix(obb.rotate.z);
-
-	Matrix4x4 rotateMatrix = rotateX * rotateY * rotateZ;
+	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(obb.rotate);
 
 	Vector3 orientations[3];
-	orientations[0] = Vector3::Transform({ 1.0f,0.0f,0.0f }, rotateMatrix);
-	orientations[1] = Vector3::Transform({ 0.0f,1.0f,0.0f }, rotateMatrix);
-	orientations[2] = Vector3::Transform({ 0.0f,0.0f,1.0f }, rotateMatrix);
+	orientations[0] = Vector3::Transform(Direction::Right(), rotateMatrix);
+	orientations[1] = Vector3::Transform(Direction::Up(), rotateMatrix);
+	orientations[2] = Vector3::Transform(Direction::Forward(), rotateMatrix);
 
 	Vector3 localSphereCenter = sphereCenter - obb.center;
 	Vector3 closestPoint = obb.center;
@@ -169,9 +205,102 @@ bool CollisionManager::SphereToOBB(
 
 bool CollisionManager::OBBToOBB(const CollisionShapes::OBB& obbA, const CollisionShapes::OBB& obbB) {
 
-	// 上手くいっていない
-	obbA;
-	obbB;
+	auto CalculateProjection =
+		[](const CollisionShapes::OBB& obb, const Vector3& axis, const Vector3* axes) -> float {
+		return std::abs(obb.size.x * Vector3::Dot(axes[0], axis)) +
+			std::abs(obb.size.y * Vector3::Dot(axes[1], axis)) +
+			std::abs(obb.size.z * Vector3::Dot(axes[2], axis));
+		};
 
-	return false;
+	auto GetOBBAxes = [](const CollisionShapes::OBB& obb) -> std::array<Vector3, 3> {
+		Matrix4x4 rotationMatrix = Quaternion::MakeRotateMatrix(obb.rotate);
+		return {
+			Vector3::Transform(Direction::Right(), rotationMatrix),
+			Vector3::Transform(Direction::Up(), rotationMatrix),
+			Vector3::Transform(Direction::Forward(), rotationMatrix)
+		};
+		};
+
+	auto obbAxesA = GetOBBAxes(obbA);
+	auto obbAxesB = GetOBBAxes(obbB);
+
+	std::vector<Vector3> axes;
+	axes.insert(axes.end(), obbAxesA.begin(), obbAxesA.end());
+	axes.insert(axes.end(), obbAxesB.begin(), obbAxesB.end());
+	for (const auto& axisA : obbAxesA) {
+		for (const auto& axisB : obbAxesB) {
+			axes.push_back(Vector3::Cross(axisA, axisB));
+		}
+	}
+
+	for (const auto& axis : axes) {
+		if (Vector3::Length(axis) < std::numeric_limits<float>::epsilon()) {
+			continue;
+		}
+
+		Vector3 normalizedAxis = Vector3::Normalize(axis);
+
+		float obbAProjection = CalculateProjection(obbA, normalizedAxis, obbAxesA.data());
+		float obbBProjection = CalculateProjection(obbB, normalizedAxis, obbAxesB.data());
+		float distance = std::abs(Vector3::Dot(obbA.center - obbB.center, normalizedAxis));
+
+		if (distance > obbAProjection + obbBProjection) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void CollisionManager::UpdateEnterLog(Collider* colliderA, Collider* colliderB) {
+
+	if (collisionLogs_.size() >= kMaxLogSize) {
+		collisionLogs_.pop_front();
+	}
+	CollisionLogEntry logEntry;
+	logEntry.message = "Enter: " + colliderA->GetName() + " and " + colliderB->GetName();
+	logEntry.enterTime = std::chrono::steady_clock::now();
+	collisionLogs_.emplace_back(logEntry);
+}
+
+void CollisionManager::UpdateStayLog(Collider* colliderA, Collider* colliderB) {
+
+	for (const auto& log : collisionLogs_) {
+		if (log.message.find("Stay~: " + colliderA->GetName() + " and " + colliderB->GetName()) != std::string::npos ||
+			log.message.find("Stay~: " + colliderB->GetName() + " and " + colliderA->GetName()) != std::string::npos) {
+			return;
+		}
+	}
+
+	if (collisionLogs_.size() >= kMaxLogSize) {
+		collisionLogs_.pop_front();
+	}
+	CollisionLogEntry logEntry;
+	logEntry.message = "Stay~: " + colliderA->GetName() + " and " + colliderB->GetName();
+	logEntry.enterTime = std::chrono::steady_clock::now();
+	collisionLogs_.emplace_back(logEntry);
+}
+
+void CollisionManager::UpdateExitLog(Collider* colliderA, Collider* colliderB) {
+
+	for (auto it = collisionLogs_.begin(); it != collisionLogs_.end(); ++it) {
+		if (it->message.find("Stay~: " + colliderA->GetName() + " and " + colliderB->GetName()) != std::string::npos ||
+			it->message.find("Stay~: " + colliderB->GetName() + " and " + colliderA->GetName()) != std::string::npos) {
+
+			collisionLogs_.erase(it);
+			break;
+		}
+	}
+
+	for (auto& log : collisionLogs_) {
+		if (log.message.find("Enter: " + colliderA->GetName() + " and " + colliderB->GetName()) != std::string::npos ||
+			log.message.find("Enter: " + colliderB->GetName() + " and " + colliderA->GetName()) != std::string::npos) {
+			if (!log.exitTime.has_value()) {
+
+				log.exitTime = std::chrono::steady_clock::now();
+				log.message = "Exit: " + colliderA->GetName() + " and " + colliderB->GetName();  // ログの内容を更新
+				return;
+			}
+		}
+	}
 }

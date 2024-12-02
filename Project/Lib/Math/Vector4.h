@@ -40,7 +40,16 @@ public:
 	// 任意初期化
 	void SetInit(float value);
 
-	// 16進数 -> Vector4 色変換
-	static Vector4 ConvertColor(int color);
-
 };
+
+namespace Color {
+
+	// 16進数 -> Vector4 色変換
+	Vector4 Convert(int color);
+
+	Vector4 White();
+	Vector4 Black();
+	Vector4 Red();
+	Vector4 Green();
+	Vector4 Blue();
+}

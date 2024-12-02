@@ -4,7 +4,7 @@
 #include "Engine/Managers/ImGuiManager.h"
 
 // SRVの最大数
-const uint32_t SrvManager::kMaxSRVCount_ = 512;
+const uint32_t SrvManager::kMaxSRVCount_ = 256;
 
 // DescriptorHeapを作成する関数
 ComPtr<ID3D12DescriptorHeap> SrvManager::MakeDescriptorHeap(ID3D12Device* device) {
@@ -142,7 +142,7 @@ void SrvManager::Init() {
 
 void SrvManager::ImGui() {
 
-	ImGui::Text("Srv ViewUseIndex: %d / %d", useIndex_, kMaxSRVCount_);
+	ImGui::Text("Srv: Use: %d / %d", useIndex_, kMaxSRVCount_);
   
 }
 

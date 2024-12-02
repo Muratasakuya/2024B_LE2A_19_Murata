@@ -6,6 +6,7 @@
 #pragma comment(lib,"dxguid.lib")
 #pragma comment(lib,"dxcompiler.lib")
 
+#include "Engine/Base/NewMoon.h"
 #include "Engine/Base/WinApp.h"
 #include "Engine/Managers/SrvManager.h"
 
@@ -179,8 +180,7 @@ void DXCommon::ClearWindow() {
 
 	commandList_->OMSetRenderTargets(1, &rtvHandles[backBufferIndex_], false, &dsvHandle);
 	// 指定した色で画面全体をクリアする
-	//float clearColor[] = { 0.184f, 0.310f, 0.310f, 1.0f };
-	float clearColor[] = { 0.016f, 0.016f, 0.016f, 1.0f };
+	float clearColor[] = { clearColor_.x, clearColor_.y, clearColor_.z, clearColor_.w };
 	// RGBAの順
 	commandList_->ClearRenderTargetView(rtvHandles[backBufferIndex_], clearColor, 0, nullptr);
 
@@ -193,7 +193,7 @@ void DXCommon::ClearWindow() {
 ////////////////////////////////////////////////////////////////////////////////*/
 void DXCommon::CreateOffscreenRenderTexture(SrvManager* srvManager, uint32_t width, uint32_t height) {
 
-	const Vector4 kRenderTargetClearColor = { 0.184f, 0.310f, 0.310f, 1.0f };
+	const Vector4 kRenderTargetClearColor = clearColor_;
 	auto device = device_->GetDevice();
 
 	// Resourceの作成
@@ -226,7 +226,7 @@ void DXCommon::CreateOffscreenRenderTexture(SrvManager* srvManager, uint32_t wid
 /*////////////////////////////////////////////////////////////////////////////////
 *						オフスクリーン描画前の準備処理
 ////////////////////////////////////////////////////////////////////////////////*/
-void DXCommon::OffscreenPreDraw() {
+void DXCommon::BeginPreOffscreen() {
 
 	// RTVの設定
 	uint32_t index = rtvManager_->Allocate();
@@ -236,7 +236,7 @@ void DXCommon::OffscreenPreDraw() {
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = descriptor_->GetDSVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
 	commandList_->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
-	float kRenderTargetClearColor[] = { 0.184f, 0.310f, 0.310f, 1.0f };
+	float kRenderTargetClearColor[] = { clearColor_.x, clearColor_.y, clearColor_.z, clearColor_.w };
 	commandList_->ClearRenderTargetView(rtvHandle, kRenderTargetClearColor, 0, nullptr);
 	// 指定した深度で画面全体をクリアする、深度バッファクリア
 	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
@@ -250,20 +250,34 @@ void DXCommon::OffscreenPreDraw() {
 	scissorRect_ = D3D12_RECT(0, 0, kClientWidth_, kClientHeight_);
 	commandList_->RSSetScissorRects(1, &scissorRect_);
 
-	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考える
-	commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *						オフスクリーン描画後の後片付け処理
 ////////////////////////////////////////////////////////////////////////////////*/
-void DXCommon::OffscreenPostDraw() {
+void DXCommon::EndPostOffscreen() {
 
 	// リソースの状態をRENDER_TARGETからPIXEL_SHADER_RESOURCEに変更
-	//TransitionBarrier(renderTextureResource_.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+	TransitionBarrier(renderTextureResource_.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+
+	//* depthを使ったOffscreenは使えない *//
+
 	// リソースの状態をD3D12_RESOURCE_STATE_DEPTH_WRITEからPIXEL_SHADER_RESOURCEに変更
 	//TransitionBarrier(descriptor_->GetDepthResource(), D3D12_RESOURCE_STATE_DEPTH_WRITE, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+
+}
+
+void DXCommon::OffscreenDraw(const PipelineType& pipelineType) {
+
+	PreDraw();
+
+	const UINT vertexCount = 3;
+
+	NewMoon::SetGraphicsPipeline(commandList_.Get(), pipelineType, kBlendModeNormal);
+	commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	commandList_->SetGraphicsRootDescriptorTable(0, renderTextureGpuHandle_);
+	commandList_->DrawInstanced(vertexCount, 1, 0, 0);
+
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -297,8 +311,11 @@ void DXCommon::PreDraw() {
 void DXCommon::PostDraw() {
 
 	// 次のOffscreenに状態が合うように状態を変更
+	TransitionBarrier(renderTextureResource_.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+	//* depthを使ったOffscreenは使えない *//
+
 	//TransitionBarrier(descriptor_->GetDepthResource(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_DEPTH_WRITE);
-	//TransitionBarrier(renderTextureResource_.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	// バックバッファの状態をRENDER_TARGETからPRESENTに変更 処理的には上のバリアと同じ
 	TransitionBarrier(swapChain_->GetResources(backBufferIndex_), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
@@ -429,6 +446,8 @@ void DXCommon::Init(WinApp* winApp, uint32_t width, uint32_t height) {
 
 	kClientWidth_ = width;
 	kClientHeight_ = height;
+
+	clearColor_ = Vector4(0.016f, 0.016f, 0.016f, 1.0f);
 
 	// FPS固定初期化
 	InitFixFPS();
