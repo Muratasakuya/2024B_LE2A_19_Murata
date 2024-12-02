@@ -3,49 +3,41 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
+#include "Engine/MyDirectXClass/ComPtr.h"
+#include "Lib/Math/Vector4.h"
 
-//* object
-#include "Game/Objects/TestParticle.h"
-#include "Game/Objects/TestGameObject.h"
+// directX
+#include <d3d12.h>
+
+// c++
+#include <cstdint>
+#include <cassert>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								TitleScene Class
+*							OffscreenManager Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class TitleScene :
-	public IScene {
+class OffscreenManager {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	TitleScene();
-	~TitleScene();
-
-	void Run() override;
-
-	void Init() override;
-
-	void Update() override;
-
-	void Draw();
-
-	void Cleanup() override;
+	OffscreenManager() = default;
+	~OffscreenManager() = default;
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	const std::string& baseModelDirectory_ = "./Resources/Obj";
-
-	std::vector<std::unique_ptr<TestGameObject>> objects_;
-
-private:
 	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
+	///* variables
 
-	void Load();
+
+
+	//===================================================================*/
+	///* functions
+
+
 
 };

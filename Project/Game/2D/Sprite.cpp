@@ -98,6 +98,7 @@ void Sprite::VertexUpdate() {
 	// 右上
 	vertex_.data[3].pos = { right,top };
 	vertex_.data[3].texcoord = { texRight,texTop };
+
 }
 
 /*////////////////////////////////////////////////////////////////////////////////

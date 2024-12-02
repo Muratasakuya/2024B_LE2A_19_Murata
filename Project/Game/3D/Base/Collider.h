@@ -7,6 +7,8 @@
 
 // c++
 #include <optional>
+#include <string>
+#include <deque>
 
 //===================================================================*/
 //							  ColliderType
@@ -59,7 +61,7 @@ public:
 
 	virtual void OBBUpdate();
 
-	virtual void DrawCollider();
+	virtual void DrawCollider(const LineColor& lineColor = LineColor::Red);
 
 	// Setter
 	void SetCollisionShapeSphere(const CollisionShapes::Sphere& sphere = CollisionShapes::Sphere::Default());
@@ -78,6 +80,8 @@ public:
 
 	ShapeType GetShapeType() const { return shapeType_.value(); }
 
+	const std::string& GetName() const { return name_; }
+
 protected:
 	//===================================================================*/
 	//							protected Methods
@@ -93,5 +97,7 @@ protected:
 
 	std::optional<CollisionShapes::Shapes> shape_ = std::nullopt; //* 衝突判定を行う形状
 	std::optional<ShapeType> shapeType_ = std::nullopt;           //* 衝突判定を行う形状のタイプ
+
+	std::string name_ = "colliderName";
 
 };

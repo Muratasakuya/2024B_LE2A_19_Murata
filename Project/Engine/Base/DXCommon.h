@@ -8,6 +8,7 @@
 #include "Engine/MyDirectXClass/DXDescriptor.h"
 #include "Engine/MyDirectXClass/DXOffscreenRender.h"
 #include "Engine/Managers/RtvManager.h"
+#include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
 
 // directX
 #include <dxgidebug.h>
@@ -46,11 +47,12 @@ public:
 	void CreateOffscreenRenderTexture(SrvManager* srvManager, uint32_t width, uint32_t height);
 	void TransitionBarrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
 
-	// オフスクリーン描画対象のオブジェクトの設定
-	void OffscreenPreDraw();
-	void OffscreenPostDraw();
+	void BeginPreOffscreen();
+	void EndPostOffscreen();
 
-	// 通常オブジェクト描画の設定 ここにRenderTextureも含まれる
+	// Offscreen
+	void OffscreenDraw(const PipelineType& pipelineType);
+
 	void PreDraw();
 	void PostDraw();
 
@@ -86,6 +88,8 @@ private:
 	D3D12_GPU_DESCRIPTOR_HANDLE renderTextureGpuHandle_;
 	D3D12_GPU_DESCRIPTOR_HANDLE depthGpuHandle_;
 	//===================================================================*/
+
+	Vector4 clearColor_;
 
 	HRESULT hr_;
 

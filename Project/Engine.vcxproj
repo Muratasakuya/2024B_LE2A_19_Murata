@@ -193,6 +193,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Particle\ParticleParameter.cpp" />
     <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
     <ClCompile Include="Game\Objects\TestGameObject.cpp" />
+    <ClCompile Include="Lib\Math\Physics.cpp" />
+    <ClCompile Include="Engine\Managers\OffscreenManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Particle\ParticleTraits.h" />
@@ -276,6 +278,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Particle\ParticleParameter.h" />
     <ClInclude Include="Game\Particle\ParticleVisitor.h" />
     <ClInclude Include="Game\Objects\TestGameObject.h" />
+    <ClInclude Include="Lib\Math\Physics.h" />
+    <ClInclude Include="Engine\Managers\OffscreenManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\BoxFilter.PS.hlsl">

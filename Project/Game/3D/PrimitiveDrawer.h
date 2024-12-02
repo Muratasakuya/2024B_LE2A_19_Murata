@@ -7,20 +7,10 @@
 #include "Game/Components/MaterialObject.h"
 #include "Game/Components/CameraObject.h"
 #include "Lib/Structure.h"
+#include "Lib/Math/Physics.h"
 
 // c++
 #include <unordered_map>
-
-//===================================================================*/
-//							global Methods
-//===================================================================*/
-enum class LineColor {
-
-	White, // 白
-	Red,   // 赤
-	Green, // 緑
-	Blue,  // 青
-};
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								PrimitiveDrawer Class
@@ -51,7 +41,11 @@ public:
 	void DrawLine2D(const Vector2& pointA, const Vector2& pointB, const LineColor& color);
 	void DrawLine3D(const Vector3& pointA, const Vector3& pointB, const LineColor& color);
 
-	void DrawGrid(); // 平面描画
+	void DrawGrid();
+
+	void DrawSphere(float radius, const Vector3& centerPos, const LineColor& color);
+
+	void DrawOBB(const Vector3& size,const Quaternion& rotate, const Vector3& centerPos, const LineColor& color);
 
 	void Reset();
 

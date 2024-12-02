@@ -64,6 +64,8 @@ public:
 	static Vector3 Zero();
 	// 任意初期化
 	void SetInit(float value);
+	// 自身の正規化
+	Vector3 Normalize() const;
 
 	// 三角形の頂点から法線の取得
 	static Vector3 CalculateTriangleNormal(const Vector4& v0, const Vector4& v1, const Vector4& v2);
