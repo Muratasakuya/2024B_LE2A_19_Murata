@@ -114,6 +114,7 @@
     <ClCompile Include="Game\Components\InputAssembler.cpp" />
     <ClCompile Include="Game\Objects\TestGameObject.cpp" />
     <ClCompile Include="Lib\Math\Physics.cpp" />
+    <ClCompile Include="Engine\Managers\OffscreenManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Game\Components\InputAssembler.h" />
     <ClInclude Include="Game\Objects\TestGameObject.h" />
     <ClInclude Include="Lib\Math\Physics.h" />
+    <ClInclude Include="Engine\Managers\OffscreenManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

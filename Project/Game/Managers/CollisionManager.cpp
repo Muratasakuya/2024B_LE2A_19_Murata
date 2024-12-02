@@ -36,8 +36,6 @@ void CollisionManager::ClearAllColliders() {
 
 void CollisionManager::UpdateAllCollisions() {
 
-	DisplayCollisionLogs();
-
 	if (colliders_.empty()) {
 		return;
 	}
@@ -94,7 +92,17 @@ void CollisionManager::UpdateAllCollisions() {
 
 void CollisionManager::DisplayCollisionLogs() {
 #ifdef _DEBUG
-	ImGui::Begin("Collision Log");
+
+	if (colliders_.empty()) {
+
+		ImGui::Text("No CollisionSetting");
+		ImGui::Separator();
+
+		return;
+	}
+
+	ImGui::Text("CollisionLog");
+	ImGui::Separator();
 	if (ImGui::Button("Reset")) {
 		collisionLogs_.clear();
 	}
@@ -111,7 +119,6 @@ void CollisionManager::DisplayCollisionLogs() {
 		}
 	}
 
-	ImGui::End();
 #endif // _DEBUG
 }
 

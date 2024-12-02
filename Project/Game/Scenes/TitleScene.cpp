@@ -22,7 +22,11 @@ void TitleScene::Run() {
 
 		Update();
 
+		NewMoon::BeginPreOffscreen();
 		Draw();
+		NewMoon::EndPostOffscreen();
+
+		NewMoon::OffscreenDraw();
 
 		NewMoonGame::Reset();
 		NewMoon::EndFrame();

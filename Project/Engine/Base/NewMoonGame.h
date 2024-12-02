@@ -143,10 +143,15 @@ private:
 	static std::unique_ptr<PrimitiveDrawer> lineDrawer3D_;
 
 	static std::vector<BaseGameObject*> gameObjects_;
+	static BaseGameObject* selectedGameObject_;
 	static int currentObjectIndex_;
 	static std::vector<IBaseParticle*> particles_;
 
 	static std::unique_ptr<CollisionManager> collisionManager_;
+
+	//* guiParameter *//
+
+	static Vector2 mainWindowPos_;
 
 	static void ImGui();
 

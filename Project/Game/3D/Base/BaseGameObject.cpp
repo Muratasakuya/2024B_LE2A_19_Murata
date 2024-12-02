@@ -113,7 +113,7 @@ void BaseGameObject::ImGui() {
 			materialLabel += "##" + std::to_string(reinterpret_cast<uintptr_t>(&materials_[i]));
 			if (ImGui::TreeNode(materialLabel.c_str())) {
 				ImGui::ColorEdit4("", &color_.x);
-				ImGui::Text("R: %4.2f G: %4.2f B: %4.2f A: %4.2f", color_.x, color_.y, color_.z, color_.w);
+				ImGui::Text("R:%4.2f G:%4.2f B:%4.2f A:%4.2f", color_.x, color_.y, color_.z, color_.w);
 				ImGui::TreePop();
 			}
 
@@ -131,10 +131,10 @@ void BaseGameObject::ImGui() {
 				SaveJsonForTransform(animationTransform_);
 			}
 
-			std::string translateLabel = std::format("Translate##{}", ptrAddress);
+			std::string translateLabel = std::format("Pos##{}", ptrAddress);
 			std::string scaleLabel = std::format("Scale##{}", ptrAddress);
-			ImGui::DragFloat3(translateLabel.c_str(), &animationTransform_.translation.x, 0.01f);
 			ImGui::DragFloat3(scaleLabel.c_str(), &animationTransform_.scale.x, 0.01f);
+			ImGui::DragFloat3(translateLabel.c_str(), &animationTransform_.translation.x, 0.01f);
 
 		} else {
 
@@ -142,10 +142,10 @@ void BaseGameObject::ImGui() {
 				SaveJsonForTransform(transform_);
 			}
 
-			std::string translateLabel = std::format("Translate##{}", ptrAddress);
+			std::string translateLabel = std::format("Pos##{}", ptrAddress);
 			std::string scaleLabel = std::format("Scale##{}", ptrAddress);
-			ImGui::DragFloat3(translateLabel.c_str(), &transform_.translation.x, 0.01f);
 			ImGui::DragFloat3(scaleLabel.c_str(), &transform_.scale.x, 0.01f);
+			ImGui::DragFloat3(translateLabel.c_str(), &transform_.translation.x, 0.01f);
 		}
 
 		ImGui::TreePop();

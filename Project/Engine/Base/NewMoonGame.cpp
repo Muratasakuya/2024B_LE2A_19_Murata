@@ -3,6 +3,7 @@
 #include "NewMoon.h"
 #include "Engine/Managers/SrvManager.h"
 #include "Engine/Managers/ImGuiManager.h"
+#include "DXCommon.h"
 
 ///===============================================================================
 /// staticメンバ変数初期化
@@ -18,9 +19,11 @@ std::unique_ptr<LightManager> NewMoonGame::lightManager_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer2D_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
 std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
+BaseGameObject* NewMoonGame::selectedGameObject_ = nullptr;
 int NewMoonGame::currentObjectIndex_ = 0;
 std::vector<IBaseParticle*> NewMoonGame::particles_ = {};
 std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
+Vector2 NewMoonGame::mainWindowPos_ = Vector2(210.0f, 64.0f);
 #pragma endregion
 ///===============================================================================
 
@@ -60,64 +63,81 @@ void NewMoonGame::Init() {
 
 void NewMoonGame::ImGui() {
 #ifdef _DEBUG
-	ImGui::Begin("Game Debug");
 
-	// Performance情報は常に表示する
-	ImGui::Text("Frame Rate: %.1f fps", ImGui::GetIO().Framerate); // フレームレート情報
-	ImGui::Text("Delta Time: %.3f s", deltaTime_);                 // ΔTime
-	NewMoon::GetSrvManagerPtr()->ImGui();
+	ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+	ImGui::SetNextWindowSize(ImVec2(NewMoon::kWindowWidthf, NewMoon::kWindowHeightf));
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize;
+	ImGui::Begin("Engine", nullptr, windowFlags);
 
-	if (ImGui::BeginTabBar("Tabs")) {
+	//* MainWindowSetting *//
+	const ImVec2 imageSize(768.0f, 432.0f);              //* サイズ
+	ImVec2 imagePos(mainWindowPos_.x, mainWindowPos_.y); //* 座標
+	ImGui::SetCursorPos(imagePos);
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle = NewMoon::GetDXCommonPtr()->GetRendreTextureGpuHandle();
+	ImGui::Image(ImTextureID(gpuHandle.ptr), imageSize);
 
-		if (ImGui::BeginTabItem("Camera")) {
-			cameraManager_->ImGui();
-			ImGui::EndTabItem();
-		}
-		if (ImGui::BeginTabItem("Input")) {
-			input_->ImGui();
-			ImGui::EndTabItem();
-		}
+	//* GameObjects List (Left Side) *//
+	ImGui::SetCursorPos(ImVec2(8.0f, imagePos.y - 32.0f));
+	ImGui::Text("Game Objects");
+	ImGui::BeginChild("GameObjectsChild", ImVec2(196.0f, imageSize.y + 12.0f), true, ImGuiWindowFlags_AlwaysUseWindowPadding);
 
-		if (!gameObjects_.empty()) {
-			if (ImGui::BeginTabItem("GameObject")) {
-				if (ImGui::BeginCombo("List", gameObjects_[currentObjectIndex_]->GetName().c_str())) {
-					for (size_t i = 0; i < gameObjects_.size(); ++i) {
+	for (const auto& gameObject : gameObjects_) {
+		if (gameObject) {
+			if (ImGui::Selectable(gameObject->GetName().c_str(), selectedGameObject_ == gameObject)) {
 
-						bool isSelected = (currentObjectIndex_ == static_cast<int>(i));
-						if (ImGui::Selectable(gameObjects_[i]->GetName().c_str(), isSelected)) {
-
-							currentObjectIndex_ = static_cast<int>(i);
-						}
-						if (isSelected) {
-
-							ImGui::SetItemDefaultFocus();
-						}
-					}
-					ImGui::EndCombo();
-				}
-
-				gameObjects_[currentObjectIndex_]->ImGui();
-
-				ImGui::EndTabItem();
+				selectedGameObject_ = gameObject;
 			}
 		}
-
-		if (!particles_.empty()) {
-			if (ImGui::BeginTabItem("Particle")) {
-				for (auto& particle : particles_) {
-					if (ImGui::CollapsingHeader(particle->GetName().c_str())) {
-
-						particle->ImGui();
-					}
-				}
-				ImGui::EndTabItem();
-			}
-		}
-
-		ImGui::EndTabBar();
 	}
 
+	ImGui::EndChild();
+
+	//* EngineLog *//
+	ImGui::BeginChild("EngineChild",
+		ImVec2(((NewMoon::kWindowWidthf / 2.0f) + (imageSize.x / 2.0f) - 254.0f), 212.0f),
+		true, ImGuiWindowFlags_AlwaysUseWindowPadding);
+
+	ImGui::Text("Engine");
+	ImGui::Separator();
+	ImGui::Text("Frame Rate: %.1f fps", ImGui::GetIO().Framerate); // フレームレート情報
+	ImGui::Text("Delta Time: %.3f s", deltaTime_);                 // ΔTime
+	ImGui::Separator();
+	ImGui::Text("Descriptor");
+	NewMoon::GetSrvManagerPtr()->ImGui();
+
+	ImGui::EndChild();
+
+	//* Selected GameObject Details (Right Side) *//
+	if (selectedGameObject_) {
+		ImGui::SetCursorPos(ImVec2(imagePos.x + imageSize.x + 6.0f, imagePos.y - 32.0f));
+		ImGui::BeginChild("SelectedGameObjectChild", ImVec2(288.0f, imageSize.y + 32.0f), true, ImGuiWindowFlags_AlwaysUseWindowPadding);
+
+		ImGui::Text(selectedGameObject_->GetName().c_str());
+		ImGui::Separator();
+
+		selectedGameObject_->ImGui();
+
+		ImGui::EndChild();
+	} else {
+
+		ImGui::SetCursorPos(ImVec2(imagePos.x + imageSize.x + 6.0f, imagePos.y - 32.0f));
+		ImGui::BeginChild("NoSelectedGameObjectChild", ImVec2(288.0f, imageSize.y + 32.0f), true, ImGuiWindowFlags_AlwaysUseWindowPadding);
+
+		ImGui::Text("No Selected");
+		ImGui::Separator();
+
+		ImGui::EndChild();
+	}
+
+	//* Collision Logs (Right Bottom Side) *//
+	ImGui::SetCursorPos(ImVec2(imagePos.x + imageSize.x - 192.0f, imagePos.y + imageSize.y + 4.0f));
+	ImGui::BeginChild("CollisionLogsChild", ImVec2(486.0f, 212.0f), true, ImGuiWindowFlags_AlwaysUseWindowPadding);
+	collisionManager_->DisplayCollisionLogs();
+
+	ImGui::EndChild();
+
 	ImGui::End();
+
 #endif // _DEBUG
 }
 

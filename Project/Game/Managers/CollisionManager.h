@@ -58,7 +58,7 @@ private:
 		std::optional<std::chrono::time_point<std::chrono::steady_clock>> exitTime = std::nullopt;
 	};
 	std::deque<CollisionLogEntry> collisionLogs_;
-	static constexpr size_t kMaxLogSize = 16;
+	static constexpr size_t kMaxLogSize = 7;
 
 	//===================================================================*/
 	//						  collision Methods

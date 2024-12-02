@@ -62,17 +62,17 @@ public:
 	static void Init(uint32_t width, uint32_t height);       // 各システムの初期化
 	static void BeginFrame();                                // フレーム開始処理
 	static void EndFrame();                                  // フレーム終了処理
-	static void OffscreenPreDraw();                          // オフスクリーン描画前処理
-	static void OffscreenPostDraw();                         // オフスクリーン描画後処理
-	static void PreDraw();                                   // 描画前処理
+	static void BeginPreOffscreen();                         // オフスクリーン描画前処理
+	static void EndPostOffscreen();                          // オフスクリーン描画後処理
 	static void PostDraw();                                  // 描画後処理
 	static void Close();                                     // システムの終了
 	static bool ProcessMessage();                            // メッセージの受け渡し処理
 
+	static void OffscreenDraw(const PipelineType& pipelineType = PipelineType::OffscreenCopy);
+
 	///===================================================================
 	// TestOffscreen
 
-	static void OffscreenDraw();
 	static void OffscreenDepthOutlineDraw(OffscreenDepthMaterial& depthMaterial);
 	static void OffscreenDissolveDraw(OffscreenDissolveMaterial& dissolveMaterial);
 
