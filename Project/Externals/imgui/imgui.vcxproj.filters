@@ -11,51 +11,56 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imconfig.h">
+    <ClInclude Include="imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui.h">
+    <ClInclude Include="imgui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_impl_dx12.h">
+    <ClInclude Include="imgui_internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_impl_win32.h">
+    <ClInclude Include="imstb_rectpack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_internal.h">
+    <ClInclude Include="imstb_textedit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imstb_rectpack.h">
+    <ClInclude Include="imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imstb_textedit.h">
+    <ClInclude Include="imgui_impl_dx12.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imstb_truetype.h">
+    <ClInclude Include="imgui_impl_win32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui.cpp">
+    <Text Include="LICENSE.txt">
+      <Filter>Header Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_demo.cpp">
+    <ClCompile Include="imgui_demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_draw.cpp">
+    <ClCompile Include="imgui_draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_impl_dx12.cpp">
+    <ClCompile Include="imgui_impl_dx12.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_impl_win32.cpp">
+    <ClCompile Include="imgui_impl_win32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_tables.cpp">
+    <ClCompile Include="imgui_tables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_widgets.cpp">
+    <ClCompile Include="imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

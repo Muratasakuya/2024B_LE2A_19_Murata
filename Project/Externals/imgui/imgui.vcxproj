@@ -135,23 +135,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imconfig.h" />
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui.h" />
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_impl_dx12.h" />
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_impl_win32.h" />
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_internal.h" />
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imstb_rectpack.h" />
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imstb_textedit.h" />
-    <ClInclude Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imstb_truetype.h" />
+    <ClInclude Include="imconfig.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="imgui_impl_dx12.h" />
+    <ClInclude Include="imgui_impl_win32.h" />
+    <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="imstb_rectpack.h" />
+    <ClInclude Include="imstb_textedit.h" />
+    <ClInclude Include="imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui.cpp" />
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_impl_dx12.cpp" />
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_tables.cpp" />
-    <ClCompile Include="..\..\..\..\TD_2_2\Project\Externals\imgui\imgui_widgets.cpp" />
+    <Text Include="LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="imgui_demo.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_impl_dx12.cpp" />
+    <ClCompile Include="imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui_tables.cpp" />
+    <ClCompile Include="imgui_widgets.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
