@@ -34,7 +34,7 @@ void TestGameObject::Init() {
 void TestGameObject::Update() {
 
 	Collider::centerPos_ = transform_.translation;
-	Collider::size_ = transform_.scale;
+	Collider::size_ = Vector3(transform_.scale.x + 0.1f, transform_.scale.y + 0.1f, transform_.scale.z + 0.1f);
 	Collider::rotate_ = transform_.rotation;
 
 	Collider::OBBUpdate();
