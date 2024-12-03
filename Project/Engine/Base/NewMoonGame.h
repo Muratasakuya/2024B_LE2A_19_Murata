@@ -104,11 +104,12 @@ public:
 	static void DrawOBB(const Vector3& size, const Quaternion& rotate, const Vector3& centerPos, const LineColor& color);
 
 	///===================================================================
-	// Setter
+	// Command
 
 	static void SetToImGui(BaseGameObject* gameObject);
 	static void EraseToImGui(BaseGameObject* gameObject);
 	static void SetToImGui(IBaseParticle* particle);
+	static void ClearAllGameInformation();
 
 	//* command
 	static void SetEnvironmentCommand(ID3D12GraphicsCommandList* commandList, PipelineType pipeline);
@@ -148,6 +149,8 @@ private:
 	static BaseGameObject* selectedGameObject_;
 	static int currentObjectIndex_;
 	static std::vector<IBaseParticle*> particles_;
+	static IBaseParticle* selectedParticle_;
+	static int currentParitcleIndex_;
 
 	static std::unique_ptr<CollisionManager> collisionManager_;
 

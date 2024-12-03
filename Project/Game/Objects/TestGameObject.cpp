@@ -8,17 +8,17 @@
 ////////////////////////////////////////////////////////////////////////////////*/
 
 TestGameObject::~TestGameObject() {
+
 	NewMoonGame::RemoveCollider(this);
+	NewMoonGame::EraseToImGui(this);
 }
 
-void TestGameObject::Init() {
+void TestGameObject::Init(uint32_t index) {
 
 	BaseGameObject::Init("cube.obj");
 
-	// TestGameObject or decltype(*this)
-	BaseGameObject::AssignIndex<TestGameObject>();
 	// 複数自身を生成する場合はAssignIndex()を先に呼びだす
-	BaseGameObject::SetName("testGameObject");
+	BaseGameObject::SetName("testGameObject", index);
 
 	// json適応
 	/*BaseGameObject::ApplyJsonForColor();

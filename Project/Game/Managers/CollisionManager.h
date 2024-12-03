@@ -33,6 +33,8 @@ public:
 
 	void DisplayCollisionLogs();
 
+	void ResetLog();
+
 private:
 	//===================================================================*/
 	//							private Methods

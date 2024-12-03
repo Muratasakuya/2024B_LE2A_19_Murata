@@ -37,6 +37,7 @@ void CameraManager::ImGui(bool debugCameraEnable) {
 
 	if (debugCameraEnable) {
 		debugCamera_->ImGui();
+		debugCamera_->SetEnable(debugCameraEnable);
 	}
 	camera3D_->ImGui();
 

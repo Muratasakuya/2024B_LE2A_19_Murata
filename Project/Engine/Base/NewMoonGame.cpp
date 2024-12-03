@@ -3,6 +3,7 @@
 #include "NewMoon.h"
 #include "Engine/Managers/SrvManager.h"
 #include "Engine/Managers/ImGuiManager.h"
+#include "Game/Managers/SceneManager.h"
 #include "DXCommon.h"
 
 ///===============================================================================
@@ -24,6 +25,8 @@ std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
 BaseGameObject* NewMoonGame::selectedGameObject_ = nullptr;
 int NewMoonGame::currentObjectIndex_ = 0;
 std::vector<IBaseParticle*> NewMoonGame::particles_ = {};
+IBaseParticle* NewMoonGame::selectedParticle_ = {};
+int NewMoonGame::currentParitcleIndex_ = 0;
 std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
 Vector2 NewMoonGame::mainWindowPos_ = Vector2(210.0f, 64.0f);
 bool NewMoonGame::showUI_ = true;
@@ -68,6 +71,8 @@ void NewMoonGame::Init() {
 	textureManager_->LoadTexture("3DGameObjectIcon");
 	textureManager_->LoadTexture("CameraIcon");
 	textureManager_->LoadTexture("GuiIcon");
+	textureManager_->LoadTexture("EditorIcon");
+	textureManager_->LoadTexture("ParticleEditIcon");
 
 #endif // _DEBUG
 
@@ -126,35 +131,77 @@ void NewMoonGame::ImGui() {
 	ImGui::Image(ImTextureID(gameObjectIconGpuHandle.ptr), ImVec2(40.0f, 40.0f));
 
 	ImGui::SameLine();
-	ImGui::SetCursorPos(ImVec2(42.0f, imagePos.y));
-	ImGui::SetNextItemWidth(162.0f);
-	if (ImGui::BeginCombo("##GameObjectsCombo",
-		currentObjectIndex_ >= 0 ? gameObjects_[currentObjectIndex_]->GetName().c_str() : "GameObjectList", ImGuiComboFlags_NoArrowButton)) {
-		for (int i = 0; i < gameObjects_.size(); ++i) {
-			if (gameObjects_[i]) {
-				bool isSelected = (currentObjectIndex_ == i);
-				if (ImGui::Selectable(gameObjects_[i]->GetName().c_str(), isSelected)) {
+	if (!gameObjects_.empty()) {
+		ImGui::SetCursorPos(ImVec2(44.0f, imagePos.y + 2.0f));
+		ImGui::SetNextItemWidth(162.0f);
+		if (ImGui::BeginCombo("##GameObjectsCombo",
+			currentObjectIndex_ >= 0 ? gameObjects_[currentObjectIndex_]->GetName().c_str() : "GameObjectList", ImGuiComboFlags_NoArrowButton)) {
+			for (int i = 0; i < gameObjects_.size(); ++i) {
+				if (gameObjects_[i]) {
+					bool isSelected = (currentObjectIndex_ == i);
+					if (ImGui::Selectable(gameObjects_[i]->GetName().c_str(), isSelected)) {
 
-					currentObjectIndex_ = i;
-					selectedGameObject_ = gameObjects_[i];
+						currentObjectIndex_ = i;
+						selectedGameObject_ = gameObjects_[i];
 
-					cameraDisplayEnable_ = false;
-				}
-				if (isSelected) {
-					ImGui::SetItemDefaultFocus();
+						selectedParticle_ = nullptr;
+						cameraDisplayEnable_ = false;
+					}
+					if (isSelected) {
+						ImGui::SetItemDefaultFocus();
+					}
 				}
 			}
+			ImGui::EndCombo();
 		}
-		ImGui::EndCombo();
+	} else {
+
+		ImGui::SetCursorPos(ImVec2(48.0f, imagePos.y + 2.0f));
+		ImGui::Text("No GameObject");
 	}
 
-	//* Camera List (Left Middle Side) *//
+	//* Particle List (Left MiddleUp Side) *//
 	ImGui::SetCursorPos(ImVec2(6.0f, imagePos.y + 64.0f));
+	D3D12_GPU_DESCRIPTOR_HANDLE particleIconGpuHandle = textureManager_->GetTextureGpuHandle("ParticleEditIcon");
+	ImGui::Image(ImTextureID(particleIconGpuHandle.ptr), ImVec2(32.0f, 32.0f));
+
+	ImGui::SameLine();
+	if (!particles_.empty()) {
+		ImGui::SetCursorPos(ImVec2(44.0f, imagePos.y + 69.0f));
+		ImGui::SetNextItemWidth(162.0f);
+		if (ImGui::BeginCombo("##ParticlesCombo",
+			currentParitcleIndex_ >= 0 ? particles_[currentParitcleIndex_]->GetName().c_str() : "ParticleList", ImGuiComboFlags_NoArrowButton)) {
+			for (int i = 0; i < particles_.size(); ++i) {
+				if (particles_[i]) {
+					bool isSelected = (currentParitcleIndex_ == i);
+					if (ImGui::Selectable(particles_[i]->GetName().c_str(), isSelected)) {
+
+						currentParitcleIndex_ = i;
+						selectedParticle_ = particles_[i];
+
+						selectedGameObject_ = nullptr;
+						cameraDisplayEnable_ = false;
+					}
+					if (isSelected) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+			}
+			ImGui::EndCombo();
+		}
+	} else {
+
+		ImGui::SetCursorPos(ImVec2(48.0f, imagePos.y + 69.0f));
+		ImGui::Text("No Particle");
+	}
+
+	//* Camera List (Left MiddleMottom Side) *//
+	ImGui::SetCursorPos(ImVec2(6.0f, imagePos.y + 128.0f));
 	D3D12_GPU_DESCRIPTOR_HANDLE cameraIconGpuHandle = textureManager_->GetTextureGpuHandle("CameraIcon");
 	ImGui::Image(ImTextureID(cameraIconGpuHandle.ptr), ImVec2(32.0f, 32.0f));
 
 	ImGui::SameLine();
-	ImGui::SetCursorPos(ImVec2(44.0f, imagePos.y + 69.0f));
+	ImGui::SetCursorPos(ImVec2(44.0f, imagePos.y + 133.0f));
 	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
 	if (ImGui::Button("CameraSetting", ImVec2(160.0f, 22.0f))) {
 
@@ -162,10 +209,21 @@ void NewMoonGame::ImGui() {
 	}
 	ImGui::PopStyleVar();
 
+	//* Editor List (Left Bottom Side) *//
+
+	ImGui::SetCursorPos(ImVec2(6.0f, imagePos.y + 192.0f));
+	D3D12_GPU_DESCRIPTOR_HANDLE editorIconGpuHandle = textureManager_->GetTextureGpuHandle("EditorIcon");
+	ImGui::Image(ImTextureID(editorIconGpuHandle.ptr), ImVec2(32.0f, 32.0f));
+
+	//* AddEditor
+	ImGui::SameLine();
+	ImGui::SetCursorPos(ImVec2(48.0f, imagePos.y + 197.0f));
+	ImGui::Text("Can't launch editor");
+
 	//* EngineLog *//
 	ImGui::SetCursorPos(ImVec2(8.0f, imagePos.y + imageSize.y + 4.0f));
 	ImGui::BeginChild("EngineChild",
-		ImVec2(((NewMoon::kWindowWidthf / 2.0f) + (imageSize.x / 2.0f) - 254.0f), 212.0f),
+		ImVec2((((NewMoon::kWindowWidthf / 2.0f) + (imageSize.x / 2.0f) - 254.0f)) / 2.0f, 212.0f),
 		true, ImGuiWindowFlags_AlwaysUseWindowPadding);
 
 	ImGui::Text("Engine");
@@ -177,6 +235,9 @@ void NewMoonGame::ImGui() {
 	NewMoon::GetSrvManagerPtr()->ImGui();
 
 	ImGui::EndChild();
+
+	//* Scene *//
+	SceneManager::GetInstance()->ImGui();
 
 	//* Selected GameObject Details (Right Side) *//
 	ImGui::SetCursorPos(ImVec2(imagePos.x + imageSize.x + 6.0f, imagePos.y - 32.0f));
@@ -192,6 +253,11 @@ void NewMoonGame::ImGui() {
 		ImGui::Text(selectedGameObject_->GetName().c_str());
 		ImGui::Separator();
 		selectedGameObject_->ImGui();
+	} else if (selectedParticle_) {
+	
+		ImGui::Text(selectedParticle_->GetName().c_str());
+		ImGui::Separator();
+		selectedParticle_->ImGui();
 	} else {
 
 		ImGui::Text("No Selected");
@@ -424,6 +490,17 @@ void NewMoonGame::SetToImGui(BaseGameObject* gameObject) {
 
 void NewMoonGame::EraseToImGui(BaseGameObject* gameObject) {
 	gameObjects_.erase(std::remove(gameObjects_.begin(), gameObjects_.end(), gameObject), gameObjects_.end());
+}
+
+void NewMoonGame::ClearAllGameInformation() {
+
+	gameObjects_.clear();
+	selectedGameObject_ = nullptr;
+
+	particles_.clear();
+	selectedParticle_ = nullptr;
+
+	collisionManager_->ResetLog();
 }
 
 void NewMoonGame::SetToImGui(IBaseParticle* particle) {

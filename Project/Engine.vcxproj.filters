@@ -108,6 +108,7 @@
     <ClCompile Include="Game\Objects\TestGameObject.cpp" />
     <ClCompile Include="Lib\Math\Physics.cpp" />
     <ClCompile Include="Engine\Managers\OffscreenManager.cpp" />
+    <ClCompile Include="Game\Methods\Transition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Game\Objects\TestGameObject.h" />
     <ClInclude Include="Lib\Math\Physics.h" />
     <ClInclude Include="Engine\Managers\OffscreenManager.h" />
+    <ClInclude Include="Game\Methods\Transition.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

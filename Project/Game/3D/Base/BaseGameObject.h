@@ -50,12 +50,9 @@ public:
 	virtual void ApplyJsonForTransform(BaseTransform& transform);
 	virtual void SaveJsonForTransform(const BaseTransform& transform);
 
-	template <typename Derived>
-	void AssignIndex();
-
 	//* setter *//
 
-	void SetName(const std::string& name);
+	void SetName(const std::string& name, uint32_t index = 0);
 	void SetLightingEnable(bool enable);
 	void SetAnimation(const std::string& animationName, bool play);
 	void SetUVTransform(
@@ -97,22 +94,4 @@ private:
 
 	bool isAnimationModel_;
 
-	int index_;
-
-	template <typename Derived>
-	static int GenerateIndex();
-
 };
-
-template<typename Derived>
-inline void BaseGameObject::AssignIndex() {
-
-	index_ = GenerateIndex<Derived>();
-}
-
-template<typename Derived>
-inline int BaseGameObject::GenerateIndex() {
-
-	static int counter = 0;
-	return counter++;
-}

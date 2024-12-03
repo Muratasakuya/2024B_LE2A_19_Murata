@@ -10,7 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////*/
 
 TitleScene::TitleScene() {}
-TitleScene::~TitleScene() {}
+TitleScene::~TitleScene() {
+	int deleteTest = 1;
+	deleteTest = 0;
+}
 
 void TitleScene::Run() {
 
@@ -32,8 +35,10 @@ void TitleScene::Run() {
 		NewMoon::EndFrame();
 
 		if (SceneManager::GetInstance()->IsSceneSwitching()) {
+
 			break;
 		}
+
 	}
 
 	Cleanup();
@@ -42,6 +47,8 @@ void TitleScene::Run() {
 
 
 void TitleScene::Load() {
+
+	NewMoonGame::LoadTexture("screenSizeWhite");
 
 	NewMoonGame::LoadModel(baseModelDirectory_, "cube.obj");
 
@@ -54,10 +61,15 @@ void TitleScene::Init() {
 	for (uint32_t index = 0; index < 2; ++index) {
 
 		auto object = std::make_unique<TestGameObject>();
-		object->Init();
+		object->Init(index);
 
 		objects_.emplace_back(std::move(object));
 	}
+
+	particle_ = std::make_unique<TestParticle>();
+	particle_->Init();
+
+	sceneName_ = "Title";
 
 }
 
@@ -67,7 +79,9 @@ void TitleScene::Update() {
 
 		object->Update();
 	}
-	
+
+	particle_->Update();
+
 }
 
 void TitleScene::Draw() {
@@ -79,7 +93,11 @@ void TitleScene::Draw() {
 		object->Draw();
 	}
 
+	particle_->Draw(kBlendModeAdd);
+
 }
 
 void TitleScene::Cleanup() {
+
+	NewMoonGame::ClearAllGameInformation();
 }

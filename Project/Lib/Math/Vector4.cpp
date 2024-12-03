@@ -84,23 +84,23 @@ Vector4 Color::Convert(int color) {
 }
 
 // Color
-Vector4 Color::White() {
+Vector4 Color::White(float alpha) {
 
-	return Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	return Vector4(1.0f, 1.0f, 1.0f, alpha);
 }
-Vector4 Color::Black() {
+Vector4 Color::Black(float alpha) {
 
-	return Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	return Vector4(0.0f, 0.0f, 0.0f, alpha);
 }
-Vector4 Color::Red() {
+Vector4 Color::Red(float alpha) {
 
-	return Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+	return Vector4(1.0f, 0.0f, 0.0f, alpha);
 }
-Vector4 Color::Green() {
+Vector4 Color::Green(float alpha) {
 
-	return Vector4(0.0f, 1.0f, 0.0f, 1.0f); ;
+	return Vector4(0.0f, 1.0f, 0.0f, alpha);
 }
-Vector4 Color::Blue() {
+Vector4 Color::Blue(float alpha) {
 
-	return Vector4(0.0f, 0.0f, 1.0f, 1.0f); ;
+	return Vector4(0.0f, 0.0f, 1.0f, alpha);
 }

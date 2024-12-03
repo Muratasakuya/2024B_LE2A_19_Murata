@@ -19,7 +19,7 @@ public:
 	TestGameObject() = default;
 	~TestGameObject();
 
-	void Init();
+	void Init(uint32_t index);
 
 	void Update();
 

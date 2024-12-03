@@ -13,6 +13,48 @@ SceneManager* SceneManager::GetInstance() {
 	return &instance;
 }
 
+void SceneManager::ImGui() {
+#ifdef _DEBUG
+
+	ImGui::SetCursorPos(ImVec2(397.0f, 64.0f + 432.0f + 4.0f));
+	ImGui::BeginChild("SceneChild",
+		ImVec2((((NewMoon::kWindowWidthf / 2.0f) + (768.0f / 2.0f) - 254.0f)) / 2.0f, 212.0f),
+		true, ImGuiWindowFlags_AlwaysUseWindowPadding);
+
+	ImGui::Text("Scene");
+	ImGui::Separator();
+	std::string currentSceneText = "CurrentScene: " + currentScene_->GetSceneName();
+	ImGui::Text("%s", currentSceneText.c_str());
+
+	std::vector<std::string> sceneList = { "Title", "Game" };
+	sceneList.erase(std::remove(sceneList.begin(), sceneList.end(), currentScene_->GetSceneName()), sceneList.end());
+
+	ImGui::SetNextItemWidth(162.0f);
+	if (ImGui::BeginCombo("TransitionTarget", sceneList[selectedSceneIndex_].c_str(), ImGuiComboFlags_NoArrowButton)) {
+		for (int i = 0; i < sceneList.size(); ++i) {
+			bool isSelected = (selectedSceneIndex_ == i);
+			if (ImGui::Selectable(sceneList[i].c_str(), isSelected)) {
+
+				selectedSceneIndex_ = i;
+
+				SetNextScene(sceneList[selectedSceneIndex_]);
+
+			}
+			if (isSelected) {
+
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	//currentScene_->GetTransition()->ImGui();
+
+	ImGui::EndChild();
+
+#endif // _DEBUG
+}
+
 bool SceneManager::IsSceneSwitching() const {
 	return isSceneSwitching_;
 }
@@ -56,19 +98,10 @@ void SceneManager::SetNextScene(const std::string& sceneName) {
 
 void SceneManager::LoadScene(const std::string& sceneName) {
 
-	auto it = loadedScenes_.find(sceneName);
-	if (it != loadedScenes_.end()) {
-
-		currentScene_ = it->second;
-		currentScene_->Init();
-		return;
-	}
+	currentScene_.reset();
 
 	//* CreateNewScene *//
-	std::shared_ptr<IScene> scene = SceneFactory::CreateScene(sceneName);
-	if (scene) {
+	std::unique_ptr<IScene> scene = SceneFactory::CreateScene(sceneName);
 
-		currentScene_ = scene;
-		loadedScenes_[sceneName] = scene;
-	}
+	currentScene_ = std::move(scene);
 }

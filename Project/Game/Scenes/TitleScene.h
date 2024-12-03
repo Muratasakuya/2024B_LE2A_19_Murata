@@ -41,6 +41,8 @@ private:
 
 	std::vector<std::unique_ptr<TestGameObject>> objects_;
 
+	std::unique_ptr<TestParticle> particle_;
+
 private:
 	//===================================================================*/
 	//							private Methods

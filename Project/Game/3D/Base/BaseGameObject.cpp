@@ -27,9 +27,6 @@ void BaseGameObject::Init(const std::string& modelName) {
 	}
 
 	isAnimationModel_ = false;
-
-	index_ = -1;
-
 }
 
 void BaseGameObject::Init(const std::string& modelName, const std::string& animationName) {
@@ -185,11 +182,12 @@ void BaseGameObject::SaveJsonForTransform(const BaseTransform& transform) {
 
 }
 
-void BaseGameObject::SetName(const std::string& name) {
+void BaseGameObject::SetName(const std::string& name, uint32_t index) {
 
 	name_ = name;
-	if (index_ != 0) {
-		name_ = name_ + std::to_string(index_);
+	if (index != 0) {
+
+		name_ = name_ + std::to_string(index);
 	}
 
 	NewMoonGame::SetToImGui(this);
