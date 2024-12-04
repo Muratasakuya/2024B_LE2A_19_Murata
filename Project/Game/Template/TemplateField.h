@@ -3,54 +3,48 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Scenes/Methods/IScene.h"
-
-//* object
-#include "Game/Template/TestParticle.h"
-#include "Game/Template/TestGameObject.h"
-#include "Game/Template/TemplateField.h"
+#include "Game/3D/Base/BaseGameObject.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								TitleScene Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class TitleScene :
-	public IScene {
+class TemplateField
+	:public BaseGameObject {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	TitleScene();
-	~TitleScene();
+	TemplateField() = default;
+	~TemplateField() = default;
 
-	void Run() override;
+	void Init();
 
-	void Init() override;
-
-	void Update() override;
+	void Update();
 
 	void Draw();
 
-	void Cleanup() override;
+	void DerivedImGui() override;
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	const std::string& baseModelDirectory_ = "./Resources/Obj";
-
-	std::unique_ptr<TestGameObject> objects_;
-
-	std::unique_ptr<TemplateField> field_;
-
-	std::unique_ptr<TestParticle> particle_;
-
-private:
 	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
+	///* variables
 
-	void Load();
+	const std::string modelName_ = "originalField";
+
+	Vector3 uvScale_;
+
+	//===================================================================*/
+	///* functions
+
+	void CreateModel(int division);
+
+	//* Json *//
+	void SaveJson();
+	void ApplyJson();
 
 };

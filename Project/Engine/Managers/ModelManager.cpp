@@ -524,6 +524,26 @@ void ModelManager::ExportToOBJ(const std::string& modelName, const std::string& 
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
+*								Modelの自作
+////////////////////////////////////////////////////////////////////////////////*/
+void ModelManager::MakeOriginalModel(const std::string& modelName,
+	const std::vector<VertexData3D>& vertexData, const std::vector<uint32_t>& indexData) {
+
+	ModelData modelData{};
+	MeshModelData meshData{};
+
+	// 頂点情報設定
+	meshData.vertices = vertexData;
+	meshData.indices = indexData;
+
+	meshData.material.textureName = std::nullopt;
+	modelData.meshes.push_back(meshData);
+
+	models_[modelName] = modelData;
+
+}
+
+/*////////////////////////////////////////////////////////////////////////////////
 *								Skeletonの更新
 ////////////////////////////////////////////////////////////////////////////////*/
 void ModelManager::SkeletonUpdate(const std::string& animationName) {

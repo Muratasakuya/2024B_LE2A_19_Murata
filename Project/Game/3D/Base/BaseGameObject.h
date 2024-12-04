@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 #include <format>
+#include <optional>
 
 /*////////////////////////////////////////////////////////////////////////////////
 *						BaseGameObject Class
@@ -82,6 +83,8 @@ protected:
 	AnimationTransform animationTransform_;
 
 	Vector4 color_;
+
+	std::optional<std::string> parentFolderName_;
 
 private:
 	//===================================================================*/
