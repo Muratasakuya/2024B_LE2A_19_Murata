@@ -25,7 +25,7 @@ void CameraManager::Update() {
 	debugCamera_->Update(camera3D_->GetWorldPos(), camera3D_->GetRotate());
 	if (debugCamera_->Enable()) {
 
-		camera3D_->SetCamera(debugCamera_->GetViewProjectionMatrix(),debugCamera_->GetTranslate());
+		camera3D_->SetCamera(debugCamera_->GetViewProjectionMatrix(), debugCamera_->GetTranslate());
 	} else {
 
 		camera3D_->Update();
@@ -33,16 +33,13 @@ void CameraManager::Update() {
 
 }
 
-void CameraManager::ImGui() {
+void CameraManager::ImGui(bool debugCameraEnable) {
 
-	if (ImGui::CollapsingHeader("3D Camera")) {
-		camera3D_->ImGui();
-	}
-
-	ImGui::Separator();
-	if (ImGui::CollapsingHeader("Debug Camera")) {
+	if (debugCameraEnable) {
 		debugCamera_->ImGui();
+		debugCamera_->SetEnable(debugCameraEnable);
 	}
+	camera3D_->ImGui();
 
 }
 

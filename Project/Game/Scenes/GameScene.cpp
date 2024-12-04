@@ -25,14 +25,20 @@ void GameScene::Run() {
 
 		Update();
 
+		NewMoon::BeginPreOffscreen();
 		Draw();
+		NewMoon::EndPostOffscreen();
+
+		NewMoon::OffscreenDraw();
 
 		NewMoonGame::Reset();
 		NewMoon::EndFrame();
 
 		if (SceneManager::GetInstance()->IsSceneSwitching()) {
+
 			break;
 		}
+
 	}
 
 	Cleanup();
@@ -40,33 +46,31 @@ void GameScene::Run() {
 }
 
 void GameScene::Load() {
-
-	//===================================================================*/
-	//* primitive *//
-
-	NewMoonGame::LoadModel(baseModelDirectory_, "cube.obj");
-	NewMoonGame::LoadModel(baseModelDirectory_, "sphere.obj");
-
 }
 
 void GameScene::Init() {
 
 	Load();
 
+	//================================================================================
+	//* SceneMethod *//
+	//================================================================================
+
+	sceneName_ = "Game";
+
 }
 
 void GameScene::Update() {
-
 
 }
 
 void GameScene::Draw() {
 
-
+	NewMoonGame::DrawGrid();
 
 }
 
 void GameScene::Cleanup() {
 
-
+	NewMoonGame::ClearAllGameInformation();
 }

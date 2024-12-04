@@ -187,7 +187,7 @@ void TextureManager::LoadTexture(const std::string& textureName) {
 	intermediateResource.Reset();
 
 	// SRV確保
-	texture.srvIndex = srvManager_->Allocate();
+	texture.srvIndex = srvManager_->Allocate("texture: " + identifier);
 	texture.cpuHandle = srvManager_->GetCPUHandle(texture.srvIndex);
 	texture.gpuHandle = srvManager_->GetGPUHandle(texture.srvIndex);
 	srvManager_->CreateSRVForTexture2D(

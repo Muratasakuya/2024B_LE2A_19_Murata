@@ -117,6 +117,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Template\TemplateField.cpp" />
     <ClCompile Include="Game\Particle\IBaseParticle.cpp" />
     <ClCompile Include="Game\Components\InputAssembler.cpp" />
     <ClCompile Include="Lib\Adapter\Easing.cpp" />
@@ -189,14 +190,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Components\ParticleBuffer.cpp" />
     <ClCompile Include="Lib\Adapter\Random.cpp" />
     <ClCompile Include="Game\Particle\ParticleBehavior.cpp" />
-    <ClCompile Include="Game\Objects\TestParticle.cpp" />
+    <ClCompile Include="Game\Template\TestParticle.cpp" />
     <ClCompile Include="Game\Particle\ParticleParameter.cpp" />
     <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
-    <ClCompile Include="Game\Objects\TestGameObject.cpp" />
+    <ClCompile Include="Game\Template\TestGameObject.cpp" />
     <ClCompile Include="Lib\Math\Physics.cpp" />
     <ClCompile Include="Engine\Managers\OffscreenManager.cpp" />
+    <ClCompile Include="Game\Methods\Transition.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Template\TemplateField.h" />
     <ClInclude Include="Game\Particle\ParticleTraits.h" />
     <ClInclude Include="Game\Particle\IBaseParticle.h" />
     <ClInclude Include="Game\Components\InputAssembler.h" />
@@ -274,12 +277,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Components\ParticleBuffer.h" />
     <ClInclude Include="Lib\Adapter\Random.h" />
     <ClInclude Include="Game\Particle\ParticleBehavior.h" />
-    <ClInclude Include="Game\Objects\TestParticle.h" />
+    <ClInclude Include="Game\Template\TestParticle.h" />
     <ClInclude Include="Game\Particle\ParticleParameter.h" />
     <ClInclude Include="Game\Particle\ParticleVisitor.h" />
-    <ClInclude Include="Game\Objects\TestGameObject.h" />
+    <ClInclude Include="Game\Template\TestGameObject.h" />
     <ClInclude Include="Lib\Math\Physics.h" />
     <ClInclude Include="Engine\Managers\OffscreenManager.h" />
+    <ClInclude Include="Game\Methods\Transition.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\BoxFilter.PS.hlsl">

@@ -11,7 +11,7 @@ void TestParticle::Init() {
 
 	//* mustSetting *//
 
-	BaseParticle::SetName();
+	BaseParticle::SetName("TestParticle");
 	parameter_.scale.SetInit(0.25f);
 
 	//* mainSetting *//

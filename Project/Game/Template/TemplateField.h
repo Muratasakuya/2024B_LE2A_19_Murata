@@ -3,44 +3,48 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Components/CameraObject.h"
-#include "Lib/Camera/Camera2D.h"
-#include "Lib/Camera/Camera3D.h"
-#include "Lib/Camera/DebugCamera.h"
-
-// c++
-#include <memory>
+#include "Game/3D/Base/BaseGameObject.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*									Model Class
+*								TitleScene Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class CameraManager {
+class TemplateField
+	:public BaseGameObject {
 public:
 	//===================================================================*/
-	//							public Functions
+	//							public Methods
 	//===================================================================*/
 
-	CameraManager() = default;
-	~CameraManager() = default;
+	TemplateField() = default;
+	~TemplateField() = default;
 
 	void Init();
+
 	void Update();
 
-	void ImGui(bool debugCameraEnable);
+	void Draw();
 
-	// Getter
-	Camera2D* GetCamera2D() const;
-	Camera3D* GetCamera3D() const;
-	DebugCamera* GetDebugCamera() const;
+	void DerivedImGui() override;
 
 private:
 	//===================================================================*/
-	//							private Variables
+	//							private Methods
 	//===================================================================*/
 
-	std::unique_ptr<Camera2D> camera2D_;
-	std::unique_ptr<Camera3D> camera3D_;
+	//===================================================================*/
+	///* variables
 
-	std::unique_ptr<DebugCamera> debugCamera_;
+	const std::string modelName_ = "originalField";
+
+	Vector3 uvScale_;
+
+	//===================================================================*/
+	///* functions
+
+	void CreateModel(int division);
+
+	//* Json *//
+	void SaveJson();
+	void ApplyJson();
 
 };

@@ -27,9 +27,6 @@ void BaseGameObject::Init(const std::string& modelName) {
 	}
 
 	isAnimationModel_ = false;
-
-	index_ = -1;
-
 }
 
 void BaseGameObject::Init(const std::string& modelName, const std::string& animationName) {
@@ -158,7 +155,9 @@ void BaseGameObject::ImGui() {
 
 void BaseGameObject::ApplyJsonForColor() {
 
-	Json data = JsonAdapter::Load(GetName() + "Color.json");
+	std::string jsonPath = parentFolderName_.value_or("") + GetName() + "Color.json";
+	Json data = JsonAdapter::Load(jsonPath);
+
 	color_ = JsonAdapter::ToVector4(data["color"]);
 }
 
@@ -166,12 +165,16 @@ void BaseGameObject::SaveJsonForColor() {
 
 	Json data;
 	data["color"] = JsonAdapter::FromVector4(color_);
-	JsonAdapter::Save(GetName() + "Color.json", data);
+
+	std::string jsonPath = parentFolderName_.value_or("") + GetName() + "Color.json";
+	JsonAdapter::Save(jsonPath, data);
 }
 
 void BaseGameObject::ApplyJsonForTransform(BaseTransform& transform) {
 
-	Json data = JsonAdapter::Load(GetName() + "Transform.json");
+	std::string jsonPath = parentFolderName_.value_or("") + GetName() + "Transform.json";
+	Json data = JsonAdapter::Load(jsonPath);
+
 	transform.translation = JsonAdapter::ToVector3(data["translation"]);
 	transform.scale = JsonAdapter::ToVector3(data["scale"]);
 }
@@ -181,15 +184,18 @@ void BaseGameObject::SaveJsonForTransform(const BaseTransform& transform) {
 	Json data;
 	data["translation"] = JsonAdapter::FromVector3(transform.translation);
 	data["scale"] = JsonAdapter::FromVector3(transform.scale);
-	JsonAdapter::Save(GetName() + "Transform.json", data);
+
+	std::string jsonPath = parentFolderName_.value_or("") + GetName() + "Transform.json";
+	JsonAdapter::Save(jsonPath, data);
 
 }
 
-void BaseGameObject::SetName(const std::string& name) {
+void BaseGameObject::SetName(const std::string& name, uint32_t index) {
 
 	name_ = name;
-	if (index_ != 0) {
-		name_ = name_ + std::to_string(index_);
+	if (index != 0) {
+
+		name_ = name_ + std::to_string(index);
 	}
 
 	NewMoonGame::SetToImGui(this);

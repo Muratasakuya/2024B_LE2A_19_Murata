@@ -100,14 +100,16 @@
     <ClCompile Include="Lib\Adapter\Random.cpp" />
     <ClCompile Include="Lib\Adapter\Easing.cpp" />
     <ClCompile Include="Game\Particle\ParticleBehavior.cpp" />
-    <ClCompile Include="Game\Objects\TestParticle.cpp" />
+    <ClCompile Include="Game\Template\TestParticle.cpp" />
     <ClCompile Include="Game\Particle\ParticleParameter.cpp" />
     <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
     <ClCompile Include="Game\Particle\IBaseParticle.cpp" />
     <ClCompile Include="Game\Components\InputAssembler.cpp" />
-    <ClCompile Include="Game\Objects\TestGameObject.cpp" />
+    <ClCompile Include="Game\Template\TestGameObject.cpp" />
     <ClCompile Include="Lib\Math\Physics.cpp" />
     <ClCompile Include="Engine\Managers\OffscreenManager.cpp" />
+    <ClCompile Include="Game\Methods\Transition.cpp" />
+    <ClCompile Include="Game\Template\TemplateField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -184,15 +186,17 @@
     <ClInclude Include="Lib\Adapter\Random.h" />
     <ClInclude Include="Lib\Adapter\Easing.h" />
     <ClInclude Include="Game\Particle\ParticleBehavior.h" />
-    <ClInclude Include="Game\Objects\TestParticle.h" />
+    <ClInclude Include="Game\Template\TestParticle.h" />
     <ClInclude Include="Game\Particle\ParticleParameter.h" />
     <ClInclude Include="Game\Particle\ParticleVisitor.h" />
     <ClInclude Include="Game\Particle\ParticleTraits.h" />
     <ClInclude Include="Game\Particle\IBaseParticle.h" />
     <ClInclude Include="Game\Components\InputAssembler.h" />
-    <ClInclude Include="Game\Objects\TestGameObject.h" />
+    <ClInclude Include="Game\Template\TestGameObject.h" />
     <ClInclude Include="Lib\Math\Physics.h" />
     <ClInclude Include="Engine\Managers\OffscreenManager.h" />
+    <ClInclude Include="Game\Methods\Transition.h" />
+    <ClInclude Include="Game\Template\TemplateField.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

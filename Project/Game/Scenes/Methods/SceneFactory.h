@@ -19,6 +19,6 @@ public:
 	//							public Functions
 	//===================================================================*/
 
-	static std::shared_ptr<IScene> CreateScene(const std::string& sceneName);
+	static std::unique_ptr<IScene> CreateScene(const std::string& sceneName);
 
 };
