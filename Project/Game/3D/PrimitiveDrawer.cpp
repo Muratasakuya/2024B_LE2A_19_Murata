@@ -179,6 +179,43 @@ void PrimitiveDrawer::DrawOBB(
 #endif // _DEBUG
 }
 
+void PrimitiveDrawer::DrawAABB(const AABBInfo& aabb, const LineColor& color) {
+#ifdef _DEBUG
+
+	// AABBの各頂点
+	Vector3 min = aabb.GetMin();
+	Vector3 max = aabb.GetMax();
+
+	// AABBの各頂点
+	std::vector<Vector3> vertices = {
+		{min.x, min.y, min.z},
+		{max.x, min.y, min.z},
+		{min.x, max.y, min.z},
+		{max.x, max.y, min.z},
+		{min.x, min.y, max.z},
+		{max.x, min.y, max.z},
+		{min.x, max.y, max.z},
+		{max.x, max.y, max.z} };
+
+	// 各辺
+	std::vector<std::pair<int, int>> edges = {
+		{0, 1}, {1, 3}, {3, 2}, {2, 0}, // 前面
+		{4, 5}, {5, 7}, {7, 6}, {6, 4}, // 背面
+		{0, 4}, {1, 5}, {2, 6}, {3, 7}  // 前面と背面を繋ぐ辺
+	};
+
+	for (const auto& edge : edges) {
+
+		const Vector3& start = vertices[edge.first];
+		const Vector3& end = vertices[edge.second];
+
+		// 各辺の描画
+		DrawLine3D(start, end, color);
+	}
+
+#endif // _DEBUG
+}
+
 void PrimitiveDrawer::Reset() {
 
 	indexLine_ = 0;

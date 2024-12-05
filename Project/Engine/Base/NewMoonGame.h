@@ -11,7 +11,7 @@
 #include "Game/Managers/LightManager.h"
 #include "Game/3D/PrimitiveDrawer.h"
 #include "Game/3D/Base/BaseGameObject.h"
-#include "Game/Particle/IBaseParticle.h"
+#include "Game/Methods/Particle/IBaseParticle.h"
 #include "Game/Managers/CollisionManager.h"
 #include "Game/Editor/UIEditor.h"
 
@@ -102,13 +102,15 @@ public:
 	static void DrawGrid();
 	static void DrawSphere(float radius, const Vector3& centerPos, const LineColor& color);
 	static void DrawOBB(const Vector3& size, const Quaternion& rotate, const Vector3& centerPos, const LineColor& color);
+	static void DrawAABB(const AABBInfo& aabb, const LineColor& color);
 
 	///===================================================================
-	// Setter
+	// Command
 
 	static void SetToImGui(BaseGameObject* gameObject);
 	static void EraseToImGui(BaseGameObject* gameObject);
 	static void SetToImGui(IBaseParticle* particle);
+	static void ClearAllGameInformation();
 
 	//* command
 	static void SetEnvironmentCommand(ID3D12GraphicsCommandList* commandList, PipelineType pipeline);
@@ -137,6 +139,8 @@ private:
 	static std::unique_ptr<Input> input_;
 
 	static std::unique_ptr<CameraManager> cameraManager_;
+	static bool cameraDisplayEnable_;
+	static bool debugCameraEnable_;
 	static std::unique_ptr<LightManager> lightManager_;
 
 	static std::unique_ptr<PrimitiveDrawer> lineDrawer2D_;
@@ -146,12 +150,15 @@ private:
 	static BaseGameObject* selectedGameObject_;
 	static int currentObjectIndex_;
 	static std::vector<IBaseParticle*> particles_;
+	static IBaseParticle* selectedParticle_;
+	static int currentParitcleIndex_;
 
 	static std::unique_ptr<CollisionManager> collisionManager_;
 
 	//* guiParameter *//
 
 	static Vector2 mainWindowPos_;
+	static bool showUI_;
 
 	static void ImGui();
 

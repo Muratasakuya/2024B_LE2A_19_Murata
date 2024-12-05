@@ -28,6 +28,7 @@
     <FxCompile Include="Resources\Shaders\PrimitiveLine.VS.hlsl" />
     <FxCompile Include="Resources\Shaders\PrimitiveLine.PS.hlsl" />
     <FxCompile Include="Resources\Shaders\WakeBoard.VS.hlsl" />
+    <FxCompile Include="Resources\Shaders\DissolveParticle.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.cpp" />
@@ -94,20 +95,27 @@
     <ClCompile Include="Game\Editor\UIEditor.cpp" />
     <ClCompile Include="Game\3D\Base\Collider.cpp" />
     <ClCompile Include="Game\Managers\CollisionManager.cpp" />
-    <ClCompile Include="Game\Particle\BaseParticle.cpp" />
-    <ClCompile Include="Game\Particle\ParticleSystem.cpp" />
+    <ClCompile Include="Game\Methods\Particle\BaseParticle.cpp" />
+    <ClCompile Include="Game\Methods\Particle\ParticleSystem.cpp" />
     <ClCompile Include="Game\Components\ParticleBuffer.cpp" />
     <ClCompile Include="Lib\Adapter\Random.cpp" />
     <ClCompile Include="Lib\Adapter\Easing.cpp" />
-    <ClCompile Include="Game\Particle\ParticleBehavior.cpp" />
-    <ClCompile Include="Game\Objects\TestParticle.cpp" />
-    <ClCompile Include="Game\Particle\ParticleParameter.cpp" />
-    <ClCompile Include="Game\Particle\ParticleVisitor.cpp" />
-    <ClCompile Include="Game\Particle\IBaseParticle.cpp" />
+    <ClCompile Include="Game\Methods\Particle\ParticleBehavior.cpp" />
+    <ClCompile Include="Game\Template\TestParticle.cpp" />
+    <ClCompile Include="Game\Methods\Particle\ParticleParameter.cpp" />
+    <ClCompile Include="Game\Methods\Particle\ParticleVisitor.cpp" />
+    <ClCompile Include="Game\Methods\Particle\IBaseParticle.cpp" />
     <ClCompile Include="Game\Components\InputAssembler.cpp" />
-    <ClCompile Include="Game\Objects\TestGameObject.cpp" />
+    <ClCompile Include="Game\Template\TestGameObject.cpp" />
     <ClCompile Include="Lib\Math\Physics.cpp" />
     <ClCompile Include="Engine\Managers\OffscreenManager.cpp" />
+    <ClCompile Include="Game\Methods\Transition.cpp" />
+    <ClCompile Include="Game\Template\TemplateField.cpp" />
+    <ClCompile Include="Game\Objects\Player.cpp" />
+    <ClCompile Include="Lib\Camera\FollowCamera.cpp" />
+    <ClCompile Include="Game\Particles\PlayerChaseParticle.cpp" />
+    <ClCompile Include="Game\Particles\FieldParticle.cpp" />
+    <ClCompile Include="Game\Particles\DispersionParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -178,21 +186,28 @@
     <ClInclude Include="Game\Editor\UIEditor.h" />
     <ClInclude Include="Game\3D\Base\Collider.h" />
     <ClInclude Include="Game\Managers\CollisionManager.h" />
-    <ClInclude Include="Game\Particle\BaseParticle.h" />
-    <ClInclude Include="Game\Particle\ParticleSystem.h" />
+    <ClInclude Include="Game\Methods\Particle\BaseParticle.h" />
+    <ClInclude Include="Game\Methods\Particle\ParticleSystem.h" />
     <ClInclude Include="Game\Components\ParticleBuffer.h" />
     <ClInclude Include="Lib\Adapter\Random.h" />
     <ClInclude Include="Lib\Adapter\Easing.h" />
-    <ClInclude Include="Game\Particle\ParticleBehavior.h" />
-    <ClInclude Include="Game\Objects\TestParticle.h" />
-    <ClInclude Include="Game\Particle\ParticleParameter.h" />
-    <ClInclude Include="Game\Particle\ParticleVisitor.h" />
-    <ClInclude Include="Game\Particle\ParticleTraits.h" />
-    <ClInclude Include="Game\Particle\IBaseParticle.h" />
+    <ClInclude Include="Game\Methods\Particle\ParticleBehavior.h" />
+    <ClInclude Include="Game\Template\TestParticle.h" />
+    <ClInclude Include="Game\Methods\Particle\ParticleParameter.h" />
+    <ClInclude Include="Game\Methods\Particle\ParticleVisitor.h" />
+    <ClInclude Include="Game\Methods\Particle\ParticleTraits.h" />
+    <ClInclude Include="Game\Methods\Particle\IBaseParticle.h" />
     <ClInclude Include="Game\Components\InputAssembler.h" />
-    <ClInclude Include="Game\Objects\TestGameObject.h" />
+    <ClInclude Include="Game\Template\TestGameObject.h" />
     <ClInclude Include="Lib\Math\Physics.h" />
     <ClInclude Include="Engine\Managers\OffscreenManager.h" />
+    <ClInclude Include="Game\Methods\Transition.h" />
+    <ClInclude Include="Game\Template\TemplateField.h" />
+    <ClInclude Include="Game\Objects\Player.h" />
+    <ClInclude Include="Lib\Camera\FollowCamera.h" />
+    <ClInclude Include="Game\Particles\PlayerChaseParticle.h" />
+    <ClInclude Include="Game\Particles\FieldParticle.h" />
+    <ClInclude Include="Game\Particles\DispersionParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

@@ -47,9 +47,9 @@ namespace Color {
 	// 16進数 -> Vector4 色変換
 	Vector4 Convert(int color);
 
-	Vector4 White();
-	Vector4 Black();
-	Vector4 Red();
-	Vector4 Green();
-	Vector4 Blue();
+	Vector4 White(float alpha = 1.0f);
+	Vector4 Black(float alpha = 1.0f);
+	Vector4 Red(float alpha = 1.0f);
+	Vector4 Green(float alpha = 1.0f);
+	Vector4 Blue(float alpha = 1.0f);
 }

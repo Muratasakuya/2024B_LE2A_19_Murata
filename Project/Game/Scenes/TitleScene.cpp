@@ -10,7 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////*/
 
 TitleScene::TitleScene() {}
-TitleScene::~TitleScene() {}
+TitleScene::~TitleScene() {
+	int deleteTest = 1;
+	deleteTest = 0;
+}
 
 void TitleScene::Run() {
 
@@ -32,8 +35,10 @@ void TitleScene::Run() {
 		NewMoon::EndFrame();
 
 		if (SceneManager::GetInstance()->IsSceneSwitching()) {
+
 			break;
 		}
+
 	}
 
 	Cleanup();
@@ -43,41 +48,25 @@ void TitleScene::Run() {
 
 void TitleScene::Load() {
 
-	NewMoonGame::LoadModel(baseModelDirectory_, "cube.obj");
-
 }
 
 void TitleScene::Init() {
 
 	Load();
 
-	for (uint32_t index = 0; index < 2; ++index) {
-
-		auto object = std::make_unique<TestGameObject>();
-		object->Init();
-
-		objects_.emplace_back(std::move(object));
-	}
+	sceneName_ = "Title";
 
 }
 
 void TitleScene::Update() {
 
-	for (const auto& object : objects_) {
-
-		object->Update();
-	}
-	
 }
 
 void TitleScene::Draw() {
 
-	for (const auto& object : objects_) {
-
-		object->Draw();
-	}
-
 }
 
 void TitleScene::Cleanup() {
+
+	NewMoonGame::ClearAllGameInformation();
 }

@@ -96,16 +96,15 @@ void SrvManager::CreateUAVForStructureBuffer(uint32_t uavIndex, ID3D12Resource* 
 /*////////////////////////////////////////////////////////////////////////////////
 *							使用インデックスの計算
 ////////////////////////////////////////////////////////////////////////////////*/
-uint32_t SrvManager::Allocate() {
+uint32_t SrvManager::Allocate(const std::string& name) {
 
 	if (!CanAllocate()) {
 		throw std::runtime_error("Cannot allocate more SRVs, maximum count reached.");
 	}
 
 	// returnする番号を一旦記録しておく
-	int index = useIndex_;
-	// 次回のために1進める
-	useIndex_++;
+	int index = static_cast<int>(srvUseInformations_.size());
+	srvUseInformations_.push_back(std::make_pair(static_cast<int>(srvUseInformations_.size()), name));
 
 	return index + 1;
 }
@@ -113,7 +112,7 @@ uint32_t SrvManager::Allocate() {
 /*////////////////////////////////////////////////////////////////////////////////
 *							割り当て可能かどうかのチェック
 ////////////////////////////////////////////////////////////////////////////////*/
-bool SrvManager::CanAllocate() { return useIndex_ < kMaxSRVCount_; }
+bool SrvManager::CanAllocate() { return static_cast<int>(srvUseInformations_.size()) < kMaxSRVCount_; }
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								  描画前処理
@@ -131,6 +130,8 @@ void SrvManager::PreDraw() {
 ////////////////////////////////////////////////////////////////////////////////*/
 void SrvManager::Init() {
 
+	showSrvList_ = false;
+
 	auto device = NewMoon::GetDXDevice();
 
 	// 生成
@@ -142,8 +143,28 @@ void SrvManager::Init() {
 
 void SrvManager::ImGui() {
 
-	ImGui::Text("Srv: Use: %d / %d", useIndex_, kMaxSRVCount_);
-  
+	ImGui::Text("Srv: Use: %d / %d", static_cast<int>(srvUseInformations_.size()), kMaxSRVCount_);
+
+	/*if (ImGui::Button("SrvList")) {
+		showSrvList_ = !showSrvList_;
+	}
+
+	if (showSrvList_) {
+
+		ImGui::BeginChild("SrvListChild", ImVec2(280.0f, 300.0f), true, ImGuiWindowFlags_AlwaysUseWindowPadding);
+
+		ImGui::Text("Srv List");
+		ImGui::Separator();
+
+		for (const auto& srvInfo : srvUseInformations_) {
+
+			std::string label = std::to_string(srvInfo.first) + ": " + srvInfo.second;
+			ImGui::Text("%s", label.c_str());
+		}
+
+		ImGui::EndChild();
+	}*/
+
 }
 
 /*////////////////////////////////////////////////////////////////////////////////

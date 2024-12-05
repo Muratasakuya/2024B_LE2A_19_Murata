@@ -1,2 +1,0 @@
-C:\Users\k023g\2024A\HAJIKIAR2\Project\Engine\Externals\DirectXTex\Bin\Desktop_2022_Win10\x64\Release\DirectXTex.lib
-C:\Users\k023g\2024B\Engine\Project\Externals\DirectXTex\Bin\Desktop_2022_Win10\x64\Release\DirectXTex.lib

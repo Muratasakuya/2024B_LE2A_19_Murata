@@ -47,11 +47,11 @@ void ImGuiManager::Close() {
 void ImGuiManager::Draw() {
 #ifdef _DEBUG
 
-	ComPtr<ID3D12GraphicsCommandList> commandList = dxCommon_->GetCommandList();
+	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 	ID3D12DescriptorHeap* descriptorHeaps[] = { srvManager_->GetDescriptorHeap() };
 	commandList->SetDescriptorHeaps(1, descriptorHeaps);
 
-	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList.Get());
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 #endif
 }
 
@@ -82,6 +82,8 @@ void ImGuiManager::Init(WinApp* winApp, DXCommon* dxCommon, SrvManager* srvManag
 		srvManager_->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart()
 	);
 #endif
+
+	srvManager_->Allocate("imgui");
 
 	//===================================================================*/
 	//							gui settings

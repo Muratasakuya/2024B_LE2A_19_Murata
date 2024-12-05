@@ -83,6 +83,15 @@ enum class ShapeType {
 	Type_OBB
 };
 
+struct AABBInfo {
+
+	Vector3 center; // AABBの中心
+	Vector3 extent; // AABBの半径（各軸方向の幅/2）
+
+	Vector3 GetMin() const { return center - extent; }
+	Vector3 GetMax() const { return center + extent; }
+};
+
 /*==========================================================*/
 /// Transform
 struct Transform3D {
@@ -300,11 +309,18 @@ enum class RandomParticleColor {
 	//* Add
 	DARKBLUE, //* 濃い青
 };
+struct ParticleValue {
+
+	Vector3 min;
+	Vector3 max;
+	Vector3 uniform;
+};
 struct ParticlePhysics {
 
 	std::optional<Vector3> gravityDirection; // 重力のかかる方向
 	std::optional<float> gravityStrength;    // 重力の強さ
 };
+
 struct ParticleData {
 
 	Transform3D transform;

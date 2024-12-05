@@ -27,7 +27,8 @@ void DXDepthStencil::Create(PipelineType pipelineType) {
 		depthStencilDesc_.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 	}
 
-	if (pipelineType == PipelineType::pParticle) {
+	if (pipelineType == PipelineType::NormalParticle||
+		pipelineType == PipelineType::DissolveParticle) {
 
 		// Depth機能無効
 		depthStencilDesc_.DepthEnable = true;

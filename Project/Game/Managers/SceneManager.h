@@ -29,13 +29,11 @@ public:
 
 	void Run();
 
-	//* LoadMethod *//
-
 	void SetNextScene(const std::string& sceneName);
 
-	//* SingletonMethod *//
-
 	static SceneManager* GetInstance();
+
+	void ImGui();
 
 	// Getter
 	bool IsSceneSwitching() const;
@@ -45,13 +43,15 @@ private:
 	//							private Methods
 	//===================================================================*/
 
-	std::shared_ptr<IScene> currentScene_;
+	std::unique_ptr<IScene> currentScene_;
 
 	std::map<std::string, std::shared_ptr<IScene>> loadedScenes_;
 
 	std::string nextSceneName_;
 	bool isSceneSwitching_;
 	bool gameLoop_;
+
+	int selectedSceneIndex_;
 
 private:
 	//===================================================================*/

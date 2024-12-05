@@ -111,7 +111,7 @@ SkinCluster ModelManager::CreateSkinCluster(const std::string& modelName, const 
 	skinCluster.mappedPalette = { mappedPalette,skeletons_[animationName].joints.size() };
 
 	// SRV確保
-	srvIndex_ = srvManager_->Allocate();
+	srvIndex_ = srvManager_->Allocate("skinClusterPalette: " + animationName);
 	skinCluster.paletteSrvHandle.first = srvManager_->GetCPUHandle(srvIndex_);
 	skinCluster.paletteSrvHandle.second = srvManager_->GetGPUHandle(srvIndex_);
 	// SRV作成
@@ -133,7 +133,7 @@ SkinCluster ModelManager::CreateSkinCluster(const std::string& modelName, const 
 	skinCluster.influenceBufferView.StrideInBytes = sizeof(VertexInfluence);
 
 	// SRV確保
-	srvIndex_ = srvManager_->Allocate();
+	srvIndex_ = srvManager_->Allocate("skinClusterInfluence: " + animationName);
 	skinCluster.influenceSrvHandle.first = srvManager_->GetCPUHandle(srvIndex_);
 	skinCluster.influenceSrvHandle.second = srvManager_->GetGPUHandle(srvIndex_);
 	// SRV作成
@@ -521,6 +521,26 @@ void ModelManager::ExportToOBJ(const std::string& modelName, const std::string& 
 	}
 
 	objFile.close();
+}
+
+/*////////////////////////////////////////////////////////////////////////////////
+*								Modelの自作
+////////////////////////////////////////////////////////////////////////////////*/
+void ModelManager::MakeOriginalModel(const std::string& modelName,
+	const std::vector<VertexData3D>& vertexData, const std::vector<uint32_t>& indexData) {
+
+	ModelData modelData{};
+	MeshModelData meshData{};
+
+	// 頂点情報設定
+	meshData.vertices = vertexData;
+	meshData.indices = indexData;
+
+	meshData.material.textureName = std::nullopt;
+	modelData.meshes.push_back(meshData);
+
+	models_[modelName] = modelData;
+
 }
 
 /*////////////////////////////////////////////////////////////////////////////////

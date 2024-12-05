@@ -35,7 +35,7 @@ public:
 	Vector3 translation;
 	Quaternion rotation;
 
-	Vector3 eulerRotate_;
+	Vector3 eulerRotate;
 
 	TransformationMatrix matrix;
 

@@ -209,18 +209,18 @@ void DXCommon::CreateOffscreenRenderTexture(SrvManager* srvManager, uint32_t wid
 
 	// SRVの作成
 	// Allocateは進めておく
-	uint32_t srvIndex = srvManager->Allocate();
+	uint32_t srvIndex = srvManager->Allocate("renderTexture");
 	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = srvManager->GetCPUHandle(srvIndex);
 	renderTextureGpuHandle_ = srvManager->GetGPUHandle(srvIndex);
 
 	srvManager->CreateSRVForTexture2D(srvIndex, renderTextureResource_.Get(), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, 1);
 
 	// Depth用のSRV
-	uint32_t depthSrvIndex = srvManager->Allocate();
+	/*uint32_t depthSrvIndex = srvManager->Allocate("depth");
 	D3D12_CPU_DESCRIPTOR_HANDLE depthCpuHandle = srvManager->GetCPUHandle(depthSrvIndex);
 	depthGpuHandle_ = srvManager->GetGPUHandle(depthSrvIndex);
 
-	srvManager->CreateSRVForDepthTexture2D(depthSrvIndex, descriptor_->GetDepthResource(), DXGI_FORMAT_R24_UNORM_X8_TYPELESS, 1);
+	srvManager->CreateSRVForDepthTexture2D(depthSrvIndex, descriptor_->GetDepthResource(), DXGI_FORMAT_R24_UNORM_X8_TYPELESS, 1);*/
 }
 
 /*////////////////////////////////////////////////////////////////////////////////

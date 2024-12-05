@@ -12,7 +12,8 @@ enum PipelineType {
 	pObject3D,                 // テクスチャ使用 Lightingの有無あり
 	Object3DUnTex,             // マテリアルのみ Lightingの有無あり
 	SkinningObject3D,          // スキニングした3Dモデル
-	pParticle,                 // パーティクル用
+	NormalParticle,            // 通常パーティクル
+	DissolveParticle,          // Dissolveパーティクル
 	PrimitiveLine,             // 線分描画用
 	RailNoneBackCulling,       // 背面カリングなし レール用(AL4)
 	OffscreenCopy,             // オフスクリーン、コピー
@@ -45,7 +46,7 @@ enum BlendMode {
 };
 
 // パイプラインタイプの数
-static const uint32_t pipelineTypeNum = 19;
+static const uint32_t pipelineTypeNum = 20;
 // CSパイプラインタイプの数
 static const uint32_t computePipelineTypeNum = 1;
 
@@ -54,7 +55,7 @@ static const uint32_t blendModeNum = 6;
 
 static const std::array<PipelineType, pipelineTypeNum> pipelineTypes = {
 
-	Primitive, Object2D, pObject3D, Object3DUnTex,SkinningObject3D, pParticle,PrimitiveLine,RailNoneBackCulling,
+	Primitive, Object2D, pObject3D, Object3DUnTex,SkinningObject3D, NormalParticle,DissolveParticle ,PrimitiveLine,RailNoneBackCulling,
 	OffscreenCopy, OffscreenGrayscale, OffscreenSepiaTone, OffscreenVignette,
 	OffscreenSmoothing, OffscreenGaussianFilter, OffscreenLuminanceOutline,OffscreenOutline,
 	OffscreenRadialBlur, OffscreenDissolve,WaveBort
