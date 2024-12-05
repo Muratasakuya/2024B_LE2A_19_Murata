@@ -43,14 +43,6 @@ private:
 
 	const std::string& baseModelDirectory_ = "./Resources/Obj";
 
-	std::unique_ptr<Player> player_;
-
-	std::unique_ptr<TemplateField> field_;
-
-	std::unique_ptr<FieldParticle> fieldParticle_;
-
-	std::unique_ptr<DispersionParticle> dispersionParticle;
-
 private:
 	//===================================================================*/
 	//							private Methods
