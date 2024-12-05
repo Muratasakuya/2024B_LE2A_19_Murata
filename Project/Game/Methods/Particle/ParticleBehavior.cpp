@@ -22,28 +22,33 @@ void DispersionBehavior::Update(ParticleData& particle, const Matrix4x4& billboa
 
 	particle.currentTime += NewMoonGame::GetDeltaTime();
 
-	particle.transform.translate += {
-		particle.velocity.x* NewMoonGame::GetDeltaTime(),
-			particle.velocity.y* NewMoonGame::GetDeltaTime(),
-			particle.velocity.z* NewMoonGame::GetDeltaTime()
-	};
-
+	// 寿命の進行度合い
 	float lifeRatio = 1.0f - (particle.currentTime / particle.lifeTime);
+
+	// イージング処理
 	if (particle.easingType.has_value()) {
 		particle.easedLifeRatio = EasedValue(particle.easingType.value(), lifeRatio);
 	}
+	float easedLifeRatio = particle.easedLifeRatio.value_or(lifeRatio);
+
+	Vector3 easedVelocity = particle.velocity * easedLifeRatio;
+	particle.transform.translate += {
+		easedVelocity.x* NewMoonGame::GetDeltaTime(),
+			easedVelocity.y* NewMoonGame::GetDeltaTime(),
+			easedVelocity.z* NewMoonGame::GetDeltaTime()
+	};
 
 	Vector3 scaledTransform = particle.transform.scale * particle.easedLifeRatio.value_or(lifeRatio);
 	Matrix4x4 scaleMatrix =
 		Matrix4x4::MakeScaleMatrix(scaledTransform);
+
+	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);
 
 	Matrix4x4 translateMatrix =
 		Matrix4x4::MakeTranslateMatrix(particle.transform.translate);
 
 	particle.worldMatrix = scaleMatrix * billboardMatrix * translateMatrix;
 	particle.wvpMatrix = particle.worldMatrix * NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix();
-
-	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);
 
 }
 
@@ -61,20 +66,27 @@ void ChaseBehavior::Update(ParticleData& particle, const Matrix4x4& billboardMat
 
 	particle.currentTime += NewMoonGame::GetDeltaTime();
 
-	particle.transform.translate += {
-		particle.velocity.x* NewMoonGame::GetDeltaTime(),
-			particle.velocity.y* NewMoonGame::GetDeltaTime(),
-			particle.velocity.z* NewMoonGame::GetDeltaTime()
-	};
-
+	// 寿命の進行度合い
 	float lifeRatio = 1.0f - (particle.currentTime / particle.lifeTime);
+
+	// イージング処理
 	if (particle.easingType.has_value()) {
 		particle.easedLifeRatio = EasedValue(particle.easingType.value(), lifeRatio);
 	}
+	float easedLifeRatio = particle.easedLifeRatio.value_or(lifeRatio);
 
-	Vector3 scaledTransform = particle.transform.scale * particle.easedLifeRatio.value_or(lifeRatio);;
+	Vector3 easedVelocity = particle.velocity * easedLifeRatio;
+	particle.transform.translate += {
+		easedVelocity.x* NewMoonGame::GetDeltaTime(),
+			easedVelocity.y* NewMoonGame::GetDeltaTime(),
+			easedVelocity.z* NewMoonGame::GetDeltaTime()
+	};
+
+	Vector3 scaledTransform = particle.transform.scale * particle.easedLifeRatio.value_or(lifeRatio);
 	Matrix4x4 scaleMatrix =
 		Matrix4x4::MakeScaleMatrix(scaledTransform);
+
+	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);
 
 	Matrix4x4 translateMatrix =
 		Matrix4x4::MakeTranslateMatrix(particle.transform.translate);
@@ -82,7 +94,6 @@ void ChaseBehavior::Update(ParticleData& particle, const Matrix4x4& billboardMat
 	particle.worldMatrix = scaleMatrix * billboardMatrix * translateMatrix;
 	particle.wvpMatrix = particle.worldMatrix * NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix();
 
-	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);;
 }
 
 //================================================================================
@@ -99,20 +110,27 @@ void ConvergeBehavior::Update(ParticleData& particle, const Matrix4x4& billboard
 
 	particle.currentTime += NewMoonGame::GetDeltaTime();
 
-	particle.transform.translate += {
-		particle.velocity.x* NewMoonGame::GetDeltaTime(),
-			particle.velocity.y* NewMoonGame::GetDeltaTime(),
-			particle.velocity.z* NewMoonGame::GetDeltaTime()
-	};
-
+	// 寿命の進行度合い
 	float lifeRatio = 1.0f - (particle.currentTime / particle.lifeTime);
+
+	// イージング処理
 	if (particle.easingType.has_value()) {
 		particle.easedLifeRatio = EasedValue(particle.easingType.value(), lifeRatio);
 	}
+	float easedLifeRatio = particle.easedLifeRatio.value_or(lifeRatio);
 
-	Vector3 scaledTransform = particle.transform.scale * particle.easedLifeRatio.value_or(lifeRatio);;
+	Vector3 easedVelocity = particle.velocity * easedLifeRatio;
+	particle.transform.translate += {
+		easedVelocity.x* NewMoonGame::GetDeltaTime(),
+			easedVelocity.y* NewMoonGame::GetDeltaTime(),
+			easedVelocity.z* NewMoonGame::GetDeltaTime()
+	};
+
+	Vector3 scaledTransform = particle.transform.scale * particle.easedLifeRatio.value_or(lifeRatio);
 	Matrix4x4 scaleMatrix =
 		Matrix4x4::MakeScaleMatrix(scaledTransform);
+
+	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);
 
 	Matrix4x4 translateMatrix =
 		Matrix4x4::MakeTranslateMatrix(particle.transform.translate);
@@ -120,7 +138,6 @@ void ConvergeBehavior::Update(ParticleData& particle, const Matrix4x4& billboard
 	particle.worldMatrix = scaleMatrix * billboardMatrix * translateMatrix;
 	particle.wvpMatrix = particle.worldMatrix * NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix();
 
-	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);;
 }
 
 //================================================================================
@@ -137,30 +154,37 @@ void InjectionBehavior::Update(ParticleData& particle, const Matrix4x4& billboar
 
 	particle.currentTime += NewMoonGame::GetDeltaTime();
 
+	// 寿命の進行度合い
+	float lifeRatio = 1.0f - (particle.currentTime / particle.lifeTime);
+
+	// イージング処理
+	if (particle.easingType.has_value()) {
+		particle.easedLifeRatio = EasedValue(particle.easingType.value(), lifeRatio);
+	}
+	float easedLifeRatio = particle.easedLifeRatio.value_or(lifeRatio);
+
+	Vector3 easedVelocity = particle.velocity * easedLifeRatio;
 	particle.transform.translate += {
-		particle.velocity.x* NewMoonGame::GetDeltaTime(),
-			particle.velocity.y* NewMoonGame::GetDeltaTime(),
-			particle.velocity.z* NewMoonGame::GetDeltaTime()
+		easedVelocity.x* NewMoonGame::GetDeltaTime(),
+			easedVelocity.y* NewMoonGame::GetDeltaTime(),
+			easedVelocity.z* NewMoonGame::GetDeltaTime()
 	};
 
 	Vector3 gravityEffect =
 		particle.physics.gravityDirection.value() * particle.physics.gravityStrength.value() * NewMoonGame::GetDeltaTime();
 	particle.velocity += gravityEffect;
 
-	float lifeRatio = 1.0f - (particle.currentTime / particle.lifeTime);
-	if (particle.easingType.has_value()) {
-		particle.easedLifeRatio = EasedValue(particle.easingType.value(), lifeRatio);
-	}
-
 	Vector3 scaledTransform = particle.transform.scale * particle.easedLifeRatio.value_or(lifeRatio);
-	Matrix4x4 scaleMatrix = Matrix4x4::MakeScaleMatrix(scaledTransform);
+	Matrix4x4 scaleMatrix =
+		Matrix4x4::MakeScaleMatrix(scaledTransform);
 
-	Matrix4x4 translateMatrix = Matrix4x4::MakeTranslateMatrix(particle.transform.translate);
+	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);
+
+	Matrix4x4 translateMatrix =
+		Matrix4x4::MakeTranslateMatrix(particle.transform.translate);
 
 	particle.worldMatrix = scaleMatrix * billboardMatrix * translateMatrix;
 	particle.wvpMatrix = particle.worldMatrix * NewMoonGame::GameCamera()->GetCamera3D()->GetViewProjectionMatrix();
-
-	particle.color.w = particle.easedLifeRatio.value_or(lifeRatio);;
 
 }
 

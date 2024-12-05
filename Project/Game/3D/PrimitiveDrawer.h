@@ -47,6 +47,8 @@ public:
 
 	void DrawOBB(const Vector3& size,const Quaternion& rotate, const Vector3& centerPos, const LineColor& color);
 
+	void DrawAABB(const AABBInfo& aabb,const LineColor& color);
+
 	void Reset();
 
 private:

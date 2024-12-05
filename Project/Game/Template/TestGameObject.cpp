@@ -17,7 +17,6 @@ void TestGameObject::Init(uint32_t index) {
 
 	BaseGameObject::Init("cube.obj");
 
-	// 複数自身を生成する場合はAssignIndex()を先に呼びだす
 	BaseGameObject::SetName("testGameObject", index);
 
 	// json適応
@@ -56,8 +55,8 @@ void TestGameObject::KeyMove() {
 void TestGameObject::DerivedImGui() {
 #ifdef _DEBUG
 
-	ImGui::DragFloat3("rotate", &transform_.eulerRotate_.x, 0.01f);
-	transform_.rotation = Quaternion::EulerToQuaternion(transform_.eulerRotate_);
+	ImGui::DragFloat3("rotate", &transform_.eulerRotate.x, 0.01f);
+	transform_.rotation = Quaternion::EulerToQuaternion(transform_.eulerRotate);
 
 #endif // _DEBUG
 }

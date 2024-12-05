@@ -3,39 +3,25 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/Methods/Particle/BaseParticle.h"
+#include <Game/Methods/Particle/BaseParticle.h>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*							TestParticle Class
+*							DispersionParticle Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class TestParticle
-	:public BaseParticle<kDispersion> {
+class DispersionParticle 
+	:public BaseParticle<ParticleType::kDispersion> {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	TestParticle() = default;
-	~TestParticle() = default;
+	DispersionParticle() = default;
+	~DispersionParticle() = default;
 
 	void Init() override;
-	
+
 	void Update() override;
 
 	void DerivedImGui() override;
-
-private:
-	//===================================================================*/
-	//							private Methods
-	//===================================================================*/
-
-	//===================================================================*/
-	///* variables
-
-
-
-	//===================================================================*/
-	///* functions
-
 
 };

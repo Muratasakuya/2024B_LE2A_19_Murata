@@ -3,47 +3,55 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Engine/MyDirectXClass/DXConstBuffer.h"
+#include "Game/3D/Base/BaseGameObject.h"
+#include "Game/3D/Base/Collider.h"
+
+//* particle
+#include "Game/Particles/PlayerChaseParticle.h"
+
+// c++
+#include <memory>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								BaseTransform Class
+*								Player Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class BaseTransform :
-	public DXConstBuffer<TransformationMatrix> {
+class Player
+	:public BaseGameObject {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	BaseTransform() = default;
-	virtual ~BaseTransform() = default;
+	Player() = default;
+	~Player();
 
-	virtual void Init();
-	virtual void Update() = 0;
+	void Init();
 
-	virtual void SetCommand(ID3D12GraphicsCommandList* commandList);
+	void Update();
 
-	// Getter
-	virtual Vector3 GetWorldPos() const;
+	void Draw();
 
-public:
-	//===================================================================*/
-	//							public Methods
-	//===================================================================*/
+	void DerivedImGui() override;
 
-	Vector3 scale;
-	Vector3 translation;
-	Quaternion rotation;
+	//* getter *//
 
-	Vector3 eulerRotate;
-
-	TransformationMatrix matrix;
+	Vector3 GetForward() const;
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	const UINT rootParameterIndex_ = 1;
+	//===================================================================*/
+	///* variables
+
+	float moveSpeed_;
+
+	std::unique_ptr<PlayerChaseParticle> chaseParticle_;
+
+	//===================================================================*/
+	///* functions
+
+	void KeyMove();
 
 };

@@ -11,7 +11,7 @@
 #include "Game/Managers/LightManager.h"
 #include "Game/3D/PrimitiveDrawer.h"
 #include "Game/3D/Base/BaseGameObject.h"
-#include "Game/Particle/IBaseParticle.h"
+#include "Game/Methods/Particle/IBaseParticle.h"
 #include "Game/Managers/CollisionManager.h"
 #include "Game/Editor/UIEditor.h"
 
@@ -102,6 +102,7 @@ public:
 	static void DrawGrid();
 	static void DrawSphere(float radius, const Vector3& centerPos, const LineColor& color);
 	static void DrawOBB(const Vector3& size, const Quaternion& rotate, const Vector3& centerPos, const LineColor& color);
+	static void DrawAABB(const AABBInfo& aabb, const LineColor& color);
 
 	///===================================================================
 	// Command

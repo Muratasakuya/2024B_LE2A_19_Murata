@@ -5,6 +5,7 @@
 //===================================================================*/
 #include "Lib/Structure.h"
 #include "Lib/Adapter/Easing.h"
+#include "Game/Components/MaterialObject.h"
 
 // c++
 #include <vector>
@@ -30,14 +31,15 @@ public:
 	bool isUniform; // 均一か非均一
 
 	Vector3 translate;
-	Vector3 scale;
+	ParticleValue scale;
 
 	std::optional<float> speed = std::nullopt;
 	std::optional<float> lifeTime = std::nullopt;
 	std::optional<Vector4> color = std::nullopt;
-	std::optional<RandomParticleColor> randomParticleColor_;
+	std::optional<RandomParticleColor> randomParticleColor;
 
 	ParticlePhysics physics;
+	AABBInfo aabb;
 
 	//* easing *//
 	std::optional<EasingType> easingType = std::nullopt;

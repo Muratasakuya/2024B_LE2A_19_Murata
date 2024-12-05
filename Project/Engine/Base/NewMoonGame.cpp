@@ -254,7 +254,7 @@ void NewMoonGame::ImGui() {
 		ImGui::Separator();
 		selectedGameObject_->ImGui();
 	} else if (selectedParticle_) {
-	
+
 		ImGui::Text(selectedParticle_->GetName().c_str());
 		ImGui::Separator();
 		selectedParticle_->ImGui();
@@ -479,6 +479,10 @@ void NewMoonGame::DrawSphere(float DrawSphere, const Vector3& centerPos, const L
 void NewMoonGame::DrawOBB(
 	const Vector3& size, const Quaternion& rotate, const Vector3& centerPos, const LineColor& color) {
 	lineDrawer3D_->DrawOBB(size, rotate, centerPos, color);
+}
+
+void NewMoonGame::DrawAABB(const AABBInfo& aabb, const LineColor& color) {
+	lineDrawer3D_->DrawAABB(aabb, color);
 }
 
 ///===================================================================

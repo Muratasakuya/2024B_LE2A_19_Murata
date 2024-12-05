@@ -219,8 +219,8 @@ void BaseGameObject::SetWorldTransform(const WorldTransform& transform) {
 
 	transform_.translation = transform.translation;
 	transform_.scale = transform.scale;
-	transform_.eulerRotate_ = transform.eulerRotate_;
-	transform_.rotation = Quaternion::EulerToQuaternion(transform_.eulerRotate_);
+	transform_.eulerRotate = transform.eulerRotate;
+	transform_.rotation = Quaternion::EulerToQuaternion(transform_.eulerRotate);
 }
 
 void BaseGameObject::SetLightingEnable(bool enable) {
