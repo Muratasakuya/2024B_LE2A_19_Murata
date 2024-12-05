@@ -5,8 +5,8 @@
 //===================================================================*/
 #include "Lib/Structure.h"
 #include "ParticleTraits.h"
-#include "Game/Particle/ParticleSystem.h"
-#include "Game/Particle/IBaseParticle.h"
+#include "Game/Methods/Particle/ParticleSystem.h"
+#include "Game/Methods/Particle/IBaseParticle.h"
 
 // c++
 #include <memory>
@@ -35,7 +35,7 @@ public:
 
 	virtual void Create(const std::string& modelName);
 
-	virtual void Draw(BlendMode blendMode = BlendMode::kBlendModeNormal) override;
+	virtual void Draw(BlendMode blendMode) override;
 
 	virtual void ImGui() override;
 	virtual void DerivedImGui() {};
@@ -97,7 +97,25 @@ inline void BaseParticle<particleType>::ImGui() {
 	// Transform
 	if (ImGui::CollapsingHeader("Transform")) {
 		ImGui::DragFloat3(("Translate##" + std::to_string(ptrAddress)).c_str(), &parameter_.translate.x, 0.01f);
-		ImGui::DragFloat3(("Scale##" + std::to_string(ptrAddress)).c_str(), &parameter_.scale.x, 0.01f);
+
+		if (parameter_.isUniform) {
+
+			ImGui::DragFloat3(("Scale##" + std::to_string(ptrAddress)).c_str(), &parameter_.scale.uniform.x, 0.01f);
+		} else {
+
+			ImGui::DragFloat3(("ScaleMin##" + std::to_string(ptrAddress)).c_str(), &parameter_.scale.min.x, 0.01f);
+			if (parameter_.scale.min.x >= parameter_.scale.max.x) {
+				parameter_.scale.min.x = parameter_.scale.max.x - 0.01f;
+			}
+			if (parameter_.scale.min.y >= parameter_.scale.max.y) {
+				parameter_.scale.min.y = parameter_.scale.max.y - 0.01f;
+			}
+			if (parameter_.scale.min.z >= parameter_.scale.max.z) {
+				parameter_.scale.min.z = parameter_.scale.max.z - 0.01f;
+			}
+
+			ImGui::DragFloat3(("ScaleMax##" + std::to_string(ptrAddress)).c_str(), &parameter_.scale.max.x, 0.01f);
+		}
 	}
 
 	// Particle Settings

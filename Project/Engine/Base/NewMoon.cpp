@@ -191,7 +191,7 @@ void NewMoon::OffscreenDepthOutlineDraw(OffscreenDepthMaterial& depthMaterial) {
 	commandList->DrawInstanced(3, 1, 0, 0);
 }
 
-void NewMoon::OffscreenDissolveDraw(OffscreenDissolveMaterial& dissolveMaterial) {
+void NewMoon::OffscreenDissolveDraw(DissolveMaterialBuffer& dissolveMaterial) {
 
 	auto commandList = dxCommon_->GetCommandList();
 

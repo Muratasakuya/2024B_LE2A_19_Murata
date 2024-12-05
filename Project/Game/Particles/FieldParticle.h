@@ -3,47 +3,43 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Engine/MyDirectXClass/DXConstBuffer.h"
+#include <Game/Methods/Particle/BaseParticle.h>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								BaseTransform Class
+*							FieldParticle Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class BaseTransform :
-	public DXConstBuffer<TransformationMatrix> {
+class FieldParticle
+	:public BaseParticle<ParticleType::kInjection> {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	BaseTransform() = default;
-	virtual ~BaseTransform() = default;
+	FieldParticle() = default;
+	~FieldParticle() = default;
 
-	virtual void Init();
-	virtual void Update() = 0;
+	void Init() override;
 
-	virtual void SetCommand(ID3D12GraphicsCommandList* commandList);
+	void Update() override;
 
-	// Getter
-	virtual Vector3 GetWorldPos() const;
+	void DerivedImGui() override;
 
-public:
-	//===================================================================*/
-	//							public Methods
-	//===================================================================*/
-
-	Vector3 scale;
-	Vector3 translation;
-	Quaternion rotation;
-
-	Vector3 eulerRotate;
-
-	TransformationMatrix matrix;
+	//* getter *//
+	AABBInfo GetAABB() const { return parameter_.aabb; }
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	const UINT rootParameterIndex_ = 1;
+	//===================================================================*/
+	///* variables
+
+	float transitionTimer_;
+
+	//===================================================================*/
+	///* function
+
+	void UpdateColor();
 
 };

@@ -160,7 +160,7 @@ void DXShaderCompiler::Init(DXCommon* dxCommon, const PipelineType& pipelineType
 		psBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/Object3D.PS.hlsl", L"ps_6_0",
 			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
 		assert(psBlob_[pipelineType] != nullptr);
-	} else if (pipelineType == pParticle) {
+	} else if (pipelineType == NormalParticle) {
 
 		/*------------------------------------------------------------------------------------------------------------------------*/
 		//												  Particle Shader
@@ -173,6 +173,21 @@ void DXShaderCompiler::Init(DXCommon* dxCommon, const PipelineType& pipelineType
 
 		// ピクセルシェーダ
 		psBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/Particle.PS.hlsl", L"ps_6_0",
+			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
+		assert(psBlob_[pipelineType] != nullptr);
+	} else if (pipelineType == DissolveParticle) {
+
+		/*------------------------------------------------------------------------------------------------------------------------*/
+		//												DissolveParticle Shader
+		/*------------------------------------------------------------------------------------------------------------------------*/
+
+		// 頂点シェーダ
+		vsBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/Particle.VS.hlsl", L"vs_6_0",
+			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
+		assert(vsBlob_[pipelineType] != nullptr);
+
+		// ピクセルシェーダ
+		psBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/DissolveParticle.PS.hlsl", L"ps_6_0",
 			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
 		assert(psBlob_[pipelineType] != nullptr);
 	} else if (pipelineType == PrimitiveLine) {

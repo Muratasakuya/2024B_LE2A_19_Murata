@@ -3,7 +3,7 @@
 #include "Lib/Adapter/Random.h"
 
 //* front
-#include "Game/Particle/ParticleParameter.h"
+#include "Game/Methods/Particle/ParticleParameter.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *						ParticleVisitor classMethods
@@ -124,11 +124,11 @@ void DispersionVisitor::CreateUniformParticles(
 		particle.velocity = Vector3(x, y, z) * speedFactor * dispersionParameter.speed.value_or(1.0f);
 
 		particle.transform.rotate.SetInit(0.0f);
-		particle.transform.scale = dispersionParameter.scale;
+		particle.transform.scale = dispersionParameter.scale.uniform;
 
 		particle.lifeTime = dispersionParameter.lifeTime.value_or(Random::Generate(2.0f, 3.0f));
 
-		particle.color = SettingColor(dispersionParameter.color, dispersionParameter.randomParticleColor_);
+		particle.color = SettingColor(dispersionParameter.color, dispersionParameter.randomParticleColor);
 
 		particle.easingType = parameter.easingType;
 
@@ -151,9 +151,9 @@ void DispersionVisitor::CreateNonUniformParticles(
 		particle.transform.translate = dispersionParameter.translate;
 
 		particle.transform.scale = Vector3(
-			Random::Generate(0.2f, dispersionParameter.scale.x),
-			Random::Generate(0.2f, dispersionParameter.scale.y),
-			Random::Generate(0.2f, dispersionParameter.scale.z));
+			Random::Generate(dispersionParameter.scale.min.x, dispersionParameter.scale.max.x),
+			Random::Generate(dispersionParameter.scale.min.y, dispersionParameter.scale.max.y),
+			Random::Generate(dispersionParameter.scale.min.z, dispersionParameter.scale.max.z));
 
 		if (dispersionParameter.speed.has_value()){
 			particle.velocity = Vector3(
@@ -167,7 +167,7 @@ void DispersionVisitor::CreateNonUniformParticles(
 				Random::Generate(-1.0f, 1.0f));
 		}
 
-		particle.color = SettingColor(dispersionParameter.color, dispersionParameter.randomParticleColor_);
+		particle.color = SettingColor(dispersionParameter.color, dispersionParameter.randomParticleColor);
 
 		particle.lifeTime = dispersionParameter.lifeTime.value_or(Random::Generate(1.0f, 3.0f));
 
@@ -202,7 +202,7 @@ void ChaseVisitor::CreateUniformParticles(std::list<ParticleData>& particles, Pa
 		particle.currentTime = 0.0f;
 
 		particle.transform.translate = chaseParticle.translate;
-		particle.transform.scale = chaseParticle.scale;
+		particle.transform.scale = chaseParticle.scale.uniform;
 
 		Vector3 direction = Vector3::Normalize(chaseParticle.translate - chaseParticle.prePos);
 		particle.velocity = chaseParticle.speed.value_or(0.5f) * direction;
@@ -210,7 +210,7 @@ void ChaseVisitor::CreateUniformParticles(std::list<ParticleData>& particles, Pa
 		float angle = std::atan2(direction.y, direction.x);
 		particle.transform.rotate.SetInit(angle);
 
-		particle.color = SettingColor(chaseParticle.color, chaseParticle.randomParticleColor_);
+		particle.color = SettingColor(chaseParticle.color, chaseParticle.randomParticleColor);
 
 		particle.lifeTime = chaseParticle.lifeTime.value_or(Random::Generate(1.0f, 2.0f));
 
@@ -237,7 +237,11 @@ void ChaseVisitor::CreateNonUniformParticles(std::list<ParticleData>& particles,
 		particle.currentTime = 0.0f;
 
 		particle.transform.translate = chaseParticle.translate;
-		particle.transform.scale = chaseParticle.scale;
+
+		particle.transform.scale = Vector3(
+			Random::Generate(chaseParticle.scale.min.x, chaseParticle.scale.max.x),
+			Random::Generate(chaseParticle.scale.min.y, chaseParticle.scale.max.y),
+			Random::Generate(chaseParticle.scale.min.z, chaseParticle.scale.max.z));
 
 		Vector3 direction = Vector3::Normalize(chaseParticle.translate - chaseParticle.prePos);
 
@@ -252,7 +256,7 @@ void ChaseVisitor::CreateNonUniformParticles(std::list<ParticleData>& particles,
 			particle.velocity = Random::Generate(0.4f, 0.8f) * spreadDirection;
 		}
 
-		particle.color = SettingColor(chaseParticle.color, chaseParticle.randomParticleColor_);
+		particle.color = SettingColor(chaseParticle.color, chaseParticle.randomParticleColor);
 
 		particle.lifeTime = chaseParticle.lifeTime.value_or(Random::Generate(1.0f, 2.0f));
 
@@ -309,13 +313,13 @@ void ConvergeVisitor::CreateUniformParticles(std::list<ParticleData>& particles,
 		float speed = convergeParameter.speed.value_or(0.5f);
 		particle.velocity = targetDirection * speed;
 
-		particle.transform.scale = convergeParameter.scale;
+		particle.transform.scale = convergeParameter.scale.uniform;
 
 		float distanceToTarget = Vector3::Length(convergeParameter.translate - initialPos);
 		float timeToReachTarget = distanceToTarget / speed;
 		particle.lifeTime = convergeParameter.lifeTime.value_or(timeToReachTarget);
 
-		particle.color = SettingColor(convergeParameter.color, convergeParameter.randomParticleColor_);
+		particle.color = SettingColor(convergeParameter.color, convergeParameter.randomParticleColor);
 
 		particle.easingType = parameter.easingType;
 
@@ -345,9 +349,9 @@ void ConvergeVisitor::CreateNonUniformParticles(std::list<ParticleData>& particl
 		particle.velocity = targetDirection * speed;
 
 		particle.transform.scale = Vector3(
-			Random::Generate(0.1f, convergeParameter.scale.x),
-			Random::Generate(0.1f, convergeParameter.scale.y),
-			Random::Generate(0.1f, convergeParameter.scale.z));
+			Random::Generate(convergeParameter.scale.min.x, convergeParameter.scale.max.x),
+			Random::Generate(convergeParameter.scale.min.y, convergeParameter.scale.max.y),
+			Random::Generate(convergeParameter.scale.min.z, convergeParameter.scale.max.z));
 
 		particle.color = convergeParameter.color.value_or(Vector4(
 			Random::Generate(0.0f, 1.0f),
@@ -389,15 +393,15 @@ void InjectionVisitor::CreateUniformParticles(std::list<ParticleData>& particles
 
 		particle.currentTime = 0.0f;
 
+		const Vector3& min = injectionParameter.aabb.GetMin();
+		const Vector3& max = injectionParameter.aabb.GetMax();
 		Vector3 randomPos = Vector3(
-			Random::Generate(-1.0f, 1.0f),
-			Random::Generate(-1.0f, 1.0f),
-			Random::Generate(-1.0f, 1.0f));
-		particle.transform.translate = injectionParameter.translate + randomPos;
+			Random::Generate(min.x, max.x),
+			Random::Generate(min.y, max.y),
+			Random::Generate(min.z, max.z));
+		particle.transform.translate = randomPos;
 		
-		float randomScale = Random::Generate(injectionParameter.scale.x - 0.05f, injectionParameter.scale.x);
-		particle.transform.scale.SetInit(randomScale);
-
+		particle.transform.scale = injectionParameter.scale.uniform;
 
 		Vector3 randomOffset = Vector3(
 			Random::Generate(-1.0f, 1.0f),
@@ -410,7 +414,7 @@ void InjectionVisitor::CreateUniformParticles(std::list<ParticleData>& particles
 
 		particle.velocity = injectionParameter.speed.value_or(0.5f) * finalDirection;
 
-		particle.color = SettingColor(injectionParameter.color, injectionParameter.randomParticleColor_);
+		particle.color = SettingColor(injectionParameter.color, injectionParameter.randomParticleColor);
 
 		particle.physics.gravityDirection = injectionParameter.physics.gravityDirection.value_or(Vector3(0.0f, -1.0f, 0.0f));
 		particle.physics.gravityStrength = injectionParameter.physics.gravityStrength.value_or(9.8f);
@@ -433,13 +437,18 @@ void InjectionVisitor::CreateNonUniformParticles(std::list<ParticleData>& partic
 
 		particle.currentTime = 0.0f;
 
+		const Vector3& min = injectionParameter.aabb.GetMin();
+		const Vector3& max = injectionParameter.aabb.GetMax();
 		Vector3 randomPos = Vector3(
-			Random::Generate(-1.0f, 1.0f),
-			Random::Generate(-1.0f, 1.0f),
-			Random::Generate(-1.0f, 1.0f));
-		particle.transform.translate = injectionParameter.translate + randomPos;
-		float randomScale = Random::Generate(injectionParameter.scale.x - 0.05f, injectionParameter.scale.x);
-		particle.transform.scale.SetInit(randomScale);
+			Random::Generate(min.x, max.x),
+			Random::Generate(min.y, max.y),
+			Random::Generate(min.z, max.z));
+		particle.transform.translate = randomPos;
+
+		particle.transform.scale = Vector3(
+			Random::Generate(injectionParameter.scale.min.x, injectionParameter.scale.max.x),
+			Random::Generate(injectionParameter.scale.min.y, injectionParameter.scale.max.y),
+			Random::Generate(injectionParameter.scale.min.z, injectionParameter.scale.max.z));
 
 		Vector3 randomOffset = Vector3(
 			Random::Generate(-1.0f, 1.0f),
@@ -452,7 +461,7 @@ void InjectionVisitor::CreateNonUniformParticles(std::list<ParticleData>& partic
 
 		particle.velocity = injectionParameter.speed.value_or(0.5f) * finalDirection;
 
-		particle.color = SettingColor(injectionParameter.color, injectionParameter.randomParticleColor_);
+		particle.color = SettingColor(injectionParameter.color, injectionParameter.randomParticleColor);
 
 		particle.physics.gravityDirection = injectionParameter.physics.gravityDirection.value_or(Vector3(0.0f, -1.0f, 0.0f));
 		particle.physics.gravityStrength = injectionParameter.physics.gravityStrength.value_or(9.8f);

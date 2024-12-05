@@ -117,17 +117,17 @@ public:
 };
 
 /*////////////////////////////////////////////////////////////////////////////////
-							OffscreenDissolveMaterial Class
+						DissolveMaterialBuffer Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class OffscreenDissolveMaterial :
+class DissolveMaterialBuffer :
 	public DXConstBuffer<DissolveMaterial> {
 public:
 	//===================================================================*/
 	//							public Functions
 	//===================================================================*/
 
-	OffscreenDissolveMaterial() = default;
-	~OffscreenDissolveMaterial() = default;
+	DissolveMaterialBuffer() = default;
+	~DissolveMaterialBuffer() = default;
 
 	void Init();
 	void Update();

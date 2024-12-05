@@ -6,9 +6,12 @@
 #include "Game/Scenes/Methods/IScene.h"
 
 //* object
-#include "Game/Template/TestParticle.h"
-#include "Game/Template/TestGameObject.h"
+#include "Game/Objects/Player.h"
 #include "Game/Template/TemplateField.h"
+
+//* particle
+#include "Game/Particles/FieldParticle.h"
+#include "Game/Particles/DispersionParticle.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *								TitleScene Class
@@ -40,11 +43,13 @@ private:
 
 	const std::string& baseModelDirectory_ = "./Resources/Obj";
 
-	std::unique_ptr<TestGameObject> objects_;
+	std::unique_ptr<Player> player_;
 
 	std::unique_ptr<TemplateField> field_;
 
-	std::unique_ptr<TestParticle> particle_;
+	std::unique_ptr<FieldParticle> fieldParticle_;
+
+	std::unique_ptr<DispersionParticle> dispersionParticle;
 
 private:
 	//===================================================================*/

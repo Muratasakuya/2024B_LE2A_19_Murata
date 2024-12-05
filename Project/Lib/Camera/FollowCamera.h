@@ -3,47 +3,47 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Engine/MyDirectXClass/DXConstBuffer.h"
+#include "Lib/Structure.h"
+#include "Game/Components/WorldTransform.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								BaseTransform Class
+*								FollowCamera Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class BaseTransform :
-	public DXConstBuffer<TransformationMatrix> {
+class FollowCamera {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	BaseTransform() = default;
-	virtual ~BaseTransform() = default;
+	FollowCamera() = default;
+	~FollowCamera() = default;
 
-	virtual void Init();
-	virtual void Update() = 0;
+	void Init(const WorldTransform* target);
 
-	virtual void SetCommand(ID3D12GraphicsCommandList* commandList);
+	void Update();
 
-	// Getter
-	virtual Vector3 GetWorldPos() const;
+	void ImGui();
 
-public:
-	//===================================================================*/
-	//							public Methods
-	//===================================================================*/
+	//* getter *//
 
-	Vector3 scale;
-	Vector3 translation;
-	Quaternion rotation;
+	Matrix4x4 GetViewProjectionMatrix() const { return viewProjectionMatrix_; }
 
-	Vector3 eulerRotate;
-
-	TransformationMatrix matrix;
+	Vector3 GetTranslate() const { return transform_.translation; }
 
 private:
 	//===================================================================*/
 	//							private Methods
 	//===================================================================*/
 
-	const UINT rootParameterIndex_ = 1;
+	//===================================================================*/
+	///* variables
+
+	const WorldTransform* target_;
+
+	WorldTransform transform_;
+
+	Vector3 offset_;
+
+	Matrix4x4 viewProjectionMatrix_;
 
 };

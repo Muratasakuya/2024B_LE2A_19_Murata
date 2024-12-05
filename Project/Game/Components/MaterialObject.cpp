@@ -67,17 +67,18 @@ void OffscreenDepthMaterial::Update() {
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								OffscreenDissolveMaterial
+*								DissolveMaterialBuffer
 ////////////////////////////////////////////////////////////////////////////////*/
-void OffscreenDissolveMaterial::Init() {
+void DissolveMaterialBuffer::Init() {
 
+	// default
 	properties.threshold = 0.0f;
 	properties.edgeSize = 0.03f;
-	properties.edgeColor = { 1.0f,0.4f,0.3f };
+	properties.edgeColor.Init();
 	DXConstBuffer::Init(NewMoon::GetDXDevice());
 }
 
-void OffscreenDissolveMaterial::Update() {
+void DissolveMaterialBuffer::Update() {
 
 	TransferData(properties);
 }

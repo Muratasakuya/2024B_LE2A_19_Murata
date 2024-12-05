@@ -74,7 +74,7 @@ public:
 	// TestOffscreen
 
 	static void OffscreenDepthOutlineDraw(OffscreenDepthMaterial& depthMaterial);
-	static void OffscreenDissolveDraw(OffscreenDissolveMaterial& dissolveMaterial);
+	static void OffscreenDissolveDraw(DissolveMaterialBuffer& dissolveMaterial);
 
 	///===============================================================================
 	// Screen

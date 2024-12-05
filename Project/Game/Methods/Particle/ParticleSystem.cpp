@@ -4,6 +4,7 @@
 #include "Engine/Base/NewMoonGame.h"
 #include "Engine/Managers/SrvManager.h"
 #include "Lib/Adapter/Random.h"
+#include "Game/Components/MaterialObject.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *							ParticleSystem classMethods
@@ -74,7 +75,7 @@ void ParticleSystem::Draw(const std::string& name, BlendMode blendMode) {
 
 	for (uint32_t index = 0; index < particleGroups_[name].model.data.meshes.size(); ++index) {
 
-		NewMoon::SetGraphicsPipeline(commandList, pParticle, blendMode);
+		NewMoon::SetGraphicsPipeline(commandList, NormalParticle, blendMode);
 		particleGroups_[name].model.inputAssembler.SetBuffer(commandList, index);
 		particleGroups_[name].particleBuffer.SetCommand(commandList, particleGroups_[name].particleBuffer.GetRootParameterIndex());
 		NewMoon::SetGraphicsRootDescriptorTable(commandList, 1, particleGroups_[name].model.data.meshes[index].material.textureName.value());
@@ -128,4 +129,10 @@ void ParticleSystem::EmitParticle(
 			assert(false && "behavior type of the existing particle group does not match");
 		}
 	}
+}
+
+void ParticleSystem::SetTexture(const std::string& name, const std::string& textureName) {
+
+	particleGroups_[name].model.data.meshes
+		[static_cast<int>(particleGroups_[name].model.data.meshes.size() - 1)].material.textureName = textureName;
 }

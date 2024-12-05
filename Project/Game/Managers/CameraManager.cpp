@@ -15,21 +15,19 @@ void CameraManager::Init() {
 	camera3D_ = std::make_unique<Camera3D>();
 	camera3D_->Init();
 
+	// Debug
 	debugCamera_ = std::make_unique<DebugCamera>();
+
+	// 追従カメラ
+	followCamera_ = std::make_unique<FollowCamera>();
 
 }
 void CameraManager::Update() {
 
 	camera2D_->Update();
 
-	debugCamera_->Update(camera3D_->GetWorldPos(), camera3D_->GetRotate());
-	if (debugCamera_->Enable()) {
-
-		camera3D_->SetCamera(debugCamera_->GetViewProjectionMatrix(), debugCamera_->GetTranslate());
-	} else {
-
-		camera3D_->Update();
-	}
+	followCamera_->Update();
+	camera3D_->SetCamera(followCamera_->GetViewProjectionMatrix(), followCamera_->GetTranslate());
 
 }
 
@@ -40,6 +38,7 @@ void CameraManager::ImGui(bool debugCameraEnable) {
 		debugCamera_->SetEnable(debugCameraEnable);
 	}
 	camera3D_->ImGui();
+	followCamera_->ImGui();
 
 }
 
@@ -54,4 +53,8 @@ Camera3D* CameraManager::GetCamera3D() const {
 }
 DebugCamera* CameraManager::GetDebugCamera() const {
 	return debugCamera_.get();
+}
+
+FollowCamera* CameraManager::GetFollowCamera() const {
+	return followCamera_.get();
 }

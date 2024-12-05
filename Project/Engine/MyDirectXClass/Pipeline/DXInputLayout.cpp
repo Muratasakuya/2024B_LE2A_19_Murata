@@ -90,7 +90,7 @@ void DXInputLayout::Create(PipelineType pipelineType) {
 		inputLayoutDesc_[pipelineType] = {};
 		inputLayoutDesc_[pipelineType].pInputElementDescs = inputElementDescs;
 		inputLayoutDesc_[pipelineType].NumElements = _countof(inputElementDescs);
-	} else if (pipelineType == pParticle) {
+	} else if (pipelineType == NormalParticle || pipelineType == DissolveParticle) {
 
 		static D3D12_INPUT_ELEMENT_DESC inputElementDescs[3]{};
 

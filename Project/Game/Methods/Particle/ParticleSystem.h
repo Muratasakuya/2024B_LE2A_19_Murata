@@ -4,8 +4,8 @@
 //===================================================================*/
 #include "Game/Components/ParticleBuffer.h"
 #include "Game/Components/InputAssembler.h"
-#include "Game/Particle/ParticleBehavior.h"
-#include "Game/Particle/ParticleParameter.h"
+#include "Game/Methods/Particle/ParticleBehavior.h"
+#include "Game/Methods/Particle/ParticleParameter.h"
 #include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
 #include "Lib/Structure.h"
 #include "Lib/Adapter/Easing.h"
@@ -55,7 +55,7 @@ public:
 
 	void Update();
 
-	void Draw(const std::string& name, BlendMode blendMode = BlendMode::kBlendModeNormal);
+	void Draw(const std::string& name, BlendMode blendMode);
 
 	void CreateParticle(
 		const std::string& modelName, const std::string& name,
@@ -63,6 +63,8 @@ public:
 
 	void EmitParticle(
 		const std::string& name, ParticleType particleType, ParticleParameter& parameter);
+
+	void SetTexture(const std::string& name, const std::string& textureName);
 
 private:
 	//===================================================================*/
