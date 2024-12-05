@@ -11,8 +11,8 @@ void DispersionParticle::Init() {
 
 	BaseParticle::SetName("dispersionParticle");
 
-	parameter_.scale.min.SetInit(0.5f);
-	parameter_.scale.max.SetInit(0.6f);
+	parameter_.scale.min.SetInit(0.25f);
+	parameter_.scale.max.SetInit(0.3f);
 
 	parameter_.isUniform = false;
 
@@ -20,7 +20,7 @@ void DispersionParticle::Init() {
 	parameter_.frequency = 0.1f; //* 出る間隔
 	parameter_.easingType = EasingType::EaseOutCubic;
 
-	BaseParticle::Create("plane.obj"); //* 使用するModelの名前で初期化
+	BaseParticle::Create("sphere.obj"); //* 使用するModelの名前で初期化
 
 	particleSystem_->SetTexture("dispersionParticle", "circle");
 

@@ -145,7 +145,7 @@ void SrvManager::ImGui() {
 
 	ImGui::Text("Srv: Use: %d / %d", static_cast<int>(srvUseInformations_.size()), kMaxSRVCount_);
 
-	/*if (ImGui::Button("SrvList")) {
+	if (ImGui::Button("SrvList")) {
 		showSrvList_ = !showSrvList_;
 	}
 
@@ -163,7 +163,7 @@ void SrvManager::ImGui() {
 		}
 
 		ImGui::EndChild();
-	}*/
+	}
 
 }
 

@@ -9,6 +9,7 @@
 #include "Engine/Base/NewMoon.h"
 #include "Engine/Base/WinApp.h"
 #include "Engine/Managers/SrvManager.h"
+#include <imgui.h>
 
 #pragma region /// Debug ///
 /*////////////////////////////////////////////////////////////////////////////////
@@ -153,42 +154,6 @@ void DXCommon::TransitionBarrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								深度バッファクリア
-////////////////////////////////////////////////////////////////////////////////*/
-void DXCommon::ClearDepthBuffer() {
-
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = descriptor_->GetDSVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
-
-	// 指定した深度で画面全体をクリアする、深度バッファクリア
-	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-}
-
-/*////////////////////////////////////////////////////////////////////////////////
-*								　画面のクリア
-////////////////////////////////////////////////////////////////////////////////*/
-void DXCommon::ClearWindow() {
-
-	// 描画先のRTVとDSVを設定する
-
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2];
-	for (uint32_t i = 0; i < swapChain_->bufferCount; i++) {
-
-		rtvHandles[i] = rtvManager_->GetCPUHandle(i);
-	}
-
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = descriptor_->GetDSVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
-
-	commandList_->OMSetRenderTargets(1, &rtvHandles[backBufferIndex_], false, &dsvHandle);
-	// 指定した色で画面全体をクリアする
-	float clearColor[] = { clearColor_.x, clearColor_.y, clearColor_.z, clearColor_.w };
-	// RGBAの順
-	commandList_->ClearRenderTargetView(rtvHandles[backBufferIndex_], clearColor, 0, nullptr);
-
-	// 深度バッファクリア
-	ClearDepthBuffer();
-}
-
-/*////////////////////////////////////////////////////////////////////////////////
 *							RenderTextureの作成
 ////////////////////////////////////////////////////////////////////////////////*/
 void DXCommon::CreateOffscreenRenderTexture(SrvManager* srvManager, uint32_t width, uint32_t height) {
@@ -201,6 +166,8 @@ void DXCommon::CreateOffscreenRenderTexture(SrvManager* srvManager, uint32_t wid
 		offscreenRender_->CreateRenderTextureResource(device, width, height,
 			DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, kRenderTargetClearColor);
 
+	renderTextureResource_->SetName(L"RenderTextureResource");
+
 	// RTVの設定
 	uint32_t rtvIndex = rtvManager_->Allocate();
 	rtvManager_->Create(rtvIndex, renderTextureResource_.Get());
@@ -208,12 +175,25 @@ void DXCommon::CreateOffscreenRenderTexture(SrvManager* srvManager, uint32_t wid
 	rtvManager_->Reset();
 
 	// SRVの作成
-	// Allocateは進めておく
 	uint32_t srvIndex = srvManager->Allocate("renderTexture");
 	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = srvManager->GetCPUHandle(srvIndex);
 	renderTextureGpuHandle_ = srvManager->GetGPUHandle(srvIndex);
-
 	srvManager->CreateSRVForTexture2D(srvIndex, renderTextureResource_.Get(), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, 1);
+
+	//* guiRenderTexture *//
+
+	// Resourceの作成
+	guiRenderTextureResource_ =
+		offscreenRender_->CreateRenderTextureResource(device, width, height,
+			DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, kRenderTargetClearColor);
+
+	guiRenderTextureResource_->SetName(L"GuiRenderTextureResource");
+
+	// SRVの作成
+	uint32_t guiSrvIndex = srvManager->Allocate("guiRenderTexture");
+	D3D12_CPU_DESCRIPTOR_HANDLE guiCpuHandle = srvManager->GetCPUHandle(guiSrvIndex);
+	guiRenderTextureGpuHandle_ = srvManager->GetGPUHandle(guiSrvIndex);
+	srvManager->CreateSRVForTexture2D(guiSrvIndex, guiRenderTextureResource_.Get(), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, 1);
 
 	// Depth用のSRV
 	/*uint32_t depthSrvIndex = srvManager->Allocate("depth");
@@ -278,6 +258,30 @@ void DXCommon::OffscreenDraw(const PipelineType& pipelineType) {
 	commandList_->SetGraphicsRootDescriptorTable(0, renderTextureGpuHandle_);
 	commandList_->DrawInstanced(vertexCount, 1, 0, 0);
 
+	CopyRenderTexture(
+		guiRenderTextureResource_.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET,
+		swapChain_->GetResources(backBufferIndex_), D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+	TransitionBarrier(guiRenderTextureResource_.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+
+}
+
+/*////////////////////////////////////////////////////////////////////////////////
+*						Gui表示用にRenderTextureをコピー
+////////////////////////////////////////////////////////////////////////////////*/
+void DXCommon::CopyRenderTexture(ID3D12Resource* dstResource, D3D12_RESOURCE_STATES dstState,
+	ID3D12Resource* srcResource, D3D12_RESOURCE_STATES srcState) {
+
+	// 状態遷移
+	TransitionBarrier(srcResource, srcState, D3D12_RESOURCE_STATE_COPY_SOURCE);
+	TransitionBarrier(dstResource, dstState, D3D12_RESOURCE_STATE_COPY_DEST);
+
+	commandList_->CopyResource(dstResource, srcResource);
+
+	// 元の状態に戻す
+	TransitionBarrier(srcResource, D3D12_RESOURCE_STATE_COPY_SOURCE, srcState);
+	TransitionBarrier(dstResource, D3D12_RESOURCE_STATE_COPY_DEST, dstState);
+
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -291,17 +295,28 @@ void DXCommon::PreDraw() {
 	// バックバッファのリソース状態をPRESENTからRENDER_TARGETに変更
 	TransitionBarrier(swapChain_->GetResources(backBufferIndex_), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
-	// 画面のクリア
-	ClearWindow();
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2];
+	for (uint32_t i = 0; i < swapChain_->bufferCount; i++) {
+
+		rtvHandles[i] = rtvManager_->GetCPUHandle(i);
+	}
+
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = descriptor_->GetDSVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+
+	commandList_->OMSetRenderTargets(1, &rtvHandles[backBufferIndex_], false, &dsvHandle);
+	// 指定した色で画面全体をクリアする
+	float clearColor[] = { clearColor_.x, clearColor_.y, clearColor_.z, clearColor_.w };
+	// RGBAの順
+	commandList_->ClearRenderTargetView(rtvHandles[backBufferIndex_], clearColor, 0, nullptr);
 
 	// ビューポートの設定
 	viewport_ =
 		D3D12_VIEWPORT(0.0f, 0.0f, float(kClientWidth_), float(kClientHeight_), 0.0f, 1.0f);
-	commandList_->RSSetViewports(1, &viewport_);// Viewportを設定
+	commandList_->RSSetViewports(1, &viewport_);
 
 	// シザリング矩形の設定
 	scissorRect_ = D3D12_RECT(0, 0, kClientWidth_, kClientHeight_);
-	commandList_->RSSetScissorRects(1, &scissorRect_);// Scirssorを設定
+	commandList_->RSSetScissorRects(1, &scissorRect_);
 
 }
 
@@ -310,8 +325,10 @@ void DXCommon::PreDraw() {
 ////////////////////////////////////////////////////////////////////////////////*/
 void DXCommon::PostDraw() {
 
-	// 次のOffscreenに状態が合うように状態を変更
+	// D3D12_RESOURCE_STATE_COPY_SOURCE -> D3D12_RESOURCE_STATE_RENDER_TARGET
 	TransitionBarrier(renderTextureResource_.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	// D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE -> D3D12_RESOURCE_STATE_RENDER_TARGET
+	TransitionBarrier(guiRenderTextureResource_.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	//* depthを使ったOffscreenは使えない *//
 

@@ -122,7 +122,7 @@ void NewMoonGame::ImGui() {
 	const ImVec2 imageSize(768.0f, 432.0f);              //* サイズ
 	ImVec2 imagePos(mainWindowPos_.x, mainWindowPos_.y); //* 座標
 	ImGui::SetCursorPos(imagePos);
-	D3D12_GPU_DESCRIPTOR_HANDLE renderTextureGpuHandle = NewMoon::GetDXCommonPtr()->GetRendreTextureGpuHandle();
+	D3D12_GPU_DESCRIPTOR_HANDLE renderTextureGpuHandle = NewMoon::GetDXCommonPtr()->GetGuiRendreTextureGpuHandle();
 	ImGui::Image(ImTextureID(renderTextureGpuHandle.ptr), imageSize);
 
 	//* GameObjects List (Left Up Side) *//
