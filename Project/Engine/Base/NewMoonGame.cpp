@@ -115,6 +115,14 @@ void NewMoonGame::ImGui() {
 	}
 	ImGui::PopStyleVar();
 
+	ImGui::SetCursorPos(ImVec2(mainWindowPos_.x, 6.0f));
+	ImGui::BeginChild("Operation",
+		ImVec2(768.0f, 44.0f),true, ImGuiWindowFlags_AlwaysUseWindowPadding);
+
+	ImGui::TextColored(ImVec4(0.8f, 0.0f, 0.0f, 1.0f), "PlayerMove: WASD");
+
+	ImGui::EndChild();
+
 	ImVec2 p1 = ImGui::GetCursorScreenPos();  //* 始点
 	p1.y = 56.0f;
 	ImVec2 p2 = ImVec2(p1.x + 968.0f, p1.y); //* 終点
