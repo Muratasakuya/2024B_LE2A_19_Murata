@@ -5,6 +5,7 @@
 #include "Engine/Managers/ImGuiManager.h"
 #include "Game/Managers/SceneManager.h"
 #include "DXCommon.h"
+#include "Game/Objects/StaticMeshModel.h"
 
 ///===============================================================================
 /// staticメンバ変数初期化
@@ -27,6 +28,8 @@ int NewMoonGame::currentObjectIndex_ = 0;
 std::vector<IBaseParticle*> NewMoonGame::particles_ = {};
 IBaseParticle* NewMoonGame::selectedParticle_ = {};
 int NewMoonGame::currentParitcleIndex_ = 0;
+StaticMeshModel* NewMoonGame::staticMeshObject_ = nullptr;
+bool NewMoonGame::selectedStaticMeshObject_ = false;
 std::unique_ptr<CollisionManager> NewMoonGame::collisionManager_ = nullptr;
 Vector2 NewMoonGame::mainWindowPos_ = Vector2(210.0f, 64.0f);
 bool NewMoonGame::showUI_ = true;
@@ -131,7 +134,7 @@ void NewMoonGame::ImGui() {
 	ImGui::Image(ImTextureID(gameObjectIconGpuHandle.ptr), ImVec2(40.0f, 40.0f));
 
 	ImGui::SameLine();
-	if (!gameObjects_.empty()) {
+	if (!gameObjects_.empty() || staticMeshObject_) {
 		ImGui::SetCursorPos(ImVec2(44.0f, imagePos.y + 2.0f));
 		ImGui::SetNextItemWidth(162.0f);
 		if (ImGui::BeginCombo("##GameObjectsCombo",
@@ -146,12 +149,30 @@ void NewMoonGame::ImGui() {
 
 						selectedParticle_ = nullptr;
 						cameraDisplayEnable_ = false;
+						selectedStaticMeshObject_ = false;
 					}
 					if (isSelected) {
 						ImGui::SetItemDefaultFocus();
 					}
 				}
 			}
+
+			if (staticMeshObject_) {
+				bool isSelected = selectedStaticMeshObject_;
+				if (ImGui::Selectable(staticMeshObject_->GetName().c_str(), isSelected)) {
+
+					currentObjectIndex_ = -1;
+					selectedGameObject_ = nullptr;
+					selectedParticle_ = nullptr;
+					cameraDisplayEnable_ = false;
+					selectedStaticMeshObject_ = true;
+				}
+				if (isSelected) {
+
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
 			ImGui::EndCombo();
 		}
 	} else {
@@ -181,6 +202,7 @@ void NewMoonGame::ImGui() {
 
 						selectedGameObject_ = nullptr;
 						cameraDisplayEnable_ = false;
+						selectedStaticMeshObject_ = false;
 					}
 					if (isSelected) {
 						ImGui::SetItemDefaultFocus();
@@ -258,6 +280,11 @@ void NewMoonGame::ImGui() {
 		ImGui::Text(selectedParticle_->GetName().c_str());
 		ImGui::Separator();
 		selectedParticle_->ImGui();
+	} else if (selectedStaticMeshObject_ && staticMeshObject_) {
+
+		ImGui::Text(staticMeshObject_->GetName().c_str());
+		ImGui::Separator();
+		staticMeshObject_->ImGui();
 	} else {
 
 		ImGui::Text("No Selected");
@@ -505,6 +532,10 @@ void NewMoonGame::ClearAllGameInformation() {
 	selectedParticle_ = nullptr;
 
 	collisionManager_->ResetLog();
+}
+
+void NewMoonGame::SetToStaticMeshImGui(StaticMeshModel* staticMeshObject) {
+	staticMeshObject_ = staticMeshObject;
 }
 
 void NewMoonGame::SetToImGui(IBaseParticle* particle) {

@@ -96,8 +96,7 @@ inline void BaseParticle<particleType>::ImGui() {
 
 	// Transform
 	if (ImGui::CollapsingHeader("Transform")) {
-		ImGui::DragFloat3(("Translate##" + std::to_string(ptrAddress)).c_str(), &parameter_.translate.x, 0.01f);
-
+		
 		if (parameter_.isUniform) {
 
 			ImGui::DragFloat3(("Scale##" + std::to_string(ptrAddress)).c_str(), &parameter_.scale.uniform.x, 0.01f);
@@ -168,39 +167,39 @@ inline void BaseParticle<particleType>::ImGui() {
 
 		// Frequency
 		ImGui::DragFloat(("Frequency##" + std::to_string(ptrAddress)).c_str(), &parameter_.frequency, 0.1f, 0.0f, 10.0f);
-	}
 
-	// Easing Type
-	bool hasEasingType = parameter_.easingType.has_value();
-	if (ImGui::Checkbox(("Has Easing##" + std::to_string(ptrAddress)).c_str(), &hasEasingType)) {
-		if (hasEasingType) {
-			parameter_.easingType = EasingType::EaseInSine;
-		} else {
-			parameter_.easingType = std::nullopt;
+		// Easing Type
+		bool hasEasingType = parameter_.easingType.has_value();
+		if (ImGui::Checkbox(("Has Easing##" + std::to_string(ptrAddress)).c_str(), &hasEasingType)) {
+			if (hasEasingType) {
+				parameter_.easingType = EasingType::EaseInSine;
+			} else {
+				parameter_.easingType = std::nullopt;
+			}
 		}
-	}
 
-	// Easing Type Selection
-	if (parameter_.easingType.has_value()) {
-		int easingIndex = static_cast<int>(*parameter_.easingType);
+		// Easing Type Selection
+		if (parameter_.easingType.has_value()) {
+			int easingIndex = static_cast<int>(*parameter_.easingType);
 
-		const char* easingOptions[] = {
-			"EaseInSine", "EaseInQuad", "EaseInCubic", "EaseInQuart", "EaseInQuint", "EaseInExpo", "EaseInCirc",
-			"EaseOutSine", "EaseOutQuad", "EaseOutCubic", "EaseOutQuart", "EaseOutQuint", "EaseOutExpo", "EaseOutCirc",
-			"EaseInOutSine", "EaseInOutQuad", "EaseInOutCubic", "EaseInOutQuart", "EaseInOutQuint", "EaseInOutExpo", "EaseInOutCirc"
-		};
+			const char* easingOptions[] = {
+				"EaseInSine", "EaseInQuad", "EaseInCubic", "EaseInQuart", "EaseInQuint", "EaseInExpo", "EaseInCirc",
+				"EaseOutSine", "EaseOutQuad", "EaseOutCubic", "EaseOutQuart", "EaseOutQuint", "EaseOutExpo", "EaseOutCirc",
+				"EaseInOutSine", "EaseInOutQuad", "EaseInOutCubic", "EaseInOutQuart", "EaseInOutQuint", "EaseInOutExpo", "EaseInOutCirc"
+			};
 
-		if (ImGui::CollapsingHeader("Easing Type")) {
-			if (ImGui::BeginCombo(("Easing Type##" + std::to_string(ptrAddress)).c_str(), easingOptions[easingIndex])) {
-				for (int i = 0; i < IM_ARRAYSIZE(easingOptions); i++) {
-					const bool isSelected = (easingIndex == i);
-					if (ImGui::Selectable(easingOptions[i], isSelected)) {
-						parameter_.easingType = static_cast<EasingType>(i);
-						easingIndex = i;
+			if (ImGui::CollapsingHeader("Easing Type")) {
+				if (ImGui::BeginCombo(("Easing Type##" + std::to_string(ptrAddress)).c_str(), easingOptions[easingIndex])) {
+					for (int i = 0; i < IM_ARRAYSIZE(easingOptions); i++) {
+						const bool isSelected = (easingIndex == i);
+						if (ImGui::Selectable(easingOptions[i], isSelected)) {
+							parameter_.easingType = static_cast<EasingType>(i);
+							easingIndex = i;
+						}
+						if (isSelected) ImGui::SetItemDefaultFocus();
 					}
-					if (isSelected) ImGui::SetItemDefaultFocus();
+					ImGui::EndCombo();
 				}
-				ImGui::EndCombo();
 			}
 		}
 	}

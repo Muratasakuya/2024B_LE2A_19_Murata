@@ -86,12 +86,13 @@ protected:
 
 	std::optional<std::string> parentFolderName_;
 
+	// 基本なにもいじらない
+	std::vector<MaterialObject3D> materials_;
+
 private:
 	//===================================================================*/
 	//							  private Methods
 	//===================================================================*/
-
-	std::vector<MaterialObject3D> materials_;
 
 	std::string name_ = "object";
 

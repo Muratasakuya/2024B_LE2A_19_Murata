@@ -92,4 +92,7 @@ public:
 	// ベクトル変換
 	static Vector3 TransferNormal(const Vector3& v, const Matrix4x4& m);
 
+	// 反射
+	static Vector3 Reflect(const Vector3& input, const Vector3& normal);
+
 };

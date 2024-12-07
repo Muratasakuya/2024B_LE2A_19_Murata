@@ -236,3 +236,10 @@ Vector3 Vector3::TransferNormal(const Vector3& v, const Matrix4x4& m) {
 
 	return matrix;
 }
+
+// 反射
+Vector3 Vector3::Reflect(const Vector3& input, const Vector3& normal) {
+
+	float dotProduct = Dot(input, normal);
+	return input - normal * (2.0f * dotProduct);
+}

@@ -9,7 +9,7 @@ void DXRasterizerState::Create(PipelineType pipelineType) {
 	Object2D, OffscreenCopy, OffscreenGrayscale, OffscreenSepiaTone,
 	OffscreenVignette, OffscreenSmoothing, OffscreenGaussianFilter,
 	OffscreenLuminanceOutline, OffscreenOutline, OffscreenRadialBlur,
-	OffscreenDissolve,RailNoneBackCulling
+	OffscreenDissolve,RailNoneBackCulling,pStaticMesh
 	};
 
 	if (noCullPipelineTypes.find(pipelineType) != noCullPipelineTypes.end()) {

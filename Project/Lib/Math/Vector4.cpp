@@ -72,6 +72,30 @@ void Vector4::SetInit(float value) {
 	this->w = value;
 }
 
+Vector4 Color::HSVtoRGB(float hue, float saturation, float value) {
+
+	float c = value * saturation;
+	float x = c * (1.0f - std::fabs(std::fmod(hue / 60.0f, 2.0f) - 1.0f));
+	float m = value - c;
+
+	float r, g, b;
+	if (hue < 60.0f) {
+		r = c; g = x; b = 0.0f;
+	} else if (hue < 120.0f) {
+		r = x; g = c; b = 0.0f;
+	} else if (hue < 180.0f) {
+		r = 0.0f; g = c; b = x;
+	} else if (hue < 240.0f) {
+		r = 0.0f; g = x; b = c;
+	} else if (hue < 300.0f) {
+		r = x; g = 0.0f; b = c;
+	} else {
+		r = c; g = 0.0f; b = x;
+	}
+
+	return Vector4(r + m, g + m, b + m, 1.0f);
+}
+
 // 16進数 -> Vector4 色変換
 Vector4 Color::Convert(int color) {
 

@@ -30,7 +30,6 @@ public:
 
 	bool isUniform; // 均一か非均一
 
-	Vector3 translate;
 	ParticleValue scale;
 
 	std::optional<float> speed = std::nullopt;

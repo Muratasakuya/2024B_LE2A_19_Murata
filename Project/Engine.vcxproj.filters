@@ -29,6 +29,8 @@
     <FxCompile Include="Resources\Shaders\PrimitiveLine.PS.hlsl" />
     <FxCompile Include="Resources\Shaders\WakeBoard.VS.hlsl" />
     <FxCompile Include="Resources\Shaders\DissolveParticle.PS.hlsl" />
+    <FxCompile Include="Resources\Shaders\StaticMesh.VS.hlsl" />
+    <FxCompile Include="Resources\Shaders\StaticMesh.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.cpp" />
@@ -116,6 +118,10 @@
     <ClCompile Include="Game\Particles\PlayerChaseParticle.cpp" />
     <ClCompile Include="Game\Particles\FieldParticle.cpp" />
     <ClCompile Include="Game\Particles\DispersionParticle.cpp" />
+    <ClCompile Include="Game\Particles\InjectionParticle.cpp" />
+    <ClCompile Include="Game\Objects\StaticMeshModel.cpp" />
+    <ClCompile Include="Game\Components\StaticMeshBuffer.cpp" />
+    <ClCompile Include="Game\Components\TriangleVertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -208,6 +214,10 @@
     <ClInclude Include="Game\Particles\PlayerChaseParticle.h" />
     <ClInclude Include="Game\Particles\FieldParticle.h" />
     <ClInclude Include="Game\Particles\DispersionParticle.h" />
+    <ClInclude Include="Game\Particles\InjectionParticle.h" />
+    <ClInclude Include="Game\Objects\StaticMeshModel.h" />
+    <ClInclude Include="Game\Components\StaticMeshBuffer.h" />
+    <ClInclude Include="Game\Components\TriangleVertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />
@@ -216,5 +226,6 @@
     <None Include="Resources\Shaders\Particle.hlsli" />
     <None Include="Resources\Shaders\PhongReflection.hlsli" />
     <None Include="Resources\Shaders\WakeBoard.hlsli" />
+    <None Include="Resources\Shaders\StaticMesh.hlsli" />
   </ItemGroup>
 </Project>

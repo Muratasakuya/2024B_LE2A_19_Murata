@@ -44,6 +44,8 @@ public:
 	/*-------------------------------------------------------------*/
 	/// 関数
 
+	static Matrix4x4 MakeZeroMatrix();
+
 	// 積
 	static Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2);
 	// 逆行列

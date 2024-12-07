@@ -70,6 +70,7 @@ public:
 	DXGI_SWAP_CHAIN_DESC1& GetSwapChainDesc();
 
 	ID3D12Resource* GetRenderTexture() const { return renderTextureResource_.Get(); }
+	ID3D12Resource* GetGuiRenderTexture() const { return guiRenderTextureResource_.Get(); }
 	D3D12_GPU_DESCRIPTOR_HANDLE& GetRendreTextureGpuHandle() { return renderTextureGpuHandle_; }
 	D3D12_GPU_DESCRIPTOR_HANDLE& GetGuiRendreTextureGpuHandle() { return guiRenderTextureGpuHandle_; }
 	D3D12_GPU_DESCRIPTOR_HANDLE& GetDepthGpuHandle() { return depthGpuHandle_; }

@@ -3,44 +3,36 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
-#include "Game/Components/InputAssembler.h"
-
-// c++
-#include <memory>
-#include <vector>
+#include <Game/Methods/Particle/BaseParticle.h>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*							BaseModel Class
+*						InjectionParticle Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class BaseModel {
+class InjectionParticle
+	:public BaseParticle<ParticleType::kInjection> {
 public:
 	//===================================================================*/
 	//							public Methods
 	//===================================================================*/
 
-	BaseModel() = default;
-	virtual ~BaseModel() = default;
+	InjectionParticle() = default;
+	~InjectionParticle() = default;
 
-	virtual void Init(const std::string& modelName);
+	void Init() override;
 
-	// Setter
-	void SetPipelineType(const PipelineType& pipelineType);
+	void Update() override;
 
-	// Getter
-	InputAssembler GetIA() const { return inputAssembler_; }
+	void DerivedImGui() override;
 
-protected:
+private:
 	//===================================================================*/
-	//							protected Methods
+	//							private Methods
 	//===================================================================*/
 
-	size_t meshNum_;
-	ModelData modelData_;
+	//===================================================================*/
+	///* variables
 
-	InputAssembler inputAssembler_;
-
-	PipelineType pipelineType_;
-	std::optional<PipelineType> setPipelineType_;
+	float emitTimer_ = 0.0f; // 0.5秒間隔を管理
+	int emitCount_ = 0;      // 4回実行するためのカウンタ
 
 };
