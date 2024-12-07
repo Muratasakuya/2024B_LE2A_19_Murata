@@ -539,6 +539,8 @@ void NewMoonGame::ClearAllGameInformation() {
 	particles_.clear();
 	selectedParticle_ = nullptr;
 
+	staticMeshObject_ = nullptr;
+
 	collisionManager_->ResetLog();
 }
 
