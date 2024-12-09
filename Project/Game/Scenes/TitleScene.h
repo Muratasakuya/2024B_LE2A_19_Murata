@@ -9,10 +9,6 @@
 #include "Game/Objects/Player.h"
 #include "Game/Template/TemplateField.h"
 
-//* particle
-#include "Game/Particles/FieldParticle.h"
-#include "Game/Particles/DispersionParticle.h"
-
 /*////////////////////////////////////////////////////////////////////////////////
 *								TitleScene Class
 ////////////////////////////////////////////////////////////////////////////////*/
@@ -42,6 +38,10 @@ private:
 	//===================================================================*/
 
 	const std::string& baseModelDirectory_ = "./Resources/Obj";
+
+	std::unique_ptr<TemplateField> field_;
+
+	std::unique_ptr<Player> player_;
 
 private:
 	//===================================================================*/

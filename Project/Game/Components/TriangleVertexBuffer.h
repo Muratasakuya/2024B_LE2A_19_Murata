@@ -3,51 +3,40 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/3D/Base/BaseGameObject.h"
-#include "Game/3D/Base/Collider.h"
-#include "Game/Methods/Utility/MoveUtility.h"
+#include "Engine/MyDirectXClass/DXConstBuffer.h"
 
-// c++
-#include <memory>
+//* bufferSize
+struct TriangleDataForGPU {
+
+	Vector4 vertex0;
+	Vector4 vertex1;
+	Vector4 vertex2;
+};
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Player Class
+*							TriangleVertexBuffer Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class Player
-	:public BaseGameObject {
+class TriangleVertexBuffer :
+	public DXConstBuffer<TriangleDataForGPU> {
 public:
 	//===================================================================*/
-	//							public Methods
+	//							public Functions
 	//===================================================================*/
 
-	Player() = default;
-	~Player();
+	TriangleVertexBuffer() = default;
+	~TriangleVertexBuffer() = default;
 
-	void Init();
+	void Init(UINT instanceCount);
 
 	void Update();
 
-	void Draw();
+	UINT GetRootParameterIndex() const;
 
-	void DerivedImGui() override;
-
-	//* getter *//
-
-	Vector3 GetForward() const;
-
-private:
+public:
 	//===================================================================*/
-	//							private Methods
+	//							public Variable
 	//===================================================================*/
 
-	//===================================================================*/
-	///* variables
-
-	MoveUtility move_;
-
-	//===================================================================*/
-	///* functions
-
-	void KeyMove();
+	std::vector<TriangleDataForGPU> properties;
 
 };

@@ -66,6 +66,8 @@ public:
 	void SetInit(float value);
 	// 自身の正規化
 	Vector3 Normalize() const;
+	// ノルム
+	float Length() const;
 
 	// 三角形の頂点から法線の取得
 	static Vector3 CalculateTriangleNormal(const Vector4& v0, const Vector4& v1, const Vector4& v2);
@@ -91,5 +93,8 @@ public:
 
 	// ベクトル変換
 	static Vector3 TransferNormal(const Vector3& v, const Matrix4x4& m);
+
+	// 反射
+	static Vector3 Reflect(const Vector3& input, const Vector3& normal);
 
 };

@@ -20,6 +20,10 @@ void PlayerChaseParticle::Init() {
 	parameter_.color = Vector4(0.8f, 0.8f, 0.8f, 1.0f);
 	parameter_.easingType = EasingType::EaseInSine;
 
+	// EmitterのAABBのサイズと座標
+	parameter_.aabb.center.Init();
+	parameter_.aabb.extent = Vector3(0.1f, 0.1f, 0.1f);
+
 	BaseParticle::Create("cube.obj"); //* 使用するModelの名前で初期化
 
 }
@@ -28,12 +32,12 @@ void PlayerChaseParticle::Update() {
 
 	BaseParticle::UpdateFrequencyEmit(NewMoonGame::GetDeltaTime());
 
-	parameter_.prePos = parameter_.translate;
+	parameter_.prePos = parameter_.aabb.center;
 	particleSystem_->Update();
 }
 
 void PlayerChaseParticle::SetPos(const Vector3& pos) {
 
-	parameter_.translate = pos;
-	parameter_.translate.y = 0.0f;
+	parameter_.aabb.center = pos;
+	parameter_.aabb.center.y = 0.0f;
 }

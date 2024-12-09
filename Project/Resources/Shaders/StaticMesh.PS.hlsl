@@ -1,7 +1,7 @@
-#include "Particle.hlsli"
+#include "StaticMesh.hlsli"
 
 /*===========================================================
-                     Particle PS Shader
+                   StaticMesh PS Shader
 ===========================================================*/
 
 struct PixelShaderOutput {
@@ -26,7 +26,6 @@ PixelShaderOutput main(VertexShaderOutput input) {
 
 	output.color.rgb = textureColor.rgb * input.color.rgb;
 	output.color.a = textureColor.a * input.color.a;
-
 
 	return output;
 }

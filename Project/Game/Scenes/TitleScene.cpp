@@ -48,11 +48,25 @@ void TitleScene::Run() {
 
 void TitleScene::Load() {
 
+	NewMoonGame::LoadTexture("templateField");
+
+	NewMoonGame::LoadModel(baseModelDirectory_, "cube.obj");
+
 }
 
 void TitleScene::Init() {
 
 	Load();
+
+	field_ = std::make_unique<TemplateField>();
+	field_->Init();
+	
+	player_ = std::make_unique<Player>();
+	player_->Init();
+
+	//================================================================================
+	//* SceneMethod *//
+	//================================================================================
 
 	sceneName_ = "Title";
 
@@ -60,9 +74,17 @@ void TitleScene::Init() {
 
 void TitleScene::Update() {
 
+	field_->Update();
+
+	player_->Update();
+
 }
 
 void TitleScene::Draw() {
+
+	field_->Draw();
+
+	player_->Draw();
 
 }
 

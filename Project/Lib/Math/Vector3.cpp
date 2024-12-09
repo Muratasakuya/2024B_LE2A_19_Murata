@@ -107,6 +107,11 @@ Vector3 Vector3::Normalize() const {
 	return Vector3(x / length, y / length, z / length);
 }
 
+float Vector3::Length() const {
+
+	return std::sqrtf(x * x + y * y + z * z);
+}
+
 // 三角形の頂点から法線の取得
 Vector3 Vector3::CalculateTriangleNormal(const Vector4& v0, const Vector4& v1, const Vector4& v2) {
 
@@ -235,4 +240,11 @@ Vector3 Vector3::TransferNormal(const Vector3& v, const Matrix4x4& m) {
 	matrix.z = v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2];
 
 	return matrix;
+}
+
+// 反射
+Vector3 Vector3::Reflect(const Vector3& input, const Vector3& normal) {
+
+	float dotProduct = Dot(input, normal);
+	return input - normal * (2.0f * dotProduct);
 }

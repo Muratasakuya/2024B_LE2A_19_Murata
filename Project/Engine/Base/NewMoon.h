@@ -89,7 +89,6 @@ public:
 	static void SetGraphicsPipeline(ID3D12GraphicsCommandList* commandList, PipelineType pipelineType, BlendMode blendMode);
 	static void SetComputePipeline(ID3D12GraphicsCommandList* commandList, ComputePipelineType csPipelineType);
 	static void TransitionBarrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
-	static void ClearDepthBuffer();
 
 	///===============================================================================
 	// Getter

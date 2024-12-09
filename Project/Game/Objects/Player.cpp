@@ -23,12 +23,11 @@ void Player::Init() {
 	BaseGameObject::ApplyJsonForColor();
 	BaseGameObject::ApplyJsonForTransform(transform_);
 
-	moveSpeed_ = 0.1f;
-
-	//* particle *//
-
-	chaseParticle_ = std::make_unique<PlayerChaseParticle>();
-	chaseParticle_->Init();
+	move_.AllKey();
+	move_.velocity.x = 0.1f;
+	move_.velocity.z = 0.1f;
+	move_.jumpStrength = 5.0f;
+	move_.groundY = transform_.scale.y;
 
 }
 
@@ -39,69 +38,27 @@ void Player::Update() {
 
 	BaseGameObject::Update();
 
-	float offsetDistance = 0.25f;
-	Vector3 offset = GetForward() * (-offsetDistance);
-	Vector3 chasePos = transform_.GetWorldPos() + offset;
-
-	chaseParticle_->Update();
-	chaseParticle_->SetPos(chasePos);
-
 }
 
 void Player::Draw() {
 
 	BaseGameObject::Draw();
 
-	chaseParticle_->Draw(kBlendModeAdd);
-
 }
 
 void Player::KeyMove() {
 
-	float moveX = 0.0f;
-	float moveZ = 0.0f;
+	move_.KeyMove(transform_);
+	move_.RotateToDirection(transform_);
+	move_.Jump(transform_, DIK_SPACE);
 
-	if (NewMoonGame::PushKey(DIK_D)) {
-
-		moveX += moveSpeed_;
-	} else if (NewMoonGame::PushKey(DIK_A)) {
-
-		moveX -= moveSpeed_;
-	}
-
-	if (NewMoonGame::PushKey(DIK_W)) {
-
-		moveZ += moveSpeed_;
-	} else if (NewMoonGame::PushKey(DIK_S)) {
-
-		moveZ -= moveSpeed_;
-	}
-
-	if (moveX != 0.0f || moveZ != 0.0f) {
-
-		// 移動の適用
-		transform_.translation.x += moveX;
-		transform_.translation.z += moveZ;
-
-		float length = sqrt(moveX * moveX + moveZ * moveZ);
-		if (length != 0.0f) {
-			moveX /= length;
-			moveZ /= length;
-		}
-
-		float angle = atan2(moveX, moveZ);
-		const float lerpRate = 0.2f;
-
-		// 動いている方向に回転を合わせる
-		transform_.eulerRotate.y = Math::LerpShortAngle(transform_.eulerRotate.y, angle, lerpRate);
-		transform_.rotation = Quaternion::EulerToQuaternion(transform_.eulerRotate);
-	}
 }
 
 void Player::DerivedImGui() {
 #ifdef _DEBUG
 
-	ImGui::DragFloat("moveSpeed", &moveSpeed_, 0.01f);
+	ImGui::Text("jumpParameter");
+	ImGui::DragFloat("strength", &move_.jumpStrength, 0.01f);
 
 #endif // _DEBUG
 }

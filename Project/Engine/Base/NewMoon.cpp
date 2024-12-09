@@ -170,10 +170,6 @@ void NewMoon::SetComputePipeline(ID3D12GraphicsCommandList* commandList, Compute
 	pipelineManager_->SetComputePipeline(commandList, csPipelineType);
 }
 
-void NewMoon::ClearDepthBuffer() {
-	dxCommon_->ClearDepthBuffer();
-}
-
 void NewMoon::TransitionBarrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter) {
 	dxCommon_->TransitionBarrier(resource, stateBefore, stateAfter);
 }
