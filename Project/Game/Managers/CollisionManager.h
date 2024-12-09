@@ -4,7 +4,7 @@
 //								include
 //===================================================================*/
 #include "Game/3D/Base/Collider.h"
-#include "Lib/Math/Physics.h"
+#include "Game/Methods/Physics/Physics.h"
 
 // c++
 #include <list>

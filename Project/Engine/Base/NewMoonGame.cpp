@@ -116,10 +116,8 @@ void NewMoonGame::ImGui() {
 	ImGui::PopStyleVar();
 
 	ImGui::SetCursorPos(ImVec2(mainWindowPos_.x, 6.0f));
-	ImGui::BeginChild("Operation",
+	ImGui::BeginChild("Information",
 		ImVec2(768.0f, 44.0f),true, ImGuiWindowFlags_AlwaysUseWindowPadding);
-
-	ImGui::TextColored(ImVec4(0.8f, 0.0f, 0.0f, 1.0f), "PlayerMove: WASD");
 
 	ImGui::EndChild();
 

@@ -56,11 +56,11 @@ public:
 	void SetName(const std::string& name, uint32_t index = 0);
 	void SetLightingEnable(bool enable);
 	void SetAnimation(const std::string& animationName, bool play);
+	void SetWorldTransform(const WorldTransform& transform);
 	void SetUVTransform(
 		const std::optional<Vector3>& scale = std::nullopt,
 		const std::optional<Vector3>& rotate = std::nullopt,
 		const std::optional<Vector3>& translate = std::nullopt);
-	void SetWorldTransform(const WorldTransform& transform);
 
 	//* getter *//
 

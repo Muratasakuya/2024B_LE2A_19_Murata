@@ -67,4 +67,7 @@ struct Quaternion {
 	static float Dot(const Quaternion& q0, const Quaternion& q1);
 	// 任意の時刻の値を取得
 	static Quaternion CalculateValue(const std::vector<Keyframe<Quaternion>>& keyframes, float time);
+	// 進行方向に向きを合わせる
+	static Quaternion LookRotation(const Vector3& forward, const Vector3& up);
+
 };

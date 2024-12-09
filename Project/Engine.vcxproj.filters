@@ -109,7 +109,6 @@
     <ClCompile Include="Game\Methods\Particle\IBaseParticle.cpp" />
     <ClCompile Include="Game\Components\InputAssembler.cpp" />
     <ClCompile Include="Game\Template\TestGameObject.cpp" />
-    <ClCompile Include="Lib\Math\Physics.cpp" />
     <ClCompile Include="Engine\Managers\OffscreenManager.cpp" />
     <ClCompile Include="Game\Methods\Transition.cpp" />
     <ClCompile Include="Game\Template\TemplateField.cpp" />
@@ -122,6 +121,8 @@
     <ClCompile Include="Game\Objects\StaticMeshModel.cpp" />
     <ClCompile Include="Game\Components\StaticMeshBuffer.cpp" />
     <ClCompile Include="Game\Components\TriangleVertexBuffer.cpp" />
+    <ClCompile Include="Game\Methods\Utility\MoveUtility.cpp" />
+    <ClCompile Include="Game\Methods\Physics\Physics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -205,7 +206,6 @@
     <ClInclude Include="Game\Methods\Particle\IBaseParticle.h" />
     <ClInclude Include="Game\Components\InputAssembler.h" />
     <ClInclude Include="Game\Template\TestGameObject.h" />
-    <ClInclude Include="Lib\Math\Physics.h" />
     <ClInclude Include="Engine\Managers\OffscreenManager.h" />
     <ClInclude Include="Game\Methods\Transition.h" />
     <ClInclude Include="Game\Template\TemplateField.h" />
@@ -218,6 +218,8 @@
     <ClInclude Include="Game\Objects\StaticMeshModel.h" />
     <ClInclude Include="Game\Components\StaticMeshBuffer.h" />
     <ClInclude Include="Game\Components\TriangleVertexBuffer.h" />
+    <ClInclude Include="Game\Methods\Utility\MoveUtility.h" />
+    <ClInclude Include="Game\Methods\Physics\Physics.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

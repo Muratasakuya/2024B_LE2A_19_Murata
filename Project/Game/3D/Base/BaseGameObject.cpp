@@ -35,7 +35,7 @@ void BaseGameObject::Init(const std::string& modelName, const std::string& anima
 	animationModel_->Init(modelName, animationName);
 
 	animationTransform_.Init(modelName, animationName);
-	color_.SetInit(1.0f);
+	color_ = Color::White();
 
 	materials_.emplace_back();
 	for (auto& material : materials_) {

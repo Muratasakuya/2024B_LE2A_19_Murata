@@ -7,7 +7,7 @@
 #include "Game/Components/MaterialObject.h"
 #include "Game/Components/CameraObject.h"
 #include "Lib/Structure.h"
-#include "Lib/Math/Physics.h"
+#include "Game/Methods/Physics/Physics.h"
 
 // c++
 #include <unordered_map>

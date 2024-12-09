@@ -5,9 +5,7 @@
 //===================================================================*/
 #include "Game/3D/Base/BaseGameObject.h"
 #include "Game/3D/Base/Collider.h"
-
-//* particle
-#include "Game/Particles/PlayerChaseParticle.h"
+#include "Game/Methods/Utility/MoveUtility.h"
 
 // c++
 #include <memory>
@@ -45,9 +43,7 @@ private:
 	//===================================================================*/
 	///* variables
 
-	float moveSpeed_;
-
-	std::unique_ptr<PlayerChaseParticle> chaseParticle_;
+	MoveUtility move_;
 
 	//===================================================================*/
 	///* functions

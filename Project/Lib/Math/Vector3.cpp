@@ -107,6 +107,11 @@ Vector3 Vector3::Normalize() const {
 	return Vector3(x / length, y / length, z / length);
 }
 
+float Vector3::Length() const {
+
+	return std::sqrtf(x * x + y * y + z * z);
+}
+
 // 三角形の頂点から法線の取得
 Vector3 Vector3::CalculateTriangleNormal(const Vector4& v0, const Vector4& v1, const Vector4& v2) {
 

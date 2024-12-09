@@ -48,14 +48,9 @@ void TitleScene::Run() {
 
 void TitleScene::Load() {
 
-	NewMoonGame::LoadTexture("checkerBoard");
-	NewMoonGame::LoadTexture("circle");
-	NewMoonGame::LoadTexture("noise");
+	NewMoonGame::LoadTexture("templateField");
 
 	NewMoonGame::LoadModel(baseModelDirectory_, "cube.obj");
-	NewMoonGame::LoadModel(baseModelDirectory_, "sphere.obj");
-	NewMoonGame::LoadModel(baseModelDirectory_, "plane.obj");
-	NewMoonGame::LoadModel(baseModelDirectory_, "teapot.obj");
 
 }
 
@@ -63,27 +58,15 @@ void TitleScene::Init() {
 
 	Load();
 
+	field_ = std::make_unique<TemplateField>();
+	field_->Init();
+	
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
-	staticMesh_ = std::make_unique<StaticMeshModel>();
-	staticMesh_->Init();
-
-	NewMoonGame::SetToStaticMeshImGui(staticMesh_.get());
-
-	field_ = std::make_unique<TemplateField>();
-	field_->Init();
-
-	fieldParticle_ = std::make_unique<FieldParticle>();
-	fieldParticle_->Init();
-	
-	injectionParticle_ = std::make_unique<InjectionParticle>();
-	injectionParticle_->Init();
-
-	dispersionParticle = std::make_unique<DispersionParticle>();
-	dispersionParticle->Init();
-
-	NewMoonGame::GameCamera()->GetFollowCamera()->Init(&player_->GetWorldTransform());
+	//================================================================================
+	//* SceneMethod *//
+	//================================================================================
 
 	sceneName_ = "Title";
 
@@ -95,14 +78,6 @@ void TitleScene::Update() {
 
 	player_->Update();
 
-	staticMesh_->Update();
-
-	fieldParticle_->Update();
-
-	injectionParticle_->Update();
-
-	dispersionParticle->Update();
-
 }
 
 void TitleScene::Draw() {
@@ -110,14 +85,6 @@ void TitleScene::Draw() {
 	field_->Draw();
 
 	player_->Draw();
-
-	staticMesh_->Draw();
-
-	fieldParticle_->Draw(kBlendModeAdd);
-
-	injectionParticle_->Draw(kBlendModeAdd);
-
-	dispersionParticle->Draw(kBlendModeAdd);
 
 }
 
