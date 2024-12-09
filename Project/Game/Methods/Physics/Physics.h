@@ -1,12 +1,36 @@
 #pragma once
 
 //===================================================================*/
-//								include
+//	include
 //===================================================================*/
-#include "Vector3.h"
+#include "Game/Components/BaseTransform.h"
 
-/*==========================================================*/
+/*////////////////////////////////////////////////////////////////////////////////
+*	Physics Class
+////////////////////////////////////////////////////////////////////////////////*/
+class Physics {
+public:
+	//===================================================================*/
+	//	public Methods
+	//===================================================================*/
+	
+	//===================================================================*/
+	///* functions
+
+	Physics() = default;
+	~Physics() = default;
+
+
+
+};
+
+/*////////////////////////////////////////////////////////////////////////////////
+*	namespace Methods
+////////////////////////////////////////////////////////////////////////////////*/
+
+/*==============================================================================*/
 /// Direction
+/*==============================================================================*/
 
 namespace Direction {
 
@@ -45,7 +69,7 @@ namespace Direction {
 		return Vector3(1.0f, 1.0f, 0.0f).Normalize();
 	} // +X, +Y
 
-	inline Vector3 UpLeft() { 
+	inline Vector3 UpLeft() {
 		return Vector3(-1.0f, 1.0f, 0.0f).Normalize();
 	} // -X, +Y
 
@@ -53,16 +77,16 @@ namespace Direction {
 		return Vector3(1.0f, -1.0f, 0.0f).Normalize();
 	} // +X, -Y
 
-	inline Vector3 DownLeft() { 
+	inline Vector3 DownLeft() {
 		return Vector3(-1.0f, -1.0f, 0.0f).Normalize();
 	} // -X, -Y
 
 	// 斜め方向 (3次元空間: XYZ)
 	inline Vector3 UpForwardRight() {
-		return Vector3(1.0f, 1.0f, 1.0f).Normalize(); 
+		return Vector3(1.0f, 1.0f, 1.0f).Normalize();
 	}  // +X, +Y, +Z
 
-	inline Vector3 UpForwardLeft() { 
+	inline Vector3 UpForwardLeft() {
 		return Vector3(-1.0f, 1.0f, 1.0f).Normalize();
 	}  // -X, +Y, +Z
 

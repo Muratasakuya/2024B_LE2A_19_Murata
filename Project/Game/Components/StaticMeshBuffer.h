@@ -3,51 +3,39 @@
 //===================================================================*/
 //								include
 //===================================================================*/
-#include "Game/3D/Base/BaseGameObject.h"
-#include "Game/3D/Base/Collider.h"
-#include "Game/Methods/Utility/MoveUtility.h"
+#include "Engine/MyDirectXClass/DXConstBuffer.h"
 
-// c++
-#include <memory>
+//* bufferSize
+struct StaticMeshForGPU {
+
+	Matrix4x4 WVP;
+	Vector4 color;
+};
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Player Class
+*							StaticMeshBuffer Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class Player
-	:public BaseGameObject {
+class StaticMeshBuffer :
+	public DXConstBuffer<StaticMeshForGPU> {
 public:
 	//===================================================================*/
-	//							public Methods
+	//							public Functions
 	//===================================================================*/
 
-	Player() = default;
-	~Player();
+	StaticMeshBuffer() = default;
+	~StaticMeshBuffer() = default;
 
-	void Init();
+	void Init(UINT instanceCount);
 
 	void Update();
 
-	void Draw();
+	UINT GetRootParameterIndex() const;
 
-	void DerivedImGui() override;
-
-	//* getter *//
-
-	Vector3 GetForward() const;
-
-private:
+public:
 	//===================================================================*/
-	//							private Methods
+	//							public Variable
 	//===================================================================*/
 
-	//===================================================================*/
-	///* variables
-
-	MoveUtility move_;
-
-	//===================================================================*/
-	///* functions
-
-	void KeyMove();
+	std::vector<StaticMeshForGPU> properties;
 
 };

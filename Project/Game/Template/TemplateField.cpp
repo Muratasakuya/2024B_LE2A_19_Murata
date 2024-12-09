@@ -15,7 +15,7 @@ void TemplateField::Init() {
 	BaseGameObject::Init(modelName_);
 	BaseGameObject::SetName("templateField");
 
-	BaseGameObject::model_->SetTexture("checkerBoard");
+	BaseGameObject::model_->SetTexture("templateField");
 
 	parentFolderName_ = "./TemplateField/";
 

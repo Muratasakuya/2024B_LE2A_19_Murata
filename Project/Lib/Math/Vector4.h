@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 /// <summary>
 /// 4次元ベクトル
 /// </summary>
@@ -43,6 +45,8 @@ public:
 };
 
 namespace Color {
+
+	Vector4 HSVtoRGB(float hue, float saturation, float value);
 
 	// 16進数 -> Vector4 色変換
 	Vector4 Convert(int color);

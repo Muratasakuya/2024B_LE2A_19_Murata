@@ -24,6 +24,9 @@
 // directX
 #include <Externals/DirectXTex/DirectXTex.h>
 
+// front
+class StaticMeshModel;
+
 /*////////////////////////////////////////////////////////////////////////////////
 *								NewMoonGame Class
 ////////////////////////////////////////////////////////////////////////////////*/
@@ -112,6 +115,8 @@ public:
 	static void SetToImGui(IBaseParticle* particle);
 	static void ClearAllGameInformation();
 
+	static void SetToStaticMeshImGui(StaticMeshModel* staticMeshObject);
+
 	//* command
 	static void SetEnvironmentCommand(ID3D12GraphicsCommandList* commandList, PipelineType pipeline);
 	
@@ -152,6 +157,9 @@ private:
 	static std::vector<IBaseParticle*> particles_;
 	static IBaseParticle* selectedParticle_;
 	static int currentParitcleIndex_;
+
+	static StaticMeshModel* staticMeshObject_;
+	static bool selectedStaticMeshObject_;
 
 	static std::unique_ptr<CollisionManager> collisionManager_;
 

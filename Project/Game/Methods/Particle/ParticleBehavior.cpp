@@ -162,13 +162,32 @@ void InjectionBehavior::Update(ParticleData& particle, const Matrix4x4& billboar
 		particle.easedLifeRatio = EasedValue(particle.easingType.value(), lifeRatio);
 	}
 	float easedLifeRatio = particle.easedLifeRatio.value_or(lifeRatio);
-
 	Vector3 easedVelocity = particle.velocity * easedLifeRatio;
-	particle.transform.translate += {
-		easedVelocity.x* NewMoonGame::GetDeltaTime(),
-			easedVelocity.y* NewMoonGame::GetDeltaTime(),
-			easedVelocity.z* NewMoonGame::GetDeltaTime()
-	};
+
+	if (particle.physics.reflectEnable) {
+
+		// 移動処理前の位置
+		Vector3 newPosition = particle.transform.translate + easedVelocity * NewMoonGame::GetDeltaTime();
+
+		// 衝突判定
+		if (newPosition.y <= particle.physics.reflectFace.y && particle.velocity.y < 0) {
+
+			particle.velocity = Vector3::Reflect(particle.velocity, Direction::Up()) * particle.physics.restitution;
+
+			// 位置の調整
+			newPosition.y = particle.physics.reflectFace.y;
+		}
+
+		// 更新された位置に適用
+		particle.transform.translate = newPosition;
+	} else {
+
+		particle.transform.translate += {
+			easedVelocity.x* NewMoonGame::GetDeltaTime(),
+				easedVelocity.y* NewMoonGame::GetDeltaTime(),
+				easedVelocity.z* NewMoonGame::GetDeltaTime()
+		};
+	}
 
 	Vector3 gravityEffect =
 		particle.physics.gravityDirection.value() * particle.physics.gravityStrength.value() * NewMoonGame::GetDeltaTime();

@@ -11,8 +11,6 @@ IDxcBlob* DXShaderCompiler::CompileShader(const std::wstring& filePath,
 	// 1.hlslファイルを読み込む
 	///////////////////////////////////////////////////////////
 
-	// ここからシェーダーをコンパイルする旨をログに出す
-	Log(ConvertWString(std::format(L"Begin CompilerShader, path:{}. profile:{}\n", filePath, profile)));
 	// hlslファイルを読み込む
 	IDxcBlobEncoding* shaderSouce = nullptr;
 	hr = dxcUtils->LoadFile(filePath.c_str(), nullptr, &shaderSouce);
@@ -70,8 +68,6 @@ IDxcBlob* DXShaderCompiler::CompileShader(const std::wstring& filePath,
 	IDxcBlob* shaderBlob = nullptr;
 	hr = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
 	assert(SUCCEEDED(hr));
-	// 成功したログを出す
-	Log(ConvertWString(std::format(L"Complie Succeeded, path:{}, profile:{}\n", filePath, profile)));
 	// もう使わないリソースを解放
 	shaderSouce->Release();
 	shaderResult->Release();
@@ -370,6 +366,24 @@ void DXShaderCompiler::Init(DXCommon* dxCommon, const PipelineType& pipelineType
 		psBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/WakeBoard.PS.hlsl", L"ps_6_0",
 			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
 		assert(psBlob_[pipelineType] != nullptr);
+	} else if (pipelineType == pStaticMesh) {
+
+		/*------------------------------------------------------------------------------------------------------------------------*/
+		//												StaticMesh Shader
+		/*------------------------------------------------------------------------------------------------------------------------*/
+
+		// 頂点シェーダ
+		vsBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/StaticMesh.VS.hlsl", L"vs_6_0",
+			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
+		assert(vsBlob_[pipelineType] != nullptr);
+
+		// ピクセルシェーダ
+		psBlob_[pipelineType] = CompileShader(L"./Resources/Shaders/StaticMesh.PS.hlsl", L"ps_6_0",
+			dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler());
+		assert(psBlob_[pipelineType] != nullptr);
+
+		// 成功したログを出す
+		Log(ConvertWString(std::format(L"Complie Succeeded\n")));
 	}
 }
 void DXShaderCompiler::Init(DXCommon* dxCommon, const ComputePipelineType& cspipelineType) {

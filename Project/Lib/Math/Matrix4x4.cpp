@@ -80,6 +80,13 @@ Matrix4x4& Matrix4x4::operator/=(const Matrix4x4& other) {
 /*-------------------------------------------------------------*/
 /// 関数
 
+Matrix4x4 Matrix4x4::MakeZeroMatrix() {
+	return Matrix4x4{ 0.0f, 0.0f, 0.0f, 0.0f,
+						0.0f, 0.0f, 0.0f, 0.0f,
+						0.0f, 0.0f, 0.0f, 0.0f,
+						0.0f, 0.0f, 0.0f, 0.0f };
+}
+
 Matrix4x4 Matrix4x4::Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
 
 	Matrix4x4 matrix{};

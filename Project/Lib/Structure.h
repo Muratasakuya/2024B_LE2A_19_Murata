@@ -317,6 +317,9 @@ struct ParticleValue {
 };
 struct ParticlePhysics {
 
+	bool reflectEnable;                      // 反射するかしないか
+	Vector3 reflectFace;                     // 反射する面
+	float restitution;                       // 反射率.1.0fで減衰しない
 	std::optional<Vector3> gravityDirection; // 重力のかかる方向
 	std::optional<float> gravityStrength;    // 重力の強さ
 };
@@ -370,10 +373,22 @@ struct Node {
 	std::string name;
 	std::vector<Node> children;
 };
+struct MeshTriangleData {
+	Vector4 v0;  // 頂点1の位置
+	Vector4 v1;  // 頂点2の位置
+	Vector4 v2;  // 頂点3の位置
+	Vector3 n0;  // 頂点1の法線
+	Vector3 n1;  // 頂点2の法線
+	Vector3 n2;  // 頂点3の法線
+	Vector2 uv0; // 頂点1のUV
+	Vector2 uv1; // 頂点2のUV
+	Vector2 uv2; // 頂点3のUV
+};
 struct MeshModelData {
 
 	std::vector<VertexData3D> vertices;
 	std::vector<uint32_t> indices;
+	std::vector<MeshTriangleData> triangles;
 	MaterialData material;
 };
 struct VertexWeightData {

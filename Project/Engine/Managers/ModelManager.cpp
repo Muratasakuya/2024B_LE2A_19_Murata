@@ -230,11 +230,35 @@ ModelData ModelManager::LoadObjFile(const std::string& directoryPath, const std:
 			aiFace& face = mesh->mFaces[faceIndex];
 			assert(face.mNumIndices == 3);
 
+			// 三角形ごとのデータ取得
+			MeshTriangleData triangle;
+
 			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
 
 				uint32_t vertexIndex = face.mIndices[element];
+				const auto& vertex = meshModelData.vertices[vertexIndex];
+
+				if (element == 0) {
+
+					triangle.v0 = vertex.pos;
+					triangle.n0 = vertex.normal;
+					triangle.uv0 = vertex.texcoord;
+				} else if (element == 1) {
+
+					triangle.v1 = vertex.pos;
+					triangle.n1 = vertex.normal;
+					triangle.uv1 = vertex.texcoord;
+				} else if (element == 2) {
+
+					triangle.v2 = vertex.pos;
+					triangle.n2 = vertex.normal;
+					triangle.uv2 = vertex.texcoord;
+				}
+
 				meshModelData.indices.push_back(vertexIndex);
 			}
+
+			meshModelData.triangles.push_back(triangle);
 		}
 
 		// bone解析

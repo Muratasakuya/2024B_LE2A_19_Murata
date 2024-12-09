@@ -234,3 +234,38 @@ Quaternion Quaternion::CalculateValue(const std::vector<Keyframe<Quaternion>>& k
 	// ここまで来た場合は1番後の時刻よりも後ろなので最後の値を返す
 	return (*keyframes.rbegin()).value;
 }
+
+Quaternion Quaternion::LookRotation(const Vector3& forward, const Vector3& up) {
+
+	Vector3 f = forward.Normalize();
+	Vector3 r = Vector3::Cross(up.Normalize(), f).Normalize();
+	Vector3 u = Vector3::Cross(f, r);
+
+	float m00 = r.x, m01 = u.x, m02 = f.x;
+	float m10 = r.y, m11 = u.y, m12 = f.y;
+	float m20 = r.z, m21 = u.z, m22 = f.z;
+
+	float trace = m00 + m11 + m22;
+
+	if (trace > 0.0f) {
+		float s = std::sqrt(trace + 1.0f) * 0.5f;
+		float invS = 0.25f / s;
+		return { invS * (m21 - m12), invS * (m02 - m20), invS * (m10 - m01), s };
+	}
+
+	if (m00 > m11 && m00 > m22) {
+		float s = std::sqrt(1.0f + m00 - m11 - m22) * 0.5f;
+		float invS = 0.25f / s;
+		return { s, invS * (m01 + m10), invS * (m02 + m20), invS * (m21 - m12) };
+	}
+
+	if (m11 > m22) {
+		float s = std::sqrt(1.0f + m11 - m00 - m22) * 0.5f;
+		float invS = 0.25f / s;
+		return { invS * (m01 + m10), s, invS * (m12 + m21), invS * (m02 - m20) };
+	}
+
+	float s = std::sqrt(1.0f + m22 - m00 - m11) * 0.5f;
+	float invS = 0.25f / s;
+	return { invS * (m02 + m20), invS * (m12 + m21), s, invS * (m10 - m01) };
+}

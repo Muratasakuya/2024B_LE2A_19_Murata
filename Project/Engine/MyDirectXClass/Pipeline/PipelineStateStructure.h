@@ -27,6 +27,7 @@ enum PipelineType {
 	OffscreenRadialBlur,       // オフスクリーン、ラジアルブラー
 	OffscreenDissolve,         // オフスクリーン、ディゾルブ
 	WaveBort,                  // ウェーブボード
+	pStaticMesh,               // 3DModel分割描画用
 };
 // ComputeShader
 enum ComputePipelineType {
@@ -46,7 +47,7 @@ enum BlendMode {
 };
 
 // パイプラインタイプの数
-static const uint32_t pipelineTypeNum = 20;
+static const uint32_t pipelineTypeNum = 21;
 // CSパイプラインタイプの数
 static const uint32_t computePipelineTypeNum = 1;
 
@@ -58,7 +59,7 @@ static const std::array<PipelineType, pipelineTypeNum> pipelineTypes = {
 	Primitive, Object2D, pObject3D, Object3DUnTex,SkinningObject3D, NormalParticle,DissolveParticle ,PrimitiveLine,RailNoneBackCulling,
 	OffscreenCopy, OffscreenGrayscale, OffscreenSepiaTone, OffscreenVignette,
 	OffscreenSmoothing, OffscreenGaussianFilter, OffscreenLuminanceOutline,OffscreenOutline,
-	OffscreenRadialBlur, OffscreenDissolve,WaveBort
+	OffscreenRadialBlur, OffscreenDissolve,WaveBort,pStaticMesh
 };
 static const std::array<ComputePipelineType, computePipelineTypeNum > computePipelineTypes = {
 
