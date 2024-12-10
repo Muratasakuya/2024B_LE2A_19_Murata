@@ -213,13 +213,12 @@ void DXCommon::BeginPreOffscreen() {
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvManager_->GetCPUHandle(index);
 	rtvManager_->Create(index, renderTextureResource_.Get());
 
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = descriptor_->GetDSVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
-	commandList_->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+	commandList_->OMSetRenderTargets(1, &rtvHandle, false, &dsvManager_->GetNoramlCPUHandle());
 
 	float kRenderTargetClearColor[] = { clearColor_.x, clearColor_.y, clearColor_.z, clearColor_.w };
 	commandList_->ClearRenderTargetView(rtvHandle, kRenderTargetClearColor, 0, nullptr);
 	// 指定した深度で画面全体をクリアする、深度バッファクリア
-	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	commandList_->ClearDepthStencilView(dsvManager_->GetNoramlCPUHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	// ビューポートの設定
 	viewport_ =
@@ -301,9 +300,7 @@ void DXCommon::PreDraw() {
 		rtvHandles[i] = rtvManager_->GetCPUHandle(i);
 	}
 
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = descriptor_->GetDSVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
-
-	commandList_->OMSetRenderTargets(1, &rtvHandles[backBufferIndex_], false, &dsvHandle);
+	commandList_->OMSetRenderTargets(1, &rtvHandles[backBufferIndex_], false, &dsvManager_->GetNoramlCPUHandle());
 	// 指定した色で画面全体をクリアする
 	float clearColor[] = { clearColor_.x, clearColor_.y, clearColor_.z, clearColor_.w };
 	// RGBAの順
@@ -458,7 +455,7 @@ void DXCommon::Init(WinApp* winApp, uint32_t width, uint32_t height) {
 
 	device_ = std::make_unique<DXDevice>();
 	swapChain_ = std::make_unique<DXSwapChain>();
-	descriptor_ = std::make_unique<DXDescriptor>();
+	dsvManager_ = std::make_unique<DsvManager>();
 	rtvManager_ = std::make_unique<RtvManager>();
 
 	kClientWidth_ = width;
@@ -500,7 +497,7 @@ void DXCommon::Init(WinApp* winApp, uint32_t width, uint32_t height) {
 	}
 
 	// DSVの初期化
-	descriptor_->Init(kClientWidth_, kClientHeight_);
+	dsvManager_->Init(kClientWidth_, kClientHeight_);
 }
 
 /*////////////////////////////////////////////////////////////////////////////////
@@ -512,7 +509,7 @@ void DXCommon::Close(WinApp* winApp) {
 
 	device_.reset();
 	swapChain_.reset();
-	descriptor_.reset();
+	dsvManager_.reset();
 
 	CloseWindow(winApp->GetHwnd());
 }

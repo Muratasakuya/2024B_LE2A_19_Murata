@@ -41,7 +41,6 @@
     <ClCompile Include="Game\Components\IndexObject.cpp" />
     <ClCompile Include="Externals\MagAudio\MagAudio.cpp" />
     <ClCompile Include="Lib\Adapter\JsonAdapter.cpp" />
-    <ClCompile Include="Engine\Managers\DXConstBufferManager.cpp" />
     <ClCompile Include="Lib\Math\Math.cpp" />
     <ClCompile Include="Game\Components\MaterialObject.cpp" />
     <ClCompile Include="Engine\Methods\Audio.cpp" />
@@ -123,6 +122,7 @@
     <ClCompile Include="Game\Components\TriangleVertexBuffer.cpp" />
     <ClCompile Include="Game\Methods\Utility\MoveUtility.cpp" />
     <ClCompile Include="Game\Methods\Physics\Physics.cpp" />
+    <ClCompile Include="Engine\Managers\DsvManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -220,6 +220,7 @@
     <ClInclude Include="Game\Components\TriangleVertexBuffer.h" />
     <ClInclude Include="Game\Methods\Utility\MoveUtility.h" />
     <ClInclude Include="Game\Methods\Physics\Physics.h" />
+    <ClInclude Include="Engine\Managers\DsvManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

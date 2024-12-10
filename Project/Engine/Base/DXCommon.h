@@ -5,10 +5,10 @@
 //===================================================================*/
 #include "Engine/MyDirectXClass/DXDevice.h"
 #include "Engine/MyDirectXClass/DXSwapChain.h"
-#include "Engine/MyDirectXClass/DXDescriptor.h"
 #include "Engine/MyDirectXClass/DXOffscreenRender.h"
-#include "Engine/Managers/RtvManager.h"
 #include "Engine/MyDirectXClass/Pipeline/PipelineStateStructure.h"
+#include "Engine/Managers/RtvManager.h"
+#include "Engine/Managers/DsvManager.h"
 
 // directX
 #include <dxgidebug.h>
@@ -96,9 +96,9 @@ private:
 
 	std::unique_ptr<DXDevice> device_;
 	std::unique_ptr<DXSwapChain> swapChain_;
-	std::unique_ptr<DXDescriptor> descriptor_;
 	std::unique_ptr<DXOffscreenRender> offscreenRender_;
 	std::unique_ptr<RtvManager> rtvManager_;
+	std::unique_ptr<DsvManager> dsvManager_;
 
 #pragma region /// DXComObject ///
 	ComPtr<ID3D12Fence> fence_;

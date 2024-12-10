@@ -117,6 +117,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Managers\DsvManager.cpp" />
     <ClCompile Include="Game\Methods\Physics\Physics.cpp" />
     <ClCompile Include="Game\Particles\DispersionParticle.cpp" />
     <ClCompile Include="Game\Particles\FieldParticle.cpp" />
@@ -143,7 +144,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Components\IndexObject.cpp" />
     <ClCompile Include="Externals\MagAudio\MagAudio.cpp" />
     <ClCompile Include="Lib\Adapter\JsonAdapter.cpp" />
-    <ClCompile Include="Engine\Managers\DXConstBufferManager.cpp" />
     <ClCompile Include="Lib\Math\Math.cpp" />
     <ClCompile Include="Game\Components\MaterialObject.cpp" />
     <ClCompile Include="Engine\Methods\Audio.cpp" />
@@ -209,6 +209,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Methods\Utility\MoveUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Managers\DsvManager.h" />
     <ClInclude Include="Game\Particles\DispersionParticle.h" />
     <ClInclude Include="Game\Particles\FieldParticle.h" />
     <ClInclude Include="Game\Particles\InjectionParticle.h" />

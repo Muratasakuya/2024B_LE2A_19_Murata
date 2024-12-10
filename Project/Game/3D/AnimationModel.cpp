@@ -2,7 +2,6 @@
 
 #include "Engine/Base/NewMoon.h"
 #include "Engine/Base/NewMoonGame.h"
-#include "Engine/Managers/DXConstBufferManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
 *						AnimationModel classMethods
