@@ -4,33 +4,28 @@
 //	include
 //============================================================================*/
 #include <Engine/DXClass/ComPtr.h>
-#include <Engine/Window/WinApp.h>
 
-// directX
+// driectX
 #include <d3d12.h>
-#include <dxgidebug.h>
-#include <dxgi1_3.h>
+#include <dxgi1_6.h>
 
 // c++
-#include <memory>
+#include <array>
+#include <cassert>
 
 //============================================================================*/
-//	NewMoon class
+//	DXSwapChain class
 //============================================================================*/
-class NewMoon {
+class DXSwapChain {
 public:
 	//========================================================================*/
 	//	public Methods
 	//========================================================================*/
 
-	NewMoon() = default;
-	~NewMoon() = default;
+	DXSwapChain() = default;
+	~DXSwapChain() = default;
 
-	static void Init();
-
-	static void Finalize();
-
-	static bool ProcessMessage();
+	void Init(HWND hwnd, IDXGIFactory7* dxgiFactory, ID3D12CommandQueue* commandQueue);
 
 private:
 	//========================================================================*/
@@ -40,25 +35,13 @@ private:
 	//========================================================================*/
 	//* variables
 
-	static std::unique_ptr<WinApp> winApp_;
+	// バッファカウント
+	static const uint32_t bufferCount_ = 2;
 
-	//============================================================================*/
-	// LeakChecker
-	//============================================================================*/
+	ComPtr<IDXGISwapChain4> swapChain_;
 
-	struct LeakChecker {
+	std::array<ComPtr<ID3D12Resource>, bufferCount_> resources_;
 
-		~LeakChecker() {
-
-			ComPtr<IDXGIDebug1> debug;
-			if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debug)))) {
-
-				debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
-				debug->ReportLiveObjects(DXGI_DEBUG_APP, DXGI_DEBUG_RLO_ALL);
-				debug->ReportLiveObjects(DXGI_DEBUG_D3D12, DXGI_DEBUG_RLO_ALL);
-			}
-		}
-	};
-	LeakChecker leakCheck;
+	DXGI_SWAP_CHAIN_DESC1 desc_;
 
 };

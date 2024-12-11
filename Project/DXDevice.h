@@ -4,33 +4,32 @@
 //	include
 //============================================================================*/
 #include <Engine/DXClass/ComPtr.h>
-#include <Engine/Window/WinApp.h>
 
 // directX
 #include <d3d12.h>
-#include <dxgidebug.h>
-#include <dxgi1_3.h>
+#include <dxgi1_6.h>
 
 // c++
-#include <memory>
+#include <cassert>
 
 //============================================================================*/
-//	NewMoon class
+//	DXDevice class
 //============================================================================*/
-class NewMoon {
-public:
+class DXDevice {
 	//========================================================================*/
 	//	public Methods
 	//========================================================================*/
 
-	NewMoon() = default;
-	~NewMoon() = default;
+	DXDevice() = default;
+	~DXDevice() = default;
 
-	static void Init();
+	void Init();
+	
+	//* getter *//
 
-	static void Finalize();
+	ID3D12Device* GetDevice() const { return device_.Get(); };
 
-	static bool ProcessMessage();
+	IDXGIFactory7* GetDxgiFactory() const { return dxgiFactory_.Get(); };
 
 private:
 	//========================================================================*/
@@ -40,25 +39,10 @@ private:
 	//========================================================================*/
 	//* variables
 
-	static std::unique_ptr<WinApp> winApp_;
+	ComPtr<ID3D12Device> device_;
 
-	//============================================================================*/
-	// LeakChecker
-	//============================================================================*/
+	ComPtr<IDXGIFactory7> dxgiFactory_;
 
-	struct LeakChecker {
-
-		~LeakChecker() {
-
-			ComPtr<IDXGIDebug1> debug;
-			if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debug)))) {
-
-				debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
-				debug->ReportLiveObjects(DXGI_DEBUG_APP, DXGI_DEBUG_RLO_ALL);
-				debug->ReportLiveObjects(DXGI_DEBUG_D3D12, DXGI_DEBUG_RLO_ALL);
-			}
-		}
-	};
-	LeakChecker leakCheck;
+	ComPtr<IDXGIAdapter4> useAdapter_;
 
 };

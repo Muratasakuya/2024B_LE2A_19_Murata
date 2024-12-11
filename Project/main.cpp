@@ -1,23 +1,18 @@
 
 //===================================================================*/
-//								include
+//	include
 //===================================================================*/
-#include "Engine/Base/NewMoon.h"
-#include "Engine/Base/NewMoonGame.h"
-#include "Game/Managers/SceneManager.h"
-#include <Windows.h>
+#include <Engine/Base/NewMoon.h>
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
-	NewMoon::Init(windowWidth, windowHeight);
-	NewMoonGame::Init();
+	NewMoon::Init();
 
-	SceneManager* sceneManager = SceneManager::GetInstance();
+	while (!NewMoon::ProcessMessage()) {
 
-	sceneManager->Run();
-
-	NewMoonGame::Close();
-	NewMoon::Close();
+		int a = 0;
+		a = 1;
+	}
 
 	return 0;
 }
