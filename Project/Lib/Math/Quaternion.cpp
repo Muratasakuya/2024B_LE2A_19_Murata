@@ -31,6 +31,16 @@ Quaternion Quaternion::operator*(float scalar) const {
 	return { x * scalar, y * scalar, z * scalar, w * scalar };
 }
 
+// Vector3*
+Vector3 Quaternion::operator*(const Vector3& v) const {
+
+	Quaternion qv(0, v.x, v.y, v.z);
+	Quaternion qConjugate = this->Inverse(Quaternion(*this));
+
+	Quaternion result = (*this) * qv * qConjugate;
+	return Vector3(result.x, result.y, result.z);
+}
+
 /*-------------------------------------------------------------*/
 /// 関数
 

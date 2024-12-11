@@ -22,8 +22,8 @@ bool NewMoonGame::debugCameraEnable_ = false;
 std::unique_ptr<LightManager> NewMoonGame::lightManager_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer2D_ = nullptr;
 std::unique_ptr<PrimitiveDrawer> NewMoonGame::lineDrawer3D_ = nullptr;
-std::vector<BaseGameObject*> NewMoonGame::gameObjects_ = {};
-BaseGameObject* NewMoonGame::selectedGameObject_ = nullptr;
+std::vector<IBaseGameObject*> NewMoonGame::gameObjects_ = {};
+IBaseGameObject* NewMoonGame::selectedGameObject_ = nullptr;
 int NewMoonGame::currentObjectIndex_ = 0;
 std::vector<IBaseParticle*> NewMoonGame::particles_ = {};
 IBaseParticle* NewMoonGame::selectedParticle_ = {};
@@ -140,7 +140,7 @@ void NewMoonGame::ImGui() {
 	ImGui::Image(ImTextureID(gameObjectIconGpuHandle.ptr), ImVec2(40.0f, 40.0f));
 
 	ImGui::SameLine();
-	if (!gameObjects_.empty() || staticMeshObject_) {
+	if (!gameObjects_.empty()) {
 		ImGui::SetCursorPos(ImVec2(44.0f, imagePos.y + 2.0f));
 		ImGui::SetNextItemWidth(162.0f);
 		if (ImGui::BeginCombo("##GameObjectsCombo",
@@ -158,24 +158,9 @@ void NewMoonGame::ImGui() {
 						selectedStaticMeshObject_ = false;
 					}
 					if (isSelected) {
+
 						ImGui::SetItemDefaultFocus();
 					}
-				}
-			}
-
-			if (staticMeshObject_) {
-				bool isSelected = selectedStaticMeshObject_;
-				if (ImGui::Selectable(staticMeshObject_->GetName().c_str(), isSelected)) {
-
-					currentObjectIndex_ = -1;
-					selectedGameObject_ = nullptr;
-					selectedParticle_ = nullptr;
-					cameraDisplayEnable_ = false;
-					selectedStaticMeshObject_ = true;
-				}
-				if (isSelected) {
-
-					ImGui::SetItemDefaultFocus();
 				}
 			}
 
@@ -521,11 +506,11 @@ void NewMoonGame::DrawAABB(const AABBInfo& aabb, const LineColor& color) {
 ///===================================================================
 // Setter
 
-void NewMoonGame::SetToImGui(BaseGameObject* gameObject) {
+void NewMoonGame::SetToImGui(IBaseGameObject* gameObject) {
 	gameObjects_.push_back(gameObject);
 }
 
-void NewMoonGame::EraseToImGui(BaseGameObject* gameObject) {
+void NewMoonGame::EraseToImGui(IBaseGameObject* gameObject) {
 	gameObjects_.erase(std::remove(gameObjects_.begin(), gameObjects_.end(), gameObject), gameObjects_.end());
 }
 

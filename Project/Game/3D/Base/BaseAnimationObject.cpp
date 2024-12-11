@@ -1,21 +1,21 @@
-#include "BaseGameObject.h"
+#include "BaseAnimationObject.h"
 
 #include "Engine/Base/NewMoonGame.h"
 #include "Engine/Managers/ImGuiManager.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*	BaseModel ClassMethods
+*	BaseAnimationObject ClassMethods
 ////////////////////////////////////////////////////////////////////////////////*/
 
-void BaseGameObject::Init(const std::string& modelName) {
+void BaseAnimationObject::Init(const std::string& modelName, const std::string& animationName) {
 
-	model_ = std::make_unique<Model>();
-	model_->Init(modelName);
+	model_ = std::make_unique<AnimationModel>();
+	model_->Init(modelName, animationName);
 
-	transform_.Init();
+	transform_.Init(modelName, animationName);
 	color_ = Color::White();
 
-	materials_.resize(model_->GetMeshNum());
+	materials_.emplace_back();
 	for (auto& material : materials_) {
 
 		material.Init();
@@ -25,7 +25,7 @@ void BaseGameObject::Init(const std::string& modelName) {
 	}
 }
 
-void BaseGameObject::Update() {
+void BaseAnimationObject::Update() {
 
 	transform_.Update();
 	for (auto& material : materials_) {
@@ -35,12 +35,12 @@ void BaseGameObject::Update() {
 	}
 }
 
-void BaseGameObject::Draw(BlendMode blendMode) {
+void BaseAnimationObject::Draw(BlendMode blendMode) {
 
-	model_->Draw(transform_, materials_, blendMode);
+	model_->Draw(transform_, materials_.front(), blendMode);
 }
 
-void BaseGameObject::TransformImGui() {
+void BaseAnimationObject::TransformImGui() {
 
 	if (ImGui::TreeNode("Transform")) {
 
@@ -55,7 +55,13 @@ void BaseGameObject::TransformImGui() {
 	}
 }
 
-void BaseGameObject::SetWorldTransform(const WorldTransform& transform) {
+void BaseAnimationObject::SetAnimation(const std::string& animationName, bool play) {
+
+	transform_.SetPlayAnimation(play, animationName);
+	model_->SetAnimationName(animationName);
+}
+
+void BaseAnimationObject::SetWorldTransform(const AnimationTransform& transform) {
 
 	transform_.translation = transform.translation;
 	transform_.scale = transform.scale;

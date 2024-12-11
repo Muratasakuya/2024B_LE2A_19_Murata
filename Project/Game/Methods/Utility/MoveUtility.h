@@ -6,6 +6,7 @@
 //	include
 //===================================================================*/
 #include "Game/Components/BaseTransform.h"
+#include "Engine/Methods/Input.h"
 
 /*==============================================================================*/
 /// Physics EnumClass
@@ -52,10 +53,12 @@ public:
 	//* methods *//
 
 	void KeyMove(BaseTransform& transform);
-
-	void RotateToDirection(BaseTransform& transform, float lerpRate = 0.25f);
+	void GamePadMove(BaseTransform& transform);
 
 	void Jump(BaseTransform& transform, BYTE keyNumber);
+	void GamePadJamp(BaseTransform& transform, InputGamePadButtons padButton);
+
+	void RotateToDirection(BaseTransform& transform, float lerpRate = 0.25f);
 
 	//===================================================================*/
 	///* variables

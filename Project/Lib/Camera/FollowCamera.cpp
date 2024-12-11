@@ -12,16 +12,17 @@ void FollowCamera::Init(const WorldTransform* target) {
 	target_ = target;
 
 	transform_.Init();
-	transform_.eulerRotate.x = 0.25f;
+	transform_.eulerRotate.x = 0.1f;
 
-	offset_ = Vector3(0.0f, 7.0f, -20.0f);
+	offset_ = Vector3(0.0f, 1.25f, -13.35f);
+	interTarget_ = offset_;
 
 }
 
 void FollowCamera::Update() {
 
-	// オフセット分座標をずらす
-	transform_.translation = target_->translation + offset_;
+	// カメラ移動、回転
+	Move();
 
 	transform_.Update();
 
@@ -32,6 +33,29 @@ void FollowCamera::Update() {
 
 	Matrix4x4 viewMatrix = Matrix4x4::Inverse(worldMatrix);
 	viewProjectionMatrix_ = viewMatrix * NewMoonGame::GameCamera()->GetCamera3D()->GetProjectionMatrix();
+
+}
+
+void FollowCamera::Move() {
+
+	const float lerpRate = 0.25f;
+
+	Vector3 rotate{};
+	rotate.Init();
+
+	rotate.y = NewMoonGame::GetRightStickVal().x;
+	transform_.eulerRotate += rotate.Normalize() / 45.0f;
+
+	interTarget_ = Vector3::Lerp(interTarget_, target_->GetWorldPos(), lerpRate);
+
+	Vector3 offset{};
+	offset.Init();
+
+	Matrix4x4 rotateMatrix = Matrix4x4::MakeRotateMatrix(transform_.eulerRotate);
+	offset = Vector3::TransferNormal(offset_, rotateMatrix);
+
+	// オフセット分座標をずらす
+	transform_.translation = interTarget_ + offset;
 
 }
 

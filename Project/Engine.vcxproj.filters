@@ -123,6 +123,9 @@
     <ClCompile Include="Game\Methods\Utility\MoveUtility.cpp" />
     <ClCompile Include="Game\Methods\Physics\Physics.cpp" />
     <ClCompile Include="Engine\Managers\DsvManager.cpp" />
+    <ClCompile Include="Game\3D\Base\IBaseGameObject.cpp" />
+    <ClCompile Include="Game\3D\Base\BaseAnimationObject.cpp" />
+    <ClCompile Include="Game\Methods\Renderer\MeshRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\MyDirectXClass\Pipeline\DXShaderCompiler.h" />
@@ -221,6 +224,9 @@
     <ClInclude Include="Game\Methods\Utility\MoveUtility.h" />
     <ClInclude Include="Game\Methods\Physics\Physics.h" />
     <ClInclude Include="Engine\Managers\DsvManager.h" />
+    <ClInclude Include="Game\3D\Base\IBaseGameObject.h" />
+    <ClInclude Include="Game\3D\Base\BaseAnimationObject.h" />
+    <ClInclude Include="Game\Methods\Renderer\MeshRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli" />

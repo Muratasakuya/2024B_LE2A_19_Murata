@@ -1,7 +1,7 @@
 #pragma once
 
 //===================================================================*/
-//								include
+//	include
 //===================================================================*/
 #include "Game/3D/Base/BaseGameObject.h"
 #include "Game/3D/Base/Collider.h"
@@ -11,17 +11,18 @@
 #include <memory>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Player Class
+*	Player Class
 ////////////////////////////////////////////////////////////////////////////////*/
 class Player
-	:public BaseGameObject {
+	:public BaseGameObject,
+	public Collider {
 public:
 	//===================================================================*/
-	//							public Methods
+	//	public Methods
 	//===================================================================*/
 
 	Player() = default;
-	~Player();
+	~Player() = default;
 
 	void Init();
 
@@ -48,6 +49,8 @@ private:
 	//===================================================================*/
 	///* functions
 
-	void KeyMove();
+	//* Move *//
+
+	void Move();
 
 };

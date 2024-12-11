@@ -10,7 +10,7 @@
 #include "Game/Managers/CameraManager.h"
 #include "Game/Managers/LightManager.h"
 #include "Game/3D/PrimitiveDrawer.h"
-#include "Game/3D/Base/BaseGameObject.h"
+#include "Game/3D/Base/IBaseGameObject.h"
 #include "Game/Methods/Particle/IBaseParticle.h"
 #include "Game/Managers/CollisionManager.h"
 #include "Game/Editor/UIEditor.h"
@@ -110,8 +110,8 @@ public:
 	///===================================================================
 	// Command
 
-	static void SetToImGui(BaseGameObject* gameObject);
-	static void EraseToImGui(BaseGameObject* gameObject);
+	static void SetToImGui(IBaseGameObject* gameObject);
+	static void EraseToImGui(IBaseGameObject* gameObject);
 	static void SetToImGui(IBaseParticle* particle);
 	static void ClearAllGameInformation();
 
@@ -151,8 +151,8 @@ private:
 	static std::unique_ptr<PrimitiveDrawer> lineDrawer2D_;
 	static std::unique_ptr<PrimitiveDrawer> lineDrawer3D_;
 
-	static std::vector<BaseGameObject*> gameObjects_;
-	static BaseGameObject* selectedGameObject_;
+	static std::vector<IBaseGameObject*> gameObjects_;
+	static IBaseGameObject* selectedGameObject_;
 	static int currentObjectIndex_;
 	static std::vector<IBaseParticle*> particles_;
 	static IBaseParticle* selectedParticle_;

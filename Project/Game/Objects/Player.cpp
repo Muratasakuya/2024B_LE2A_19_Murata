@@ -5,18 +5,14 @@
 #include "Lib/Math/Math.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								Player classMethods
+*	Player ClassMethods
 ////////////////////////////////////////////////////////////////////////////////*/
-
-Player::~Player() {
-	NewMoonGame::EraseToImGui(this);
-}
 
 void Player::Init() {
 
 	BaseGameObject::Init("cube.obj");
 
-	BaseGameObject::SetName("player");
+	BaseGameObject::SetMeshRenderer("player");
 
 	parentFolderName_ = "./Player/";
 
@@ -29,12 +25,20 @@ void Player::Init() {
 	move_.jumpStrength = 5.0f;
 	move_.groundY = transform_.scale.y;
 
+	Collider::SetCollisionShapeOBB();
+
 }
 
 void Player::Update() {
 
 	// 移動処理
-	KeyMove();
+	Move();
+
+	Collider::OBBUpdate();
+
+	Collider::rotate_ = transform_.rotation;
+	Collider::centerPos_ = transform_.translation;
+	Collider::size_ = Vector3(transform_.scale.x + 0.1f, transform_.scale.y + 0.1f, transform_.scale.z + 0.1f);
 
 	BaseGameObject::Update();
 
@@ -42,15 +46,15 @@ void Player::Update() {
 
 void Player::Draw() {
 
-	BaseGameObject::Draw();
+	Collider::DrawCollider();
 
 }
 
-void Player::KeyMove() {
+void Player::Move() {
 
-	move_.KeyMove(transform_);
+	move_.GamePadMove(transform_);
+	move_.GamePadJamp(transform_, InputGamePadButtons::A);
 	move_.RotateToDirection(transform_);
-	move_.Jump(transform_, DIK_SPACE);
 
 }
 
@@ -65,11 +69,10 @@ void Player::DerivedImGui() {
 
 Vector3 Player::GetForward() const {
 
-	float angleY = transform_.eulerRotate.y;
-	Vector3 forward;
-	forward.x = std::sinf(angleY);
-	forward.z = std::cosf(angleY);
-	forward.y = 0.0f;
+	Vector3 forward = Direction::Forward();
+
+	Quaternion rotation = transform_.rotation;
+	forward = rotation * forward;
 
 	return forward;
 }

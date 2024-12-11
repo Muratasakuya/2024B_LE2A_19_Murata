@@ -48,6 +48,30 @@ void MoveUtility::KeyMove(BaseTransform& transform) {
 	transform.translation += move_;
 }
 
+void MoveUtility::GamePadMove(BaseTransform& transform) {
+
+	move_.Init();
+
+	if (NewMoonGame::GameCamera()->GetFollowCamera()) {
+
+		move_ = Vector3(NewMoonGame::GetLeftStickVal().x, 0.0f, NewMoonGame::GetLeftStickVal().y);
+		move_ = move_.Normalize() * velocity;
+
+		Matrix4x4 rotateMatrix =
+			Matrix4x4::MakeRotateMatrix(NewMoonGame::GameCamera()->GetFollowCamera()->GetRotate());
+		move_ = Vector3::TransferNormal(move_, rotateMatrix);
+		move_.y = 0.0f;
+
+	} else {
+
+		move_ = Vector3(NewMoonGame::GetLeftStickVal().x, 0.0f, NewMoonGame::GetLeftStickVal().y);
+		move_ = move_.Normalize() * velocity;
+	}
+
+	transform.translation += move_;
+
+}
+
 void MoveUtility::RotateToDirection(BaseTransform& transform, float lerpRate) {
 
 	Vector3 direction = Vector3(move_.x, 0.0f, move_.z).Normalize();
@@ -83,4 +107,27 @@ void MoveUtility::Jump(BaseTransform& transform, BYTE keyNumber) {
 		}
 	}
 
+}
+
+void MoveUtility::GamePadJamp(BaseTransform& transform, InputGamePadButtons padButton) {
+
+	// 地面に着いているときのみ
+	if (isGrounded_ && NewMoonGame::TriggerGamepadButton(padButton)) {
+
+		velocity.y = jumpStrength;
+		isGrounded_ = false;
+	}
+
+	if (!isGrounded_) {
+
+		velocity.y += gravity_ * NewMoonGame::GetDeltaTime();
+		transform.translation.y += velocity.y * NewMoonGame::GetDeltaTime();
+
+		if (transform.translation.y <= groundY) {
+
+			transform.translation.y = groundY;
+			velocity.y = 0.0f;
+			isGrounded_ = true;
+		}
+	}
 }

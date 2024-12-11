@@ -26,14 +26,8 @@ void CameraManager::Update() {
 
 	camera2D_->Update();
 
-	debugCamera_->Update(camera3D_->GetWorldPos(), camera3D_->GetRotate());
-	if (debugCamera_->Enable()) {
-
-		camera3D_->SetCamera(debugCamera_->GetViewProjectionMatrix(), debugCamera_->GetTranslate());
-	} else {
-
-		camera3D_->Update();
-	}
+	followCamera_->Update();
+	camera3D_->SetCamera(followCamera_->GetViewProjectionMatrix(), followCamera_->GetTranslate());
 
 }
 

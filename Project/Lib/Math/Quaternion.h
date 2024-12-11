@@ -35,6 +35,9 @@ struct Quaternion {
 	Quaternion operator*(float scalar) const;
 	friend Quaternion operator*(float scalar, const Quaternion& q);
 
+	// Vector3*
+	Vector3 operator*(const Vector3& v) const;
+
 	/*-------------------------------------------------------------*/
 	/// 関数
 

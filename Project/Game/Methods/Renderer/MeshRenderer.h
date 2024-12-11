@@ -1,35 +1,38 @@
 #pragma once
 
 //===================================================================*/
-//								include
+//	include
 //===================================================================*/
-#include "Lib/Structure.h"
-#include "Game/Components/WorldTransform.h"
+#include "Game/3D/Base/IBaseGameObject.h"
+
+// c++
+#include <vector>
 
 /*////////////////////////////////////////////////////////////////////////////////
-*								FollowCamera Class
+*	MeshRenderer Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class FollowCamera {
+class MeshRenderer {
 public:
 	//===================================================================*/
-	//							public Methods
+	//	public Methods
 	//===================================================================*/
 
-	FollowCamera() = default;
-	~FollowCamera() = default;
+	MeshRenderer() = default;
+	~MeshRenderer() = default;
 
-	void Init(const WorldTransform* target);
+	static void Render();
 
-	void Update();
+	static void SetGameObject(IBaseGameObject* gameObject);
 
-	void ImGui();
+	static void EraseGameObject(IBaseGameObject* gameObject);
+		
+	static void Clear();
+
+	static void SelectImGui();
 
 	//* getter *//
 
-	Matrix4x4 GetViewProjectionMatrix() const { return viewProjectionMatrix_; }
-
-	Vector3 GetTranslate() const { return transform_.translation; }
-	Vector3 GetRotate() const { return transform_.eulerRotate; }
+	static std::vector<IBaseGameObject*> GetRenderObject() { return gameObjects_; };
 
 private:
 	//===================================================================*/
@@ -39,18 +42,13 @@ private:
 	//===================================================================*/
 	///* variables
 
-	const WorldTransform* target_;
+	static std::vector<IBaseGameObject*> gameObjects_;
 
-	WorldTransform transform_;
+	static IBaseGameObject* selectedGameObject_;
 
-	Vector3 offset_;
-	Vector3 interTarget_;
-
-	Matrix4x4 viewProjectionMatrix_;
+	static int currentObjectIndex_;
 
 	//===================================================================*/
 	///* functions
-
-	void Move();
 
 };

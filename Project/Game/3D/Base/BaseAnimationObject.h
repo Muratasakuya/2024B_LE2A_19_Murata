@@ -4,22 +4,22 @@
 //	include
 //===================================================================*/
 #include "Game/3D/Base/IBaseGameObject.h"
-#include "Game/Components/WorldTransform.h"
+#include "Game/Components/AnimationTransform.h"
 
 /*////////////////////////////////////////////////////////////////////////////////
-*	BaseGameObject Class
+*	BaseAnimationObject Class
 ////////////////////////////////////////////////////////////////////////////////*/
-class BaseGameObject :
+class BaseAnimationObject :
 	public IBaseGameObject {
 public:
 	//===================================================================*/
 	//	public Methods
 	//===================================================================*/
 
-	BaseGameObject() = default;
-	virtual ~BaseGameObject() = default;
+	BaseAnimationObject() = default;
+	virtual ~BaseAnimationObject() = default;
 
-	virtual void Init(const std::string& modelName);
+	virtual void Init(const std::string& modelName, const std::string& animationName);
 
 	virtual void Update();
 
@@ -37,11 +37,13 @@ public:
 
 	//* setter *//
 
-	void SetWorldTransform(const WorldTransform& transform);
+	void SetAnimation(const std::string& animationName, bool play);
+
+	void SetWorldTransform(const AnimationTransform& transform);
 
 	//* getter *//
 
-	const WorldTransform& GetWorldTransform() const { return transform_; };
+	const AnimationTransform& GetWorldTransform() const { return transform_; };
 
 	Vector3 GetWorldPos() const { return transform_.GetWorldPos(); };
 
@@ -53,8 +55,8 @@ protected:
 	//===================================================================*/
 	///* variables
 
-	std::unique_ptr<Model> model_;
+	std::unique_ptr<AnimationModel> model_;
 
-	WorldTransform transform_;
+	AnimationTransform transform_;
 
 };

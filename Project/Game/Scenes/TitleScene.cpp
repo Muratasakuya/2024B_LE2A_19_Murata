@@ -64,6 +64,8 @@ void TitleScene::Init() {
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
+	NewMoonGame::GameCamera()->GetFollowCamera()->Init(&player_->GetWorldTransform());
+
 	//================================================================================
 	//* SceneMethod *//
 	//================================================================================
