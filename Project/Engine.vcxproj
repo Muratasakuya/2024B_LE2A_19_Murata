@@ -46,14 +46,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
-    <IncludePath>C:\Kamata_Workbench\Project_HAJIKI\HAJIKI\Project\Engine\Externals\MagAudio;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(ProjectDir)Engine\Externals\nlohmann;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
-    <IncludePath>C:\Kamata_Workbench\Project_HAJIKI\HAJIKI\Project\Engine\Externals\MagAudio;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(ProjectDir)Engine\Externals\nlohmann;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -68,7 +68,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)/;$(ProjectDir)/Externals/MagAudio;$(ProjectDir)/Externals/imgui;$(ProjectDir)/Externals/assimp/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/;$(ProjectDir)/Externals/imgui;$(ProjectDir)/Externals/assimp/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -98,7 +98,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)/;$(ProjectDir)/Externals/MagAudio;$(ProjectDir)/Externals/imgui;$(ProjectDir)/Externals/assimp/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/;$(ProjectDir)/Externals/imgui;$(ProjectDir)/Externals/assimp/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -333,21 +333,25 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DXDevice.cpp" />
+    <ClCompile Include="Engine\DXClass\DXDevice.cpp" />
     <ClCompile Include="Engine\DXClass\DXSwapChain.cpp" />
     <ClCompile Include="Engine\DXClass\DXCommon.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Base\NewMoon.cpp" />
     <ClCompile Include="Engine\Window\WinApp.cpp" />
+    <ClCompile Include="Engine\DXClass\Managers\RtvManager.cpp" />
+    <ClCompile Include="Lib\MathUtils\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DXDevice.h" />
+    <ClInclude Include="Engine\DXClass\DXDevice.h" />
     <ClInclude Include="Engine\DXClass\DXSwapChain.h" />
     <ClInclude Include="Engine\DXClass\DXCommon.h" />
     <ClInclude Include="Engine\DXClass\ComPtr.h" />
     <ClInclude Include="Engine\Utility\Environment.h" />
     <ClInclude Include="Engine\Base\NewMoon.h" />
     <ClInclude Include="Engine\Window\WinApp.h" />
+    <ClInclude Include="Engine\DXClass\Managers\RtvManager.h" />
+    <ClInclude Include="Lib\MathUtils\Vector3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

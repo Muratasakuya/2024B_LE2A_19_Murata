@@ -7,29 +7,23 @@
 
 // directX
 #include <d3d12.h>
-#include <dxgi1_6.h>
 
 // c++
-#include <cassert>
+#include <cstdint>
 
 //============================================================================*/
-//	DXDevice class
+//	RtvManager class
 //============================================================================*/
-class DXDevice {
+class RtvManager {
+public:
 	//========================================================================*/
 	//	public Methods
 	//========================================================================*/
 
-	DXDevice() = default;
-	~DXDevice() = default;
+	RtvManager() = default;
+	~RtvManager() = default;
 
 	void Init();
-	
-	//* getter *//
-
-	ID3D12Device* GetDevice() const { return device_.Get(); };
-
-	IDXGIFactory7* GetDxgiFactory() const { return dxgiFactory_.Get(); };
 
 private:
 	//========================================================================*/
@@ -39,10 +33,17 @@ private:
 	//========================================================================*/
 	//* variables
 
-	ComPtr<ID3D12Device> device_;
+	static const uint32_t kMaxRtvCount_;
+	uint32_t useIndex_;
 
-	ComPtr<IDXGIFactory7> dxgiFactory_;
+	ComPtr<ID3D12DescriptorHeap> descriptorHeap_;
+	D3D12_RENDER_TARGET_VIEW_DESC desc_;
 
-	ComPtr<IDXGIAdapter4> useAdapter_;
+	uint32_t descriptorSize_;
+
+	//========================================================================*/
+	//* functions
+
+	ComPtr<ID3D12DescriptorHeap> MakeDescriptorHeap(ID3D12Device* device);
 
 };

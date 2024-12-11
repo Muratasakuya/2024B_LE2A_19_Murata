@@ -47,7 +47,9 @@
     <ClCompile Include="Engine\Window\WinApp.cpp" />
     <ClCompile Include="Engine\DXClass\DXCommon.cpp" />
     <ClCompile Include="Engine\DXClass\DXSwapChain.cpp" />
-    <ClCompile Include="DXDevice.cpp" />
+    <ClCompile Include="Engine\DXClass\DXDevice.cpp" />
+    <ClCompile Include="Engine\DXClass\Managers\RtvManager.cpp" />
+    <ClCompile Include="Lib\MathUtils\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Utility\Environment.h" />
@@ -56,6 +58,8 @@
     <ClInclude Include="Engine\Window\WinApp.h" />
     <ClInclude Include="Engine\DXClass\DXCommon.h" />
     <ClInclude Include="Engine\DXClass\DXSwapChain.h" />
-    <ClInclude Include="DXDevice.h" />
+    <ClInclude Include="Engine\DXClass\DXDevice.h" />
+    <ClInclude Include="Engine\DXClass\Managers\RtvManager.h" />
+    <ClInclude Include="Lib\MathUtils\Vector3.h" />
   </ItemGroup>
 </Project>
